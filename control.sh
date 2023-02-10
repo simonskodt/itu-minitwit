@@ -20,5 +20,3 @@ elif [ "$1" = "flag" ]; then
 else
   echo "I do not know this command..."
 fi
-
-
