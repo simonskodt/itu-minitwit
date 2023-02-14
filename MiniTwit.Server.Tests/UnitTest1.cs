@@ -1,4 +1,4 @@
-namespace MiniTwit.Tests;
+namespace MiniTwit.Server.Tests;
 
 public class UnitTest1
 {
