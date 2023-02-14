@@ -26,8 +26,20 @@ public class TwitterController : ControllerBase{
 
     [AllowAnonymous]
     [HttpPost]
-    public void InsertUser(){
-        _repository.InsertUser();
+    [Route("/Registrer")]
+    public void Register(string username, string email, string pw){
+        _repository.RegisterUser(username, email, pw);
     }
 
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("/Login")]
+    public ActionResult Login(string username, string pw){
+        var response = _repository.Login(username, pw);
+        if (response != null ){
+            return Ok();
+        }else{
+            return BadRequest();
+        }
+    }
 }

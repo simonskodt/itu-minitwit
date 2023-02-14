@@ -14,7 +14,6 @@ function SignUp() {
         <Button
           onClick={() => {
             alert('clicked');
-            const response = appService.insertUser();
           }}
         >
         Clich here to insert data
