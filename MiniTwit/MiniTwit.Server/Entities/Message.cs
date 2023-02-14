@@ -1,5 +1,7 @@
 using MongoDB.Bson;
 
+namespace MiniTwit.Server.Entities;
+
 public class Message
 {
     public ObjectId MessageId { get; set; }
