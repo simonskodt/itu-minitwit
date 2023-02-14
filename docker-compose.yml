@@ -5,9 +5,15 @@ version: '3.4'
 services:
   ituminitwit:
     image: ituminitwit
+    build: 
+      context: .
+      dockerfile: 'MiniTwit/MiniTwit.Server/Dockerfile'
     ports:
       - 5000:5000
   ituminitwitweb:
     image: ituminitwitweb
+    build:
+      context: .
+      dockerfile: 'MiniTwit/MiniTwit.Web/Dockerfile'
     ports:
       - "3000:3000"
