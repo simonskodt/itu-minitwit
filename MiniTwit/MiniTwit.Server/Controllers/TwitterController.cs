@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiniTwit.Server.Entities;
 using MiniTwit.Server.Repository;
 
 namespace MiniTwit.Server.Controllers;
