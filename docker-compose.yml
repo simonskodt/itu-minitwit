@@ -17,7 +17,7 @@ services:
     image: ituminitwit
     build: 
       context: .
-      dockerfile: 'MiniTwit/MiniTwit.Server/Dockerfile'
+      dockerfile: 'MiniTwit.Server/Dockerfile'
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
@@ -30,7 +30,7 @@ services:
     image: ituminitwitweb
     build:
       context: .
-      dockerfile: 'MiniTwit/MiniTwit.Web/Dockerfile'
+      dockerfile: 'MiniTwit.Web/Dockerfile'
     ports:
       - '3000:3000'
 
