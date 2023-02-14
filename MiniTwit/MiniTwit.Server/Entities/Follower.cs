@@ -1,4 +1,3 @@
-using MongoDB.Driver;
 using MongoDB.Bson;
 
 public class Follower
