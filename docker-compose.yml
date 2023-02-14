@@ -6,12 +6,10 @@ services:
   mongodb:
     image: mongodb/mongodb-community-server:6.0-ubi8
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONDO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_ROOT_USERNAME=Radiator
+      - MONGO_INITDB_ROOT_PASSWORD=1kvt8q6@W#K1
     volumes:
-      - type: bind
-        source: ./data
-        target: /data/db
+      - mongodb_data_container:/data/db
     ports:
       - '27017:27017'
 
@@ -35,4 +33,6 @@ services:
       dockerfile: 'MiniTwit/MiniTwit.Web/Dockerfile'
     ports:
       - '3000:3000'
-  
+
+volumes:
+  mongodb_data_container:
