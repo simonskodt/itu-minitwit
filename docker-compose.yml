@@ -13,26 +13,28 @@ services:
     ports:
       - '27017:27017'
 
-  ituminitwit:
-    image: ituminitwit
+  itu-minitwit-server:
+    image: itu-minitwit-server
     build: 
       context: .
       dockerfile: 'MiniTwit.Server/Dockerfile'
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_URLS: http://+:80
     ports:
-      - '8080:8080'
+      - '80:80'
     depends_on:
       - mongodb
 
-  ituminitwitweb:
-    image: ituminitwitweb
+  itu-minitwit-web:
+    image: itu-minitwit-web
     build:
       context: .
       dockerfile: 'MiniTwit.Web/Dockerfile'
     ports:
       - '3000:3000'
+    depends_on:
+      - itu-minitwit-server
 
 volumes:
   mongodb_data_container:
