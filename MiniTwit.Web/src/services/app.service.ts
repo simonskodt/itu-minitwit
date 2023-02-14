@@ -9,4 +9,8 @@ export class AppService {
     return (await response).json();
   }
 
+  public async Login(username: string, password : string ) : Promise<any> {
+    alert("username: " + password + " | password: " + password)
+  }
+
 }
