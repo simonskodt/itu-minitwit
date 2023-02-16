@@ -1,4 +1,5 @@
-using MiniTwit.Server.Repository;
+using MiniTwit.Core.IRepositories;
+using MiniTwit.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

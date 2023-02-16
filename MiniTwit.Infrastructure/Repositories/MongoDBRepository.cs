@@ -1,11 +1,11 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
-using System.Collections.Generic;
-using MiniTwit.Server.Entities;
+using MiniTwit.Core.Entities;
+using MiniTwit.Core.IRepositories;
 using Konscious.Security.Cryptography;
 using System.Text;
 
-namespace MiniTwit.Server.Repository;
+namespace MiniTwit.Infrastructure.Repositories;
 
 public class MongoDBRepository : IMongoDBRepository
 {
@@ -23,7 +23,6 @@ public class MongoDBRepository : IMongoDBRepository
         _followerCollection = _database.GetCollection<Follower>("follower");
         _messageCollection = _database.GetCollection<BsonDocument>("message");
     }
-
 
     public void RegisterUser(string username, string email, string pw)
     {

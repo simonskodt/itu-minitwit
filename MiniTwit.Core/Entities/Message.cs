@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace MiniTwit.Server.Entities;
+namespace MiniTwit.Core.Entities;
 
 public class Message
 {
