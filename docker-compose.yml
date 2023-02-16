@@ -6,7 +6,7 @@ services:
   mongodb:
     image: mongodb/mongodb-community-server:6.0-ubi8
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=Radiator
+      - MONGO_INITDB_ROOT_USERNAME=radiator
       - MONGO_INITDB_ROOT_PASSWORD=1kvt8q6@W#K1
     volumes:
       - mongodb_data_container:/data/db
