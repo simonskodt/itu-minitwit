@@ -4,24 +4,17 @@ using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
 using Konscious.Security.Cryptography;
 using System.Text;
+using MiniTwit.Core;
 
 namespace MiniTwit.Infrastructure.Repositories;
 
 public class MongoDBRepository : IMongoDBRepository
 {
-    private MongoClient _dbClient;
-    private IMongoDatabase _database;
-    private IMongoCollection<User> _userCollection;
-    private IMongoCollection<Follower> _followerCollection;
-    private IMongoCollection<BsonDocument> _messageCollection;
+    private IMongoDBContext _context;
 
-    public MongoDBRepository()
+    public MongoDBRepository(IMongoDBContext context)
     {
-        _dbClient = new MongoClient("mongodb://localhost:27017");
-        _database = _dbClient.GetDatabase("minitwit");
-        _userCollection = _database.GetCollection<User>("user");
-        _followerCollection = _database.GetCollection<Follower>("follower");
-        _messageCollection = _database.GetCollection<BsonDocument>("message");
+        _context = context;
     }
 
     public void RegisterUser(string username, string email, string pw)
@@ -36,8 +29,7 @@ public class MongoDBRepository : IMongoDBRepository
             Email    = email,
             PwHash   = str
         };
-
-        _userCollection.InsertOne(user);
+        _context.Users.InsertOne(user);
     }
 
     private byte[] HashPassword(string password)
@@ -63,7 +55,7 @@ public class MongoDBRepository : IMongoDBRepository
     public User? GetUserByUserName(string userName)
     {
         var userNameFilter = Builders<User>.Filter.Eq(u => u.Username, userName);
-        var user = _userCollection.Find(userNameFilter).First();
+        var user = _context.Users.Find(userNameFilter).First();
         if (user != null)
         {
             return user;
@@ -84,7 +76,7 @@ public class MongoDBRepository : IMongoDBRepository
 
     public ICollection<Message> DisplayAllTweets()
     {
-        IList<Message> messages = _database.GetCollection<Message>("message").Aggregate().ToList();
+        IList<Message> messages = _context.Messages.Aggregate().ToList();
         if (messages != null)
         {
             return messages;
@@ -96,6 +88,7 @@ public class MongoDBRepository : IMongoDBRepository
     public Message? DisplayTweetByUserName(string userName)
     {
         throw new NotImplementedException();
+        // Message message = _context.Messages.Find(msg => msg.MessageId == userName).Single();
     }
 
     public void FollowUser(string userName)
