@@ -2,6 +2,8 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Collections.Generic;
 using MiniTwit.Server.Entities;
+using Konscious.Security.Cryptography;
+using System.Text;
 
 namespace MiniTwit.Server.Repository;
 
@@ -22,29 +24,63 @@ public class MongoDBRepository : IMongoDBRepository
         _messageCollection = _database.GetCollection<BsonDocument>("message");
     }
 
-    public void InsertUser()
+
+    public void RegisterUser(string username, string email, string pw)
     {
+        var password = HashPassword(pw);
+
+        var str = System.Text.Encoding.Default.GetString(password);
         var user = new User 
         { 
             _id      = ObjectId.GenerateNewId(), 
-            Username = "Victor", 
-            Email    = "vibr@itu.dk", 
-            PwHash   = "Victor123"
+            Username = username,
+            Email    = email,
+            PwHash   = str
         };
 
         _userCollection.InsertOne(user);
     }
 
+    private byte[] HashPassword(string password)
+    {
+
+        byte[] bytes = Encoding.ASCII.GetBytes(password);
+        using var argon2 = new Argon2id(bytes);
+
+        argon2.DegreeOfParallelism = 8;
+        argon2.Iterations = 4;
+        argon2.MemorySize = 1024 * 128;
+        return argon2.GetBytes(32);                
+    }
+
+    private bool VerifyHash(string password, string hash)
+    {
+        var newHash = HashPassword(password);
+        byte[] bytes = Encoding.ASCII.GetBytes(hash); 
+         
+        return bytes.SequenceEqual(newHash);
+    }
+
     public User? GetUserByUserName(string userName)
     {
-        var filter = Builders<User>.Filter.Eq("username", userName);
-        var user = _userCollection.Find(filter).First();
+        var userNameFilter = Builders<User>.Filter.Eq(u => u.Username, userName);
+        var user = _userCollection.Find(userNameFilter).First();
         if (user != null)
         {
             return user;
         }
-
         return null;
+    }
+
+    public User? Login(string userName, string pw){
+        var user = GetUserByUserName(userName);
+        if (VerifyHash(pw, user.PwHash)){
+            Console.WriteLine("YHHUUU");
+            return user;
+        }else{
+            Console.WriteLine("FACCCKk");
+            return null;
+        }
     }
 
     public ICollection<Message> DisplayAllTweets()
