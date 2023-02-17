@@ -12,7 +12,7 @@ public class MongoDBContext : IMongoDBContext
 
     public IMongoCollection<Message> Messages { get; init; }
 
-    public MongoDBContext(string connectionString, string database)
+    public MongoDBContext()
     {
         MongoDatabase = new MongoClient("mongodb://localhost:27017").GetDatabase("minitwit");
         Users = MongoDatabase.GetCollection<User>("user");
