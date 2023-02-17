@@ -1,12 +1,12 @@
-
+import Layout from './Layout';
+import './Layout.css';
 
 function TimeLine() {
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>TIMNELINEPAGE</div>
-      </header>
+    <div className="page">
+      <h1>Public Timeline</h1>
+      <Layout />
     </div>
   );
 }
