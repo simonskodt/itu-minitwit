@@ -17,65 +17,16 @@ public class MongoDBRepository : IMongoDBRepository
         _context = context;
     }
 
-    public void RegisterUser(string username, string email, string pw)
+    public ICollection<Message> DisplayTimeline()
     {
-        var password = HashPassword(pw);
+        // If used is logged in, show the users and its followed users messages
 
-        var str = System.Text.Encoding.Default.GetString(password);
-        var user = new User 
-        { 
-            _id      = ObjectId.GenerateNewId(), 
-            Username = username,
-            Email    = email,
-            PwHash   = str
-        };
-        
-        _context.Users.InsertOne(user);
+        // If user is not logged in, redirect to PublicTimeline()
+
+        throw new NotImplementedException();
     }
 
-    private byte[] HashPassword(string password)
-    {
-
-        byte[] bytes = Encoding.ASCII.GetBytes(password);
-        using var argon2 = new Argon2id(bytes);
-
-        argon2.DegreeOfParallelism = 8;
-        argon2.Iterations = 4;
-        argon2.MemorySize = 1024 * 128;
-        return argon2.GetBytes(32);                
-    }
-
-    private bool VerifyHash(string password, string hash)
-    {
-        var newHash = HashPassword(password);
-        byte[] bytes = Encoding.ASCII.GetBytes(hash); 
-         
-        return bytes.SequenceEqual(newHash);
-    }
-
-    public User? GetUserByUserName(string userName)
-    {
-        var userNameFilter = Builders<User>.Filter.Eq(u => u.Username, userName);
-        var user = _context.Users.Find(userNameFilter).First();
-        if (user != null)
-        {
-            return user;
-        }
-        return null;
-    }
-
-    public User? Login(string userName, string pw){
-        var user = GetUserByUserName(userName);
-        if (VerifyHash(pw, user.PwHash)){
-            Console.WriteLine("YHHUUU");
-            return user;
-        }else{
-            Console.WriteLine("FACCCKk");
-            return null;
-        }
-    }
-
-    public ICollection<Message> DisplayAllTweets()
+    public ICollection<Message> DisplayPublicTimeline()
     {
         IList<Message> messages = _context.Messages.Aggregate().ToList();
         if (messages != null)
@@ -83,14 +34,40 @@ public class MongoDBRepository : IMongoDBRepository
             return messages;
         }
 
-        return new List<Message>();
+        return messages;
+    }
+
+    public ICollection<Message> DisplayUserTimeline()
+    {
         throw new NotImplementedException();
     }
 
-    public Message? DisplayTweetByUserName(string userName)
+    public Message? DisplayTweetByUserName(string userName, ObjectId userId)
     {
-        throw new NotImplementedException();
-        // Message message = _context.Messages.Find(msg => msg.MessageId == userName).Single();
+        var filter = Builders<User>.Filter.Eq("Username", userName);
+        var user = _context.Users.Find(filter).FirstOrDefault();
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        // Check wheather the user is followed
+        bool isFollowed = false;
+        if (user is not null)
+        {
+            var followerFilter =
+                Builders<Follower>.Filter.Eq("WhoId", user._id)
+                & Builders<Follower>.Filter.Eq("WhomId", userId);
+            // isFollowed = _context.Users.Find(followerFilter).Any();
+        }
+
+        // Find the user timeline
+        var msgFilter = Builders<Message>.Filter.Eq("AuthorId", user._id);
+        // var msg = _context.Users.Find(msgFilter).SortByDecending(m => m.PubDate);
+
+        // return msg;
+        return null;
     }
 
     public void FollowUser(string userName)
@@ -108,9 +85,38 @@ public class MongoDBRepository : IMongoDBRepository
         throw new NotImplementedException();
     }
 
+    public User? Login(string userName, string pw)
+    {
+        var user = GetUserByUserName(userName);
+        if (VerifyHash(pw, user.PwHash))
+        {
+            Console.WriteLine("Success");
+            return user;
+        }
+
+        Console.WriteLine("Fail");
+        return null;
+    }
+
     public void Login()
     {
         throw new NotImplementedException();
+    }
+
+    public void RegisterUser(string username, string email, string pw)
+    {
+        var password = HashPassword(pw);
+
+        var str = System.Text.Encoding.Default.GetString(password);
+        var user = new User
+        {
+            _id = ObjectId.GenerateNewId(),
+            Username = username,
+            Email = email,
+            PwHash = str
+        };
+
+        _context.Users.InsertOne(user);
     }
 
     public void Register()
@@ -121,5 +127,56 @@ public class MongoDBRepository : IMongoDBRepository
     public void Logout()
     {
         throw new NotImplementedException();
+    }
+
+    /// ----------------------------------------------------------------------------
+    /// Swagger testing functions
+    public User? GetUserByUserName(string userName)
+    {
+        var userNameFilter = Builders<User>.Filter.Eq(u => u.Username, userName);
+        var user = _context.Users.Find(userNameFilter).First();
+        if (user != null)
+        {
+            return user;
+        }
+
+        return null;
+    }
+
+    private ObjectId GetUserId(string userName)
+    {
+        var userId = Builders<User>.Filter.Eq(u => u.Username, userName);
+        var user = _context.Users.Find(userId).FirstOrDefault();
+
+        return user._id;
+    }
+
+    /// ----------------------------------------------------------------------------
+    /// Utility functions
+    private byte[] HashPassword(string password)
+    {
+        byte[] bytes = Encoding.ASCII.GetBytes(password);
+        using var argon2 = new Argon2id(bytes);
+
+        argon2.DegreeOfParallelism = 8;
+        argon2.Iterations = 4;
+        argon2.MemorySize = 1024 * 128;
+        return argon2.GetBytes(32);
+    }
+
+    private bool VerifyHash(string password, string hash)
+    {
+        var newHash = HashPassword(password);
+        byte[] bytes = Encoding.ASCII.GetBytes(hash);
+
+        return bytes.SequenceEqual(newHash);
+    }
+
+    public string FormatDatetime(long timestamp)
+    {
+        DateTime date = DateTime.FromBinary(timestamp);
+        String formattedTime = date.ToString("yyyy-MM-dd @ HH:mm");
+
+        return formattedTime;
     }
 }
