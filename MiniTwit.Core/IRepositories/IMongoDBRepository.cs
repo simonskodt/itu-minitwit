@@ -1,6 +1,6 @@
-using MiniTwit.Server.Entities;
+using MiniTwit.Core.Entities;
 
-namespace MiniTwit.Server.Repository;
+namespace MiniTwit.Core.IRepositories;
 
 public interface IMongoDBRepository
 {

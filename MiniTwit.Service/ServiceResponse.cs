@@ -1,8 +1,10 @@
-namespace MiniTwit.Server.Service;
+using MiniTwit.Core;
+
+namespace MiniTwit.Service;
 
 public class ServiceResponse
 {
-    public Response response { get; init; }
+    public HTTPResponse HTTPResponse { get; init; }
 }
 
 public class ServiceResponse<T> : ServiceResponse

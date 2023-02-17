@@ -1,24 +1,27 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MiniTwit.Server.Entities;
-using MiniTwit.Server.Repository;
+using MiniTwit.Core.Entities;
+using MiniTwit.Core.IRepositories;
 
 namespace MiniTwit.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TwitterController : ControllerBase{
-
+public class TwitterController : ControllerBase
+{
     IMongoDBRepository _repository;
-    public TwitterController(IMongoDBRepository repository){
+    public TwitterController(IMongoDBRepository repository)
+    {
         _repository = repository;
     }
 
     [AllowAnonymous]
     [HttpGet("{userName}")]
-    public User? GetUser(string userName){
+    public User? GetUser(string userName)
+    {
         var user = _repository.GetUserByUserName(userName);
-        if (user != null){
+        if (user != null)
+        {
             return user;
         }
         return null;
@@ -27,18 +30,23 @@ public class TwitterController : ControllerBase{
     [AllowAnonymous]
     [HttpPost]
     [Route("/Registrer")]
-    public void Register(string username, string email, string pw){
+    public void Register(string username, string email, string pw)
+    {
         _repository.RegisterUser(username, email, pw);
     }
 
     [AllowAnonymous]
     [HttpPost]
     [Route("/Login")]
-    public ActionResult Login(string username, string pw){
+    public ActionResult Login(string username, string pw)
+    {
         var response = _repository.Login(username, pw);
-        if (response != null ){
+        if (response != null)
+        {
             return Ok();
-        }else{
+        }
+        else
+        {
             return BadRequest();
         }
     }
