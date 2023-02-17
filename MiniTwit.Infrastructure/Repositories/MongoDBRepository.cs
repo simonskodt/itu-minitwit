@@ -29,6 +29,7 @@ public class MongoDBRepository : IMongoDBRepository
             Email    = email,
             PwHash   = str
         };
+        
         _context.Users.InsertOne(user);
     }
 
@@ -83,6 +84,7 @@ public class MongoDBRepository : IMongoDBRepository
         }
 
         return new List<Message>();
+        throw new NotImplementedException();
     }
 
     public Message? DisplayTweetByUserName(string userName)
