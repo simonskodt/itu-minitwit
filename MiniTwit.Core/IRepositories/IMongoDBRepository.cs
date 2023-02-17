@@ -5,14 +5,15 @@ namespace MiniTwit.Core.IRepositories;
 
 public interface IMongoDBRepository
 {
-    void RegisterUser(string username, string email, string pw);
+    public ICollection<Message> DisplayTimeline();
+    public ICollection<Message> DisplayPublicTimeline();
+    public ICollection<Message> DisplayUserTimeline();
+    public Message? DisplayTweetByUserName(string userName, ObjectId userId);
+    public void FollowUser(string userName);
+    public void UnfollowUser(string userName);
+    public void AddMessage();
+    public User? Login(string userName, string pw);
+    public void RegisterUser(string username, string email, string pw);
+    public void Logout();
     public User? GetUserByUserName(string userName);
-    ICollection<Message> DisplayAllTweets();
-    Message? DisplayTweetByUserName(string userName, ObjectId userId);
-    void FollowUser(string userName);
-    void UnfollowUser(string userName);
-    void AddMessage();
-    public User? Login(string email, string pw);
-    void Register();
-    void Logout();
 }
