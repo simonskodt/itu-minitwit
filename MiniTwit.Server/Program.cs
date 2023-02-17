@@ -1,4 +1,6 @@
+using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
+using MiniTwit.Infrastructure;
 using MiniTwit.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 builder.Services.AddScoped<IMongoDBRepository, MongoDBRepository>();
 
 var app = builder.Build();
