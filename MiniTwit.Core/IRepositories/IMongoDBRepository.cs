@@ -11,7 +11,7 @@ public interface IMongoDBRepository
     public Message? DisplayTweetByUserName(string userName, ObjectId userId);
     public void FollowUser(string userName);
     public void UnfollowUser(string userName);
-    public void AddMessage();
+    public void AddMessage(string text);
     public User? Login(string userName, string pw);
     public void RegisterUser(string username, string email, string pw);
     public void Logout();

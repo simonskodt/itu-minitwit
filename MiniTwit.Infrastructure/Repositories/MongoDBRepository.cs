@@ -80,9 +80,18 @@ public class MongoDBRepository : IMongoDBRepository
         throw new NotImplementedException();
     }
 
-    public void AddMessage()
+    public void AddMessage(string text)
     {
-        throw new NotImplementedException();
+        var message = new Message
+        {
+            MessageId = ObjectId.GenerateNewId(),
+            AuthorId = ObjectId.GenerateNewId(),
+            Text = text,
+            //PwHash = str
+        };
+
+        _context.Messages.InsertOne(message);
+
     }
 
     public User? Login(string userName, string pw)

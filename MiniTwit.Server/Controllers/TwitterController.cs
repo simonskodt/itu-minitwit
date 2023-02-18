@@ -22,13 +22,13 @@ public class TwitterController : ControllerBase
     /// redirect to the public timeline.  This timeline shows the user's
     /// messages as well as all the messages of followed users.
     /// <summary>
-    [AllowAnonymous]
+/*     [AllowAnonymous]
     [HttpGet]
     [Route("/")]
     public Message? Timeline()
     {
         throw new NotImplementedException();
-    }
+    } */
 
     /// <summary>
     /// Displays the latest messages of all users.
@@ -36,10 +36,15 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("/public")]
-    public Message? PublicTimeline()
+    public ICollection<Message>? PublicTimeline()
     {
-        throw new NotImplementedException();
-    }
+        var messages = _repository.DisplayPublicTimeline();
+        if (messages != null)
+        {
+            return messages;
+        }
+        return null;
+    } 
 
     /// <summary>
     /// Display's a users tweets.
@@ -87,9 +92,10 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/add_message")]
-    public ActionResult AddMessage()
+    public void AddMessage(string text)
     {
-        throw new NotImplementedException();
+        _repository.AddMessage(text);
+        
     }
 
     /// <summary>
