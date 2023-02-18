@@ -87,7 +87,6 @@ public class MongoDBRepository : IMongoDBRepository
             MessageId = ObjectId.GenerateNewId(),
             AuthorId = ObjectId.GenerateNewId(),
             Text = text,
-            //PwHash = str
         };
 
         _context.Messages.InsertOne(message);
@@ -122,7 +121,7 @@ public class MongoDBRepository : IMongoDBRepository
             _id = ObjectId.GenerateNewId(),
             Username = username,
             Email = email,
-            PwHash = str
+            PwHash = HashPassword(pw)
         };
 
         _context.Users.InsertOne(user);
@@ -173,12 +172,12 @@ public class MongoDBRepository : IMongoDBRepository
         return argon2.GetBytes(32);
     }
 
-    private bool VerifyHash(string password, string hash)
+    private bool VerifyHash(string password, byte[] hash)
     {
         var newHash = HashPassword(password);
-        byte[] bytes = Encoding.ASCII.GetBytes(hash);
+        //byte[] bytes = Encoding.ASCII.GetBytes(hash);
 
-        return bytes.SequenceEqual(newHash);
+        return hash.SequenceEqual(newHash);
     }
 
     public string FormatDatetime(long timestamp)
