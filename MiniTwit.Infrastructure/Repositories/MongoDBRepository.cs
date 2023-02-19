@@ -23,7 +23,13 @@ public class MongoDBRepository : IMongoDBRepository
 
         // If user is not logged in, redirect to PublicTimeline()
 
-        throw new NotImplementedException();
+        IList<Message> messages = _context.Messages.Aggregate().ToList();
+        if (messages != null)
+        {
+            return messages;
+        }
+
+        return messages;
     }
 
     public ICollection<Message> DisplayPublicTimeline()

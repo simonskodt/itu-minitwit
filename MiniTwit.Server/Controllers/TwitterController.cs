@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
 using MongoDB.Bson;
+using System.Net.Http;
 
 namespace MiniTwit.Server.Controllers;
 
@@ -24,13 +25,18 @@ public class TwitterController : ControllerBase
     /// redirect to the public timeline.  This timeline shows the user's
     /// messages as well as all the messages of followed users.
     /// <summary>
-/*     [AllowAnonymous]
+    [AllowAnonymous]
     [HttpGet]
     [Route("/")]
-    public Message? Timeline()
+    public ICollection<Message>? Timeline()
     {
-        throw new NotImplementedException();
-    } */
+        var messages = _repository.DisplayTimeline();
+        if (messages != null)
+        {
+            return messages;
+        }
+        return null;
+    } 
 
     /// <summary>
     /// Displays the latest messages of all users.
@@ -40,6 +46,7 @@ public class TwitterController : ControllerBase
     [Route("/public")]
     public ICollection<Message>? PublicTimeline()
     {
+
         var messages = _repository.DisplayPublicTimeline();
         if (messages != null)
         {
@@ -121,8 +128,6 @@ public class TwitterController : ControllerBase
         if (response != null)
         {
             currentUser = response;
-            Console.WriteLine("Response user was " + response.Username);
-            Console.WriteLine("CurrentUser is " + currentUser.Username);
             return Ok();
         }
         else
