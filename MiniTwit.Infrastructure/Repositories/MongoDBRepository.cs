@@ -70,12 +70,18 @@ public class MongoDBRepository : IMongoDBRepository
         return null;
     }
 
-    public void FollowUser(string userName)
+    public void FollowUser(string currentUser, string userToFollow)
     {
-        throw new NotImplementedException();
+        var who = GetUserByUserName(currentUser);
+        var whom = GetUserByUserName(userToFollow);
+        var Follower = new Follower{Who_id = who._id, Whom_id = whom._id};
+
+
+        _context.Followers.InsertOne(Follower);
+
     }
 
-    public void UnfollowUser(string userName)
+    public void UnfollowUser(string currentUser, string userToUnFollow)
     {
         throw new NotImplementedException();
     }
@@ -187,4 +193,5 @@ public class MongoDBRepository : IMongoDBRepository
 
         return formattedTime;
     }
+
 }

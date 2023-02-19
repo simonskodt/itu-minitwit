@@ -6,10 +6,12 @@ using MongoDB.Bson;
 
 namespace MiniTwit.Server.Controllers;
 
+
 [ApiController]
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
+    private User currentUser;
     private IMongoDBRepository _repository;
 
     public TwitterController(IMongoDBRepository repository)
@@ -70,9 +72,13 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/{userName}/follow")]
-    public ActionResult FollowUser(string userName)
+    public void FollowUser(FollowDTO followDTO)
     {
-        throw new NotImplementedException();
+        var currentUser = followDTO.Who;
+        var userToFollow = followDTO.Whom;
+
+        _repository.FollowUser(currentUser, userToFollow);
+
     }
 
     /// <summary>
@@ -108,10 +114,12 @@ public class TwitterController : ControllerBase
     public ActionResult Login(string username, string pw)
     {
         
-
         var response = _repository.Login(username, pw);
         if (response != null)
         {
+            currentUser = response;
+            Console.WriteLine("Response user was " + response.Username);
+            Console.WriteLine("CurrentUser is " + currentUser.Username);
             return Ok();
         }
         else
