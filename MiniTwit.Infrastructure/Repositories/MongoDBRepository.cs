@@ -83,7 +83,14 @@ public class MongoDBRepository : IMongoDBRepository
 
     public void UnfollowUser(string currentUser, string userToUnFollow)
     {
-        throw new NotImplementedException();
+        var who = GetUserByUserName(currentUser);
+        var whom = GetUserByUserName(userToUnFollow);
+
+        var filter = Builders<Follower>.Filter.Eq(f => f.Who_id, who._id)
+                    & Builders<Follower>.Filter.Eq(f => f.Whom_id, whom._id);
+        
+        _context.Followers.DeleteOne(filter);
+
     }
 
     public void AddMessage(string text)

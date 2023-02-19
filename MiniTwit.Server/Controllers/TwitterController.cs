@@ -87,9 +87,12 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/{userName}/unfollow")]
-    public ActionResult UnfollowUser(string userName)
+    public void UnfollowUser(FollowDTO followDTO)
     {
-        throw new NotImplementedException();
+        var currentUser = followDTO.Who;
+        var userToFollow = followDTO.Whom;
+
+        _repository.UnfollowUser(currentUser, userToFollow);
     }
 
     /// <summary>
