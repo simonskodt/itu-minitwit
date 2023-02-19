@@ -3,13 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
 using MongoDB.Bson;
+using System.Net.Http;
 
 namespace MiniTwit.Server.Controllers;
+
 
 [ApiController]
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
+    private User currentUser;
     private IMongoDBRepository _repository;
 
     public TwitterController(IMongoDBRepository repository)
@@ -25,10 +28,15 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("/")]
-    public Message? Timeline()
+    public ICollection<Message>? Timeline()
     {
-        throw new NotImplementedException();
-    }
+        var messages = _repository.DisplayTimeline();
+        if (messages != null)
+        {
+            return messages;
+        }
+        return null;
+    } 
 
     /// <summary>
     /// Displays the latest messages of all users.
@@ -36,10 +44,16 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("/public")]
-    public Message? PublicTimeline()
+    public ICollection<Message>? PublicTimeline()
     {
-        throw new NotImplementedException();
-    }
+
+        var messages = _repository.DisplayPublicTimeline();
+        if (messages != null)
+        {
+            return messages;
+        }
+        return null;
+    } 
 
     /// <summary>
     /// Display's a users tweets.
@@ -65,9 +79,13 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/{userName}/follow")]
-    public ActionResult FollowUser(string userName)
+    public void FollowUser(FollowDTO followDTO)
     {
-        throw new NotImplementedException();
+        var currentUser = followDTO.Who;
+        var userToFollow = followDTO.Whom;
+
+        _repository.FollowUser(currentUser, userToFollow);
+
     }
 
     /// <summary>
@@ -76,9 +94,12 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/{userName}/unfollow")]
-    public ActionResult UnfollowUser(string userName)
+    public void UnfollowUser(FollowDTO followDTO)
     {
-        throw new NotImplementedException();
+        var currentUser = followDTO.Who;
+        var userToFollow = followDTO.Whom;
+
+        _repository.UnfollowUser(currentUser, userToFollow);
     }
 
     /// <summary>
@@ -87,9 +108,10 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("/add_message")]
-    public ActionResult AddMessage()
+    public void AddMessage(string text)
     {
-        throw new NotImplementedException();
+        _repository.AddMessage(text);
+        
     }
 
     /// <summary>
@@ -101,9 +123,11 @@ public class TwitterController : ControllerBase
     [Route("/login")]
     public ActionResult Login(string username, string pw)
     {
+        
         var response = _repository.Login(username, pw);
         if (response != null)
         {
+            currentUser = response;
             return Ok();
         }
         else
