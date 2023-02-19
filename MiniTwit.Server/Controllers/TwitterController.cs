@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiniTwit.Core;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
 using MongoDB.Bson;
@@ -12,12 +13,15 @@ namespace MiniTwit.Server.Controllers;
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
-    private User currentUser;
-    private IMongoDBRepository _repository;
+    private IUserRepository _userRepository;
+    private IMessageRepository _messageRepository;
+    private IFollowerRepository _followerRepository;
 
-    public TwitterController(IMongoDBRepository repository)
+    public TwitterController(IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository)
     {
-        _repository = repository;
+        _userRepository = userRepository;
+        _messageRepository = messageRepository;
+        _followerRepository = followerRepository;
     }
 
     /// <summary>
@@ -28,14 +32,11 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("/")]
-    public ICollection<Message>? Timeline()
+    public IActionResult Timeline()
     {
-        var messages = _repository.DisplayTimeline();
-        if (messages != null)
-        {
-            return messages;
-        }
-        return null;
+        var response = _messageRepository.GetAllNonFlagged();
+        
+        return response.ToActionResult();
     } 
 
     /// <summary>

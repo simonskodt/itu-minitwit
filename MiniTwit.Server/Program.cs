@@ -2,6 +2,7 @@ using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Infrastructure;
 using MiniTwit.Infrastructure.Repositories;
+using MiniTwit.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +16,19 @@ var dbSettings = builder.Configuration.GetSection(nameof(MiniTwitDatabaseSetting
 builder.Services.Configure<MiniTwitDatabaseSettings>(dbSettings);
 builder.Services.Configure<MiniTwitDatabaseSettings>(options => options.ConnectionString = builder.Configuration.GetConnectionString("MiniTwit")!);
 
+// Configure Hasher
+builder.Services.Configure<HashSettings>(builder.Configuration.GetSection(nameof(HashSettings)));
+builder.Services.AddScoped<IHasher, Hasher>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
-builder.Services.AddScoped<IMongoDBRepository, MongoDBRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 
 var app = builder.Build();
 

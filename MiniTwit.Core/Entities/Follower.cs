@@ -1,17 +1,12 @@
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace MiniTwit.Core.Entities;
 
 public class Follower
 {
-    public ObjectId Who_id { get; set; }
-    
-    public ObjectId Whom_id { get; set; }
-}
-
-public class FollowDTO
-{
-    public string? Who { get; set; }
-    public string? Whom { get; set; }
-
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? WhoId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? WhomId { get; set; }
 }

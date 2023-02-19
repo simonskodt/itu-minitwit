@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTwit.Core", "MiniTwit.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTwit.Infrastructure", "MiniTwit.Infrastructure\MiniTwit.Infrastructure.csproj", "{8DBEB98F-3258-4FFB-AD7D-ACC2327BBE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTwit.Service", "MiniTwit.Service\MiniTwit.Service.csproj", "{0653CE2D-A13A-4C87-9DB8-35D126C607D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniTwit.Security", "MiniTwit.Security\MiniTwit.Security.csproj", "{34C6A456-A1D9-4A38-B27E-9CB2510972E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +38,9 @@ Global
 		{8DBEB98F-3258-4FFB-AD7D-ACC2327BBE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DBEB98F-3258-4FFB-AD7D-ACC2327BBE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DBEB98F-3258-4FFB-AD7D-ACC2327BBE6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0653CE2D-A13A-4C87-9DB8-35D126C607D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0653CE2D-A13A-4C87-9DB8-35D126C607D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0653CE2D-A13A-4C87-9DB8-35D126C607D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0653CE2D-A13A-4C87-9DB8-35D126C607D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34C6A456-A1D9-4A38-B27E-9CB2510972E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34C6A456-A1D9-4A38-B27E-9CB2510972E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34C6A456-A1D9-4A38-B27E-9CB2510972E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34C6A456-A1D9-4A38-B27E-9CB2510972E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
