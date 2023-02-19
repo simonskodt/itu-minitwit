@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Layout.css';
+import Menu from './Menu';
 
 class Layout extends Component {
     constructor(props: any) {
@@ -8,15 +9,9 @@ class Layout extends Component {
 
     render() {
         return (
-            <div>
-                    <div className="navigation">
-                        <a>timeline</a> | &nbsp;
-                        <a>public timeline</a> | &nbsp;
-                        <a>sign out</a>
-                    </div>
-                <div className="footer">
-                    MiniTwit &mdash; A Twitter clone
-                </div>
+            <div className="layout">
+                <h1>MiniTwit</h1>
+                <Menu />
             </div>
         );
     }
