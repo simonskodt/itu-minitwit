@@ -23,7 +23,13 @@ public class MongoDBRepository : IMongoDBRepository
 
         // If user is not logged in, redirect to PublicTimeline()
 
-        throw new NotImplementedException();
+        IList<Message> messages = _context.Messages.Aggregate().ToList();
+        if (messages != null)
+        {
+            return messages;
+        }
+
+        return messages;
     }
 
     public ICollection<Message> DisplayPublicTimeline()
@@ -70,19 +76,40 @@ public class MongoDBRepository : IMongoDBRepository
         return null;
     }
 
-    public void FollowUser(string userName)
+    public void FollowUser(string currentUser, string userToFollow)
     {
-        throw new NotImplementedException();
+        var who = GetUserByUserName(currentUser);
+        var whom = GetUserByUserName(userToFollow);
+        var Follower = new Follower{Who_id = who._id, Whom_id = whom._id};
+
+
+        _context.Followers.InsertOne(Follower);
+
     }
 
-    public void UnfollowUser(string userName)
+    public void UnfollowUser(string currentUser, string userToUnFollow)
     {
-        throw new NotImplementedException();
+        var who = GetUserByUserName(currentUser);
+        var whom = GetUserByUserName(userToUnFollow);
+
+        var filter = Builders<Follower>.Filter.Eq(f => f.Who_id, who._id)
+                    & Builders<Follower>.Filter.Eq(f => f.Whom_id, whom._id);
+        
+        _context.Followers.DeleteOne(filter);
+
     }
 
-    public void AddMessage()
+    public void AddMessage(string text)
     {
-        throw new NotImplementedException();
+        var message = new Message
+        {
+            MessageId = ObjectId.GenerateNewId(),
+            AuthorId = ObjectId.GenerateNewId(),
+            Text = text,
+        };
+
+        _context.Messages.InsertOne(message);
+
     }
 
     public User? Login(string userName, string pw)
@@ -113,7 +140,7 @@ public class MongoDBRepository : IMongoDBRepository
             _id = ObjectId.GenerateNewId(),
             Username = username,
             Email = email,
-            PwHash = str
+            PwHash = HashPassword(pw)
         };
 
         _context.Users.InsertOne(user);
@@ -164,12 +191,12 @@ public class MongoDBRepository : IMongoDBRepository
         return argon2.GetBytes(32);
     }
 
-    private bool VerifyHash(string password, string hash)
+    private bool VerifyHash(string password, byte[] hash)
     {
         var newHash = HashPassword(password);
-        byte[] bytes = Encoding.ASCII.GetBytes(hash);
+        //byte[] bytes = Encoding.ASCII.GetBytes(hash);
 
-        return bytes.SequenceEqual(newHash);
+        return hash.SequenceEqual(newHash);
     }
 
     public string FormatDatetime(long timestamp)
@@ -179,4 +206,5 @@ public class MongoDBRepository : IMongoDBRepository
 
         return formattedTime;
     }
+
 }
