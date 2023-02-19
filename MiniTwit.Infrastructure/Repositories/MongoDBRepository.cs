@@ -82,9 +82,7 @@ public class MongoDBRepository : IMongoDBRepository
         var whom = GetUserByUserName(userToFollow);
         var Follower = new Follower{Who_id = who._id, Whom_id = whom._id};
 
-
         _context.Followers.InsertOne(Follower);
-
     }
 
     public void UnfollowUser(string currentUser, string userToUnFollow)
@@ -96,7 +94,6 @@ public class MongoDBRepository : IMongoDBRepository
                     & Builders<Follower>.Filter.Eq(f => f.Whom_id, whom._id);
         
         _context.Followers.DeleteOne(filter);
-
     }
 
     public void AddMessage(string text)
