@@ -4,6 +4,9 @@
 # VS Code
 *.vscode
 
+# .local
+.local
+
 # Flag tools
 flag_tool
 

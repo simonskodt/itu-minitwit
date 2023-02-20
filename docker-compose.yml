@@ -6,12 +6,15 @@ services:
   mongodb:
     image: mongodb/mongodb-community-server:6.0-ubi8
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=Radiator
-      - MONGO_INITDB_ROOT_PASSWORD=1kvt8q6@W#K1
+      MONGO_INITDB_ROOT_USERNAME: radiator
+      MONGO_INITDB_ROOT_PASSWORD_FILE: run/secrets/db_password
+      MONGO_INITDB_DATABASE: MiniTwit
     volumes:
       - mongodb_data_container:/data/db
     ports:
       - '27017:27017'
+    secrets:
+      - db_password
 
   itu-minitwit-server:
     image: itu-minitwit-server
@@ -21,10 +24,14 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__MiniTwit:
     ports:
       - '80:80'
     depends_on:
       - mongodb
+    secrets:
+      - source: connection_string
+        target: ConnectionStrings__MiniTwit
 
   itu-minitwit-web:
     image: itu-minitwit-web
@@ -38,3 +45,9 @@ services:
 
 volumes:
   mongodb_data_container:
+
+secrets:
+  db_password:
+    file: './.local/db_password.txt'
+  connection_string:
+    file: './.local/connection_string.txt'

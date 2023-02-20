@@ -1,0 +1,1 @@
+namespace MiniTwit.Core.IRepositories;

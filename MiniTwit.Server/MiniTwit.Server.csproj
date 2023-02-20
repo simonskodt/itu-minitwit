@@ -1,15 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0a60ddcd-86b0-42db-9216-996d71456e52</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
+    <PackageReference Include="MongoDB.Bson" Version="2.19.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MiniTwit.Core\MiniTwit.Core.csproj" />
+    <ProjectReference Include="..\MiniTwit.Infrastructure\MiniTwit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
