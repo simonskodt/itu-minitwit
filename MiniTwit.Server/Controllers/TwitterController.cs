@@ -60,10 +60,10 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{userName}")]
-    public IActionResult UserTimeline(string userName)
+    [Route("/{username}")]
+    public IActionResult UserTimeline(string username)
     {
-        var response = _messageRepository.GetAllByUsername(userName);
+        var response = _messageRepository.GetAllByUsername(username);
         return response.ToActionResult();
     }
 
@@ -74,7 +74,7 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{userName}/follow")]
+    [Route("/{username}/follow")]
     public IActionResult FollowUser(string userId, string username)
     {
         var response = _followerRepository.Create(userId, username);
@@ -88,7 +88,7 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{userName}/unfollow")]
+    [Route("/{username}/unfollow")]
     public IActionResult UnfollowUser(string userId, string username)
     {
         var response = _followerRepository.Delete(userId, username);
@@ -164,7 +164,7 @@ public class TwitterController : ControllerBase
     }
 
     /// Extra method for swagger testing
-    [HttpGet("{userName}")]
+    [HttpGet("{username}")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
