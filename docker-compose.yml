@@ -12,7 +12,7 @@ services:
     volumes:
       - mongodb_data_container:/data/db
     ports:
-      - '27017:27017'
+      - '27018:27017'
     secrets:
       - db_password
 
