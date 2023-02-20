@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  background: #CAECE9;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 14px;
+}
