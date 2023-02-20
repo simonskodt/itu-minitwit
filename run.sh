@@ -13,7 +13,7 @@ elif [ "$1" = "secrets" ]; then
     project="MiniTwit.Server"
     user="radiator"
     password=$(<./.local/db_password.txt) # Load db password from file
-    connectionString="mongodb://$user:$password@localhost:27018/?authSource=admin"
+    connectionString="mongodb://$user:$password@localhost:27018"
 
     dotnet user-secrets init --project $project
     dotnet user-secrets set "ConnectionStrings:MiniTwit" "$connectionString" --project $project
