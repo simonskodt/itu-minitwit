@@ -53,6 +53,13 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Cross-origin Request Blocked
+app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                    .AllowCredentials());
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
