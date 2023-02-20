@@ -7,10 +7,7 @@ clear='\033[0m'
 
 if [ "$#" -eq 0 ]; then
     password=$(<./.local/db_password.txt) # Load db password from file
-    docker run --name mongodb -d -p 27018:27017 -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD_FILE=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongodb/mongodb-community-server:6.0-ubi8
-elif [ "$1" = "stop" ]; then
-    printf "${green}Stopping container\n${clear}"
-    docker-compose stop
+    docker run --name mongodb -d -p 27018:27017 -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongodb/mongodb-community-server:6.0-ubi8
 elif [ "$1" = "secrets" ]; then
     printf "${green}Creating secrets...\n${clear}"
     project="MiniTwit.Server"
