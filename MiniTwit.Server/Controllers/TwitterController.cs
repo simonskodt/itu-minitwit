@@ -3,22 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
-using MongoDB.Bson;
-using System.Net.Http;
+using MiniTwit.Security;
 
 namespace MiniTwit.Server.Controllers;
-
 
 [ApiController]
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
+    private IHasher _hasher;
     private IUserRepository _userRepository;
     private IMessageRepository _messageRepository;
     private IFollowerRepository _followerRepository;
 
-    public TwitterController(IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository)
+    public TwitterController(IHasher hasher, IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository)
     {
+        _hasher = hasher;
         _userRepository = userRepository;
         _messageRepository = messageRepository;
         _followerRepository = followerRepository;
@@ -26,151 +26,151 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Shows a users timeline or if no user is logged in it will
-    /// redirect to the public timeline.  This timeline shows the user's
+    /// redirect to the public timeline. This timeline shows the user's
     /// messages as well as all the messages of followed users.
     /// <summary>
-    [AllowAnonymous]
     [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/")]
-    public IActionResult Timeline()
+    public IActionResult Timeline(string userId)
     {
-        var response = _messageRepository.GetAllNonFlagged();
-        
+        var response = _messageRepository.GetAllFollowedByUser(userId);
         return response.ToActionResult();
     } 
 
     /// <summary>
     /// Displays the latest messages of all users.
     /// <summary>
-    [AllowAnonymous]
     [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [Route("/public")]
-    public ICollection<Message>? PublicTimeline()
+    public IActionResult PublicTimeline()
     {
-
-        var messages = _repository.DisplayPublicTimeline();
-        if (messages != null)
-        {
-            return messages;
-        }
-        return null;
+        var response = _messageRepository.GetAllNonFlagged();
+        return response.ToActionResult();
     } 
 
     /// <summary>
     /// Display's a users tweets.
     /// <summary>
-    [AllowAnonymous]
     [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{userName}")]
-    public Message? UserTimeline(string userName, ObjectId userId)
+    public IActionResult UserTimeline(string userName)
     {
-        var messages = _repository.DisplayTweetByUserName(userName, userId);
-
-        if (messages != null)
-        {
-            return messages;
-        }
-
-        return null;
+        var response = _messageRepository.GetAllByUsername(userName);
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Adds the current user as follower of the given user.
     /// <summary>
-    [AllowAnonymous]
     [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{userName}/follow")]
-    public void FollowUser(FollowDTO followDTO)
+    public IActionResult FollowUser(string userId, string username)
     {
-        var currentUser = followDTO.Who;
-        var userToFollow = followDTO.Whom;
-
-        _repository.FollowUser(currentUser, userToFollow);
-
+        var response = _followerRepository.Create(userId, username);
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Removes the current user as follower of the given user.
     /// <summary>
-    [AllowAnonymous]
     [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{userName}/unfollow")]
-    public void UnfollowUser(FollowDTO followDTO)
+    public IActionResult UnfollowUser(string userId, string username)
     {
-        var currentUser = followDTO.Who;
-        var userToFollow = followDTO.Whom;
-
-        _repository.UnfollowUser(currentUser, userToFollow);
+        var response = _followerRepository.Delete(userId, username);
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Registers a new message for the user.
     /// <summary>
-    [AllowAnonymous]
     [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [Route("/add_message")]
-    public void AddMessage(string text)
+    public IActionResult AddMessage(string userId, string text)
     {
-        _repository.AddMessage(text);
-        
+        var response = _messageRepository.Create(userId, text);
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Logs the user in.
     /// <summary>
-    [AllowAnonymous]
     [HttpGet]
-    [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public ActionResult Login(string username, string pw)
+    public IActionResult Login(string username, string password)
     {
-        
-        var response = _repository.Login(username, pw);
-        if (response != null)
-        {
-            currentUser = response;
-            return Ok();
-        }
-        else
-        {
-            return BadRequest();
-        }
-    }
+        var response = _userRepository.GetByUsername(username);
 
-    /// <summary>
-    /// Logs the user out.
-    /// <summary>
-    [AllowAnonymous]
-    [HttpGet]
-    [HttpPost]
-    [Route("/register")]
-    public void Register(string username, string email, string pw)
-    {
-        _repository.RegisterUser(username, email, pw);
+        if (response.HTTPResponse == HTTPResponse.NotFound)
+        {
+            return Unauthorized("Invalid username");
+        }
+
+        var validPassword = _hasher.VerifyHash(password, response.Model!.Password!);
+
+        if (!validPassword)
+        {
+            return Unauthorized("Invalid password");
+        }
+
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Registers the user.
     /// <summary>
-    [AllowAnonymous]
+    [HttpGet]
     [HttpPost]
-    [Route("/logout")]
-    public void Logout(string username, string email, string pw)
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [Route("/register")]
+    public void Register(string username, string email, string password)
     {
-        _repository.RegisterUser(username, email, pw);
+        _hasher.Hash(password, out string hashedPassword);
+        var response = _userRepository.Create(username, email, hashedPassword);
+        response.ToActionResult();
+    }
+
+    /// <summary>
+    /// Logs out the user
+    /// <summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Route("/logout")]
+    public IActionResult Logout()
+    {
+        return Ok();
     }
 
     /// Extra method for swagger testing
-    [AllowAnonymous]
     [HttpGet("{userName}")]
-    public User? GetUser(string userName)
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult GetUser(string username)
     {
-        var user = _repository.GetUserByUserName(userName);
-        if (user != null)
-        {
-            return user;
-        }
-
-        return null;
+        var response = _userRepository.GetByUsername(username);
+        return response.ToActionResult();
     }
 }
