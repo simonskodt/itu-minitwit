@@ -72,14 +72,35 @@ public class MessageRepository : IMessageRepository
         };
     }
 
+    public Response<IEnumerable<Message>> GetAllByUsername(string username)
+    {
+        var user = GetUserByUsername(username);
+
+        if (user == null)
+        {
+            return new Response<IEnumerable<Message>>
+            {
+                HTTPResponse = HTTPResponse.NotFound
+            };
+        }
+
+        var messages = _context.Messages.Find(message => message.Flagged == 0 && message.AuthorId == user.Id).ToList();
+
+        return new Response<IEnumerable<Message>>
+        {
+            HTTPResponse = HTTPResponse.Success,
+            Model = messages
+        };
+    }
+
     public Response<IEnumerable<Message>> GetAllFollowedByUser(string userId)
     {
-        var userMessages = GetAllByUserId(userId);
+        var userMessagesResponse = GetAllByUserId(userId);
 
         // User not found
-        if (userMessages.Model == null)
+        if (userMessagesResponse.Model == null)
         {
-            return userMessages;
+            return userMessagesResponse;
         }
 
         return new Response<IEnumerable<Message>>
@@ -94,7 +115,12 @@ public class MessageRepository : IMessageRepository
         return _context.Users.Find(user => user.Id == userId).FirstOrDefault();
     }
 
-    private IEnumerable<Follower> GetAllUsersFollowedByUser(string userId)
+    private User? GetUserByUsername(string username)
+    {
+        return _context.Users.Find(user => user.Username == username).FirstOrDefault();
+    }
+
+    private IEnumerable<Follower> GetAllUsersFollowedByUserId(string userId)
     {
         return null;
     }
