@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Infrastructure;
@@ -23,7 +24,15 @@ builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "MiniTwit API",
+        Version = "v1",
+        Description = "A refactor of a Twitter clone handed out in the elective course DevOps on the IT University of Copenhagen.",
+        Contact = new OpenApiContact() { Name = "Group Radiator" },
+    });
+});
 
 builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -39,8 +48,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniTwit API");
-        options.DocumentTitle = "Swagger - MiniTwit API";
-        options.RoutePrefix = string.Empty;
+        options.DocumentTitle = "MiniTwit API - Swagger";
         options.DisplayRequestDuration();
     });
 }
