@@ -1,1 +1,0 @@
-namespace MiniTwit.Service.Services;
