@@ -6,10 +6,8 @@ green='\033[0;32m'
 clear='\033[0m'
 
 if [ "$#" -eq 0 ]; then
-    docker-compose -f 'docker-compose.yml' up -d --build
-    docker-compose -f 'docker-compose.yml' ps
-    printf "\n${green}To stop the project write:\n"
-    printf "'run stop'${clear}\n"
+    password=$(<./.local/db_password.txt) # Load db password from file
+    docker run --name mongodb -d -p 27018:27017 -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD_FILE=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongodb/mongodb-community-server:6.0-ubi8
 elif [ "$1" = "stop" ]; then
     printf "${green}Stopping container\n${clear}"
     docker-compose stop
