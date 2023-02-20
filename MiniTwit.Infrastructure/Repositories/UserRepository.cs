@@ -9,12 +9,10 @@ namespace MiniTwit.Infrastructure.Repositories;
 public class UserRepository : IUserRepository
 {
     private IMongoDBContext _context;
-    private IHasher _hasher;
 
-    public UserRepository(IMongoDBContext context, IHasher hasher)
+    public UserRepository(IMongoDBContext context)
     {
         _context = context;
-        _hasher = hasher;
     }
 
     public Response<User> Create(string username, string email, string password)
@@ -30,13 +28,11 @@ public class UserRepository : IUserRepository
             };
         }
 
-        _hasher.Hash(password, out string hash);
-
         var user = new User
         {
             Username = username,
             Email = email,
-            Password = hash,
+            Password = password,
         };
 
         _context.Users.InsertOne(user);
