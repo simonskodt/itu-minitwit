@@ -162,15 +162,4 @@ public class TwitterController : ControllerBase
     {
         return Ok();
     }
-
-    /// Extra method for swagger testing
-    [HttpGet("{username}")]
-    [AllowAnonymous]
-    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetUser(string username)
-    {
-        var response = _userRepository.GetByUsername(username);
-        return response.ToActionResult();
-    }
 }
