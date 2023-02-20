@@ -138,7 +138,6 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Registers the user.
     /// <summary>
-    [HttpGet]
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
