@@ -13,7 +13,14 @@ function TimeLine() {
       
       <Layout />
         <h2>Public Timeline</h2>
-      <button onClick={() => fetchPublicTimeline()}>Fetch</button>
+      <button onClick={() => {
+        
+        var result = fetchPublicTimeline()
+        //console.log(result)
+        
+  }     
+        }>
+          Fetch</button>
       <Footer />
     </div>
   );
