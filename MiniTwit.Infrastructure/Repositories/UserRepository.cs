@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
 
     public Response<User> Create(string username, string email, string password)
     {
-        var existingUser = _context.Users.Find(user => user.Username == username).FirstOrDefault();
+        var existingUser = _context.Users.Find(u => u.Username == username).FirstOrDefault();
 
         // Username already taken
         if (existingUser != null)
@@ -46,7 +46,7 @@ public class UserRepository : IUserRepository
 
     public Response<User> GetByUserId(string userId)
     {
-        var user = _context.Users.Find(user => user.Id == userId).FirstOrDefault();
+        var user = _context.Users.Find(u => u.Id == userId).FirstOrDefault();
 
         if (user == null)
         {
@@ -65,7 +65,7 @@ public class UserRepository : IUserRepository
 
     public Response<User> GetByUsername(string username)
     {
-        var user = _context.Users.Find(user => user.Username == username).FirstOrDefault();
+        var user = _context.Users.Find(u => u.Username == username).FirstOrDefault();
 
         if (user == null)
         {

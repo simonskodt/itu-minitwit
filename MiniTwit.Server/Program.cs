@@ -2,8 +2,10 @@ using Microsoft.OpenApi.Models;
 using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Infrastructure;
+using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
+using MiniTwit.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,7 @@ builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
+builder.Services.AddScoped<DataInitializer>();
 
 var app = builder.Build();
 
@@ -51,6 +54,7 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "MiniTwit API - Swagger";
         options.DisplayRequestDuration();
     });
+    app.SeedDB();
 }
 
 // Cross-origin Request Blocked
