@@ -33,21 +33,12 @@ public class MessageRepository : IMessageRepository
         };
     }
 
-    public Response<IEnumerable<Message>> GetAll()
-    {
-        return new Response<IEnumerable<Message>>
-        {
-            HTTPResponse = HTTPResponse.Success,
-            Model = _context.Messages.Aggregate().ToList()
-        };
-    }
-
     public Response<IEnumerable<Message>> GetAllNonFlagged()
     {
         return new Response<IEnumerable<Message>>
         {
             HTTPResponse = HTTPResponse.Success,
-            Model = _context.Messages.Find(message => message.Flagged == 0).ToList()
+            Model = _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToList()
         };
     }
 
@@ -63,7 +54,7 @@ public class MessageRepository : IMessageRepository
             };
         }
 
-        var messages = _context.Messages.Find(message => message.Flagged == 0 && message.AuthorId == userId).ToList();
+        var messages = _context.Messages.Find(m => m.Flagged == 0 && m.AuthorId == userId).ToList();
 
         return new Response<IEnumerable<Message>>
         {
@@ -84,7 +75,7 @@ public class MessageRepository : IMessageRepository
             };
         }
 
-        var messages = _context.Messages.Find(message => message.Flagged == 0 && message.AuthorId == user.Id).ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToList();
 
         return new Response<IEnumerable<Message>>
         {
@@ -95,33 +86,42 @@ public class MessageRepository : IMessageRepository
 
     public Response<IEnumerable<Message>> GetAllFollowedByUser(string userId)
     {
-        var userMessagesResponse = GetAllByUserId(userId);
+        var user = GetUserByUserId(userId);
 
         // User not found
-        if (userMessagesResponse.Model == null)
+        if (user == null)
         {
-            return userMessagesResponse;
+            return new Response<IEnumerable<Message>>
+            {
+                HTTPResponse = HTTPResponse.NotFound
+            };
         }
+
+        var users = _context.Users.AsQueryable();
+        var messages = _context.Messages.AsQueryable();
+        var followers = _context.Followers.AsQueryable();
+
+        var result = from m in messages
+            join u in users on m.AuthorId equals u.Id
+            join f in followers on m.AuthorId equals f.WhomId
+            where m.Flagged == 0 && u.Id == userId || f.WhoId == userId
+            orderby m.PubDate descending
+            select m;
 
         return new Response<IEnumerable<Message>>
         {
             HTTPResponse = HTTPResponse.Success,
-            Model = null // TODO - Remember to update
+            Model = result
         };
     }
 
     private User? GetUserByUserId(string userId)
     {
-        return _context.Users.Find(user => user.Id == userId).FirstOrDefault();
+        return _context.Users.Find(u => u.Id == userId).FirstOrDefault();
     }
 
     private User? GetUserByUsername(string username)
     {
-        return _context.Users.Find(user => user.Username == username).FirstOrDefault();
-    }
-
-    private IEnumerable<Follower> GetAllUsersFollowedByUserId(string userId)
-    {
-        return null;
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
     }
 }
