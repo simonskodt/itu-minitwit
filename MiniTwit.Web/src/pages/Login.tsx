@@ -2,7 +2,7 @@ import './Login.css';
 import React, { useState } from 'react';
 import { AppService } from '../services/app.service';
 import { useNavigate } from 'react-router-dom';
-import Layout from './Layout';
+import Header from './Header';
 import Footer from './Footer';
 
 const Login = () => {
@@ -25,7 +25,7 @@ const Login = () => {
 
     return (
       <div className="page">
-        <Layout />
+        <Header isLoggedIn = {false}/>
           <div className='login-form'>
           <h2>Sign In</h2>
             <label htmlFor="username">Username</label>

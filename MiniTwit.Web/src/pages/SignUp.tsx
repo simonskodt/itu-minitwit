@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AppService } from '../services/app.service';
 import Footer from './Footer';
-import Layout from './Layout';
+import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
@@ -38,7 +38,7 @@ function SignUp() {
 
 return (
   <div className="page">
-    <Layout />
+    <Header isLoggedIn = {false}/>
       <div className='login-form'>
       <h2>Sign Up</h2>
         <label htmlFor="username">Username</label>
