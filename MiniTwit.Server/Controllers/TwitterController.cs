@@ -111,21 +111,21 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Logs the user in.
     /// <summary>
-    [HttpGet]
+    [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public IActionResult Login(string username, string password)
+    public IActionResult Login([FromBody]LoginDTO loginDTO)
     {
-        var response = _userRepository.GetByUsername(username);
+        var response = _userRepository.GetByUsername(loginDTO.Username);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
             return Unauthorized("Invalid username");
         }
 
-        var validPassword = _hasher.VerifyHash(password, response.Model!.Password!);
+        var validPassword = _hasher.VerifyHash(loginDTO.Password, response.Model!.Password!);
 
         if (!validPassword)
         {
@@ -143,10 +143,10 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [Route("/register")]
-    public void Register(string username, string email, string password)
+    public void Register([FromBody] RegisterDTO registerDTO)
     {
-        _hasher.Hash(password, out string hashedPassword);
-        var response = _userRepository.Create(username, email, hashedPassword);
+        _hasher.Hash(registerDTO.Password, out string hashedPassword);
+        var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, hashedPassword);
         response.ToActionResult();
     }
 
