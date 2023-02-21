@@ -6,9 +6,11 @@ green='\033[0;32m'
 clear='\033[0m'
 
 if [ "$#" -eq 0 ]; then
+    printf "${green}Starting mongodb container...\n${clear}"
     password=$(<./.local/db_password.txt) # Load db password from file
     docker volume create mongodb_data_container_local
-    docker run --name mongodb -d -p 27018:27017 -v mongodb_data_container_local:/data/db -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongo:latest
+    docker run --rm --name mongodb -d -p 27018:27017 -v mongodb_data_container_local:/data/db -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongo:latest
+    printf "${green}To stop the container write 'docker stop mongodb'\n${clear}"
 elif [ "$1" = "secrets" ]; then
     printf "${green}Creating secrets...\n${clear}"
     project="MiniTwit.Server"
