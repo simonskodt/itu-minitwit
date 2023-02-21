@@ -1,6 +1,5 @@
 import { getMessageArray } from "../builders/functions";
 import { useState } from "react";
-import { MessagesContext } from "../contexts/messageContext";
 import { useContext } from "react";
 import axios, { AxiosRequestConfig } from 'axios';
 
