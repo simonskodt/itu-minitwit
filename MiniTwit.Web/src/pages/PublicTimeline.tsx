@@ -1,26 +1,39 @@
 import Footer from './Footer';
 import Layout from './Layout';
 import './Layout.css';
-import { fetchPublicTimeline } from './fetch';
+import { useContext } from 'react';
+import { MessagesContext } from '../contexts/messageContext';
+import { getMessageArray } from '../builders/functions';
+import { FetchPublicTimeline } from './fetch';
 
-interface Request {
-  endpoint: string;
-}
 
 function TimeLine() {
+  const {messages} = useContext(MessagesContext) 
+  const { setMessages } = useContext(MessagesContext);
+  
+
   return (
     <div className="page">
       
       <Layout />
         <h2>Public Timeline</h2>
       <button onClick={() => {
-        
-        var result = fetchPublicTimeline()
-        //console.log(result)
-        
+                FetchPublicTimeline().then(
+          (messages) => {
+              let buildingData = getMessageArray(messages);
+              console.log(buildingData);
+              //setMessages(buildingData);
+              //console.log(messages);
+          },
+      );
   }     
         }>
           Fetch</button>
+
+          <button onClick={()=> console.log(messages)}>
+            test
+
+          </button>
       <Footer />
     </div>
   );

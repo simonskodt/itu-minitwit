@@ -1,29 +1,23 @@
 import { getMessageArray } from "../builders/functions";
+import { useState } from "react";
+import { MessagesContext } from "../contexts/messageContext";
+import { useContext } from "react";
+import axios, { AxiosRequestConfig } from 'axios';
 
-export async function fetchPublicTimeline() {
-    var headers = new Headers();
-    var requestOptions = {
+
+
+export async function FetchPublicTimeline() {
+    const config: AxiosRequestConfig = {
         method: 'GET',
-        headers: headers,
+        headers: {
+        },
     };
 
-    // var response = await fetch('api/timeline', request);
-    var response = await fetch("https://localhost:7111/public", requestOptions)
-
-    if (response.ok) { // if HTTP-status is 200-299
-        // get the response body (the method explained below)
-        let json = await response.json();        
-        let messageArray = getMessageArray(json);
-        console.log(messageArray);
-      } else {
-        alert("HTTP-Error: " + response.status);
-      }
-
-/* 
-    fetch("https://localhost:7111/public", request)
-        .then(response => response.text())
-        .then(result => {
-            console.log(result);
-        })
-        .catch(error => console.log('error', error)); */
+    try {
+        const a = await axios.get("https://localhost:7111/public", config).then((response) => response.data);
+        return a;
+    } catch (error) {
+        console.log(error);
+        return Promise.reject('fetch order history failed');
+    }
 }
