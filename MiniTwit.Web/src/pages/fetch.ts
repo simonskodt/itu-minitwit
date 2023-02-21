@@ -1,16 +1,23 @@
-export async function fetchPublicTimeline() {
-    var headers = new Headers();
-    var request = {
+import { getMessageArray } from "../builders/functions";
+import { useState } from "react";
+import { MessagesContext } from "../contexts/messageContext";
+import { useContext } from "react";
+import axios, { AxiosRequestConfig } from 'axios';
+
+
+
+export async function FetchPublicTimeline() {
+    const config: AxiosRequestConfig = {
         method: 'GET',
-        headers: headers,
+        headers: {
+        },
     };
 
-    // var response = await fetch('api/timeline', request);
-
-    fetch("https://localhost:7111/public", request)
-        .then(response => response.text())
-        .then(result => {
-            console.log(result);
-        })
-        .catch(error => console.log('error', error));
+    try {
+        const a = await axios.get("https://localhost:7111/public", config).then((response) => response.data);
+        return a;
+    } catch (error) {
+        console.log(error);
+        return Promise.reject('fetch order history failed');
+    }
 }
