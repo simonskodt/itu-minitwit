@@ -7,10 +7,11 @@ interface Request {
 }
 
 function TimeLine() {
+
   return (
     <div className="page">
       
-      <Layout />
+      <Layout/>
         <h2>Public Timeline</h2>
       <Footer />
     </div>

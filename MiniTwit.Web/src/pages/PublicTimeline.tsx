@@ -2,14 +2,11 @@ import Footer from './Footer';
 import Layout from './Layout';
 import './Layout.css';
 import { useContext } from 'react';
-import { MessagesContext } from '../contexts/messageContext';
 import { getMessageArray } from '../builders/functions';
 import { FetchPublicTimeline } from './fetch';
 
 
 function TimeLine() {
-  const {messages} = useContext(MessagesContext) 
-  const { setMessages } = useContext(MessagesContext);
   
 
   return (
@@ -30,7 +27,7 @@ function TimeLine() {
         }>
           Fetch</button>
 
-          <button onClick={()=> console.log(messages)}>
+          <button onClick={()=> console.log("messages")}>
             test
 
           </button>
