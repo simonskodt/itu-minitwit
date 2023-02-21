@@ -55,7 +55,7 @@ public class FollowerRepository : IFollowerRepository
             };
         }
 
-        _context.Followers.DeleteOne(follower => follower.WhoId == userId && follower.WhomId == toUnfollow.Id);
+        _context.Followers.DeleteOne(f => f.WhoId == userId && f.WhomId == toUnfollow.Id);
 
         return new Response
         {
@@ -65,6 +65,6 @@ public class FollowerRepository : IFollowerRepository
 
     private User? GetUserByUsername(string username)
     {
-        return _context.Users.Find(user => user.Username == username).FirstOrDefault();
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
     }
 }
