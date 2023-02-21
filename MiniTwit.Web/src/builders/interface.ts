@@ -3,6 +3,6 @@ export interface MessageObject
     messageId: string,
     authorId: string,
     text: string,
-    pubDate: Date,
+    pubDate: string,
     flagged: number
   } 

@@ -1,39 +1,62 @@
-import Footer from './Footer';
-import Layout from './Layout';
-import './Layout.css';
-import { useContext } from 'react';
-import { getMessageArray } from '../builders/functions';
-import { FetchPublicTimeline } from './fetch';
+import Footer from "./Footer";
+import Header from "./Header";
+import "./Layout.css";
+import { useContext } from "react";
+import { getMessageArray } from "../builders/functions";
+import { FetchPublicTimeline } from "./fetch";
+import { useState } from "react";
+import { MessageObject } from "../builders/interface";
+import { useEffect } from "react";
+import { Message } from "./Message";
 
+function PublicTimeline() {
+  //const {messages} = useContext(MessagesContext)
+  //const { setMessages } = useContext(MessagesContext);
 
-function TimeLine() {
-  
+  const [messages, setMessages] = useState<MessageObject[]>();
 
-  return (
-    <div className="page">
-      
-      <Layout />
-        <h2>Public Timeline</h2>
-      <button onClick={() => {
-                FetchPublicTimeline().then(
-          (messages) => {
-              let buildingData = getMessageArray(messages);
-              console.log(buildingData);
-              //setMessages(buildingData);
-              //console.log(messages);
-          },
-      );
-  }     
-        }>
-          Fetch</button>
+  const fetchAllUsers = () => {
+    FetchPublicTimeline().then((messages) => {
+      console.log(messages);
+      let buildingMessage = getMessageArray(messages);
+      setMessages(buildingMessage);
+    });
+  };
 
-          <button onClick={()=> console.log("messages")}>
-            test
+  useEffect(() => {
+    FetchPublicTimeline().then((messages) => {
+      console.log(messages);
+      setMessages(messages);
+    });
+  }, []);
 
-          </button>
-      <Footer />
-    </div>
-  );
+  if (messages != undefined) {
+    return (
+      <div className="page">
+        <Header isLoggedIn={false} />
+        {messages.map((mes) => (
+          <view key={mes.messageId}>
+            <view>
+              <Message
+                username = {mes.authorId}
+                text = {mes.text}
+                date = {mes.pubDate}
+              />
+            </view>
+          </view>
+        ))}
+        <Footer />
+      </div>
+    );
+  } else {
+    return (
+      <div className="page">
+        <Header isLoggedIn={false} />
+        <button onClick={() => console.log(messages)}> TEST </button>
+        <Footer />
+      </div>
+    );
+  }
 }
 
-export default TimeLine
+export default PublicTimeline;
