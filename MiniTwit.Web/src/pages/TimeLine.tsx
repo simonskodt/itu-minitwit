@@ -1,5 +1,5 @@
+import Header from './Header';
 import Footer from './Footer';
-import Layout from './Layout';
 import './Layout.css';
 
 interface Request {
@@ -9,8 +9,9 @@ interface Request {
 function TimeLine() {
   return (
     <div className="page">
-      
-      <Layout />
+      <Header 
+        isLoggedIn={false}
+      />
         <h2>Public Timeline</h2>
       <Footer />
     </div>
