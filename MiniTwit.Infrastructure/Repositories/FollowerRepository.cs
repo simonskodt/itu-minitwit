@@ -63,6 +63,29 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
+    public Response<IEnumerable<Follower>> GetAllFollowersByUsername(string username)
+    {
+        // TODO: Fix this method (_id error)
+
+        var user = GetUserByUsername(username);
+
+        if (user is null)
+        {
+            return new Response<IEnumerable<Follower>>
+            {
+                HTTPResponse = HTTPResponse.NotFound,
+            };
+        }
+
+        var followers = _context.Followers.Find(f => f.WhomId == user.Id).ToList();
+
+        return new Response<IEnumerable<Follower>>
+        {
+            HTTPResponse = HTTPResponse.Success,
+            Model = followers
+        };
+    }
+
     private User? GetUserByUsername(string username)
     {
         return _context.Users.Find(u => u.Username == username).FirstOrDefault();
