@@ -2,6 +2,7 @@ using MiniTwit.Core;
 using MiniTwit.Infrastructure.Data.DataCreators;
 using MiniTwit.Security;
 using MongoDB.Bson;
+using MiniTwit.Core.Entities;
 
 namespace MiniTwit.Infrastructure.Data;
 
@@ -60,5 +61,10 @@ public class DataInitializer
         var f4 = FollowerCreator.Create(victor.Id!, gustav.Id!);
 
         _context.Followers.InsertMany(new [] { f1, f2, f3, f4 });
+
+        //Latest
+        var l1 = LatestCreator.Create(1);
+
+        _context.Latests.InsertOne(l1);
     }
 }

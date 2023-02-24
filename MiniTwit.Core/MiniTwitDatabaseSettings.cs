@@ -7,4 +7,5 @@ public class MiniTwitDatabaseSettings
     public string UsersCollectionName { get; set; } = null!;
     public string TweetsCollectionName { get; set; } = null!;
     public string FollowersCollectionName { get; set; } = null!;
+    public string LatestsCollectionName { get; set; } = null!;
 }

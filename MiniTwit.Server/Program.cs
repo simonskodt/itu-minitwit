@@ -40,6 +40,7 @@ builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
+builder.Services.AddScoped<ILatestRepository, LatestRepository>();
 builder.Services.AddScoped<DataInitializer>();
 
 var app = builder.Build();
