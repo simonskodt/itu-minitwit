@@ -16,6 +16,7 @@ public class SimController : ControllerBase
     private IMessageRepository _messageRepository;
     private IFollowerRepository _followerRepository;
     private ILatestRepository _latestRepository;
+    private int LATEST;
 
     public SimController(IHasher hasher, IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository, ILatestRepository latestRepository)
     {
@@ -31,7 +32,7 @@ public class SimController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Latest), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("latest")]
     public IActionResult Latest()
@@ -50,16 +51,102 @@ public class SimController : ControllerBase
     [Route("register")]
     public void Register([FromBody] RegisterDTO registerDTO)
     {
+        UpdateLatest();
+
         _hasher.Hash(registerDTO.Password, out string hashedPassword);
         var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, hashedPassword);
         response.ToActionResult();
     }
 
-
-    private void updateLatest()
+    /// <summary>
+    /// Gets all the messages 
+    /// <summary>
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("msgs")]
+    public IActionResult Msgs()
     {
-
+        UpdateLatest();
+        
+        // TODO: Check if userid == authorid?
+        return _messageRepository.GetAllNonFlagged().ToActionResult();
     }
 
+    /// <summary>
+    /// Gets all the messages 
+    /// <summary>
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("msgs/{username}")]
+    public IActionResult MsgUsername(string username)
+    {
+        UpdateLatest();
+        
+        var response = _messageRepository.GetAllByUsername(username);
+        return response.ToActionResult();
+    }
 
+    /// <summary>
+    /// Add message by username
+    /// <summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [Route("msgs/{username}")]
+    public IActionResult MsgUsernamePost(string username, string text)
+    {
+        UpdateLatest();
+
+        var user = _messageRepository.GetUserByUsername(username);
+        var response = _messageRepository.Create(user.Id, text);
+
+        return response.ToActionResult();
+    }
+
+    /// <summary>
+    /// Get followers by username
+    /// <summary>
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("fllws/{username}")]
+    public IActionResult FollowUser(string username)
+    {
+        UpdateLatest();
+
+        var followers = _followerRepository.GetAllFollowersByUsername(username);
+
+        return followers.ToActionResult();
+    }
+
+    /// <summary>
+    /// Follow user by username
+    /// <summary>
+    /*[ HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(Latest), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Route("fllws/{username}")]
+    public IActionResult FollowUser(string username, string text)
+    {
+        UpdateLatest();
+
+        var user = _messageRepository.GetUserByUsername(username);
+        var response = _messageRepository.Create(user.Id, text);
+
+        return response.ToActionResult();
+    } */
+    
+    private void UpdateLatest()
+    {
+        var latest = _latestRepository.Update(LATEST);
+
+        LATEST = latest.Model.LatestVal;
+    }
 }

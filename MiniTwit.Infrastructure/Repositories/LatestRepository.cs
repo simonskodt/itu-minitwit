@@ -18,6 +18,11 @@ public class LatestRepository : ILatestRepository
     {
         var latest = _context.Latests.Find(_ => true).First();
 
+        if (latest is null)
+        {
+            latest.LatestVal = -1;
+        }
+
         return new Response<Latest>
         {
             HTTPResponse = HTTPResponse.Success,
@@ -25,13 +30,26 @@ public class LatestRepository : ILatestRepository
         };
     }
 
-
-/*     public void Update()
+    public Response<Latest> Update(int latestVal)
     {
-        //var latest = _context.Latests.Find(_ => true).;
+        var latest = _context.Latests.Find(_ => true).FirstOrDefault();
 
+        if (latest is not null)
+        {
+            _context.Latests.DeleteOne(_ => true);
+        }
 
+        latest = new Latest
+        {
+            LatestVal = latestVal
+        };
 
+        _context.Latests.InsertOne(latest);
 
-    } */
+        return new Response<Latest>
+        {
+            HTTPResponse = HTTPResponse.Created,
+            Model = latest
+        };
+    }
 }

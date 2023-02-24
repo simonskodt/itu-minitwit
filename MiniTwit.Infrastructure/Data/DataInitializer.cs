@@ -54,17 +54,15 @@ public class DataInitializer
 
         // Followers
         var f1 = FollowerCreator.Create(gustav.Id!, simon.Id!);
-
         var f2 = FollowerCreator.Create(simon.Id!, nikolaj.Id!);
         var f3 = FollowerCreator.Create(simon.Id!, victor.Id!);
-
         var f4 = FollowerCreator.Create(victor.Id!, gustav.Id!);
 
         _context.Followers.InsertMany(new [] { f1, f2, f3, f4 });
 
         //Latest
-        var l1 = LatestCreator.Create(1);
+        var l = LatestCreator.Create(1);
 
-        _context.Latests.InsertOne(l1);
+        _context.Latests.InsertOne(l);
     }
 }

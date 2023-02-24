@@ -5,4 +5,6 @@ namespace MiniTwit.Core.IRepositories;
 public interface ILatestRepository
 {
     Response<Latest> GetLatest();
+
+    Response<Latest> Update(int latestVal);
 }
