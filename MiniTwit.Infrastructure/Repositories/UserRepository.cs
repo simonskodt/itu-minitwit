@@ -1,7 +1,6 @@
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
-using MiniTwit.Security;
 using MongoDB.Driver;
 
 namespace MiniTwit.Infrastructure.Repositories;
@@ -17,7 +16,7 @@ public class UserRepository : IUserRepository
 
     public Response<User> Create(string username, string email, string password)
     {
-        var existingUser = _context.Users.Find(u => u.Username == username).FirstOrDefault();
+        var existingUser = GetUserByUsername(username);
 
         // Username already taken
         if (existingUser != null)
@@ -65,7 +64,7 @@ public class UserRepository : IUserRepository
 
     public Response<User> GetByUsername(string username)
     {
-        var user = _context.Users.Find(u => u.Username == username).FirstOrDefault();
+        var user = GetUserByUsername(username);
 
         if (user == null)
         {
@@ -80,5 +79,10 @@ public class UserRepository : IUserRepository
             HTTPResponse = HTTPResponse.Success,
             Model = user
         };
+    }
+
+    private User? GetUserByUsername(string username)
+    {
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
     }
 }
