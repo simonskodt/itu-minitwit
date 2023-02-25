@@ -13,4 +13,15 @@ public static class UserCreator
             Password = password,
         };
     }
+
+    public static User Create(string id, string username, string email, string password)
+    {
+        return new User
+        {
+            Id = id,
+            Username = username,
+            Email = email,
+            Password = password,
+        };
+    }
 }
