@@ -101,6 +101,7 @@ public class TwitterController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/add_message")]
     public IActionResult AddMessage(string userId, string text)
     {
@@ -143,11 +144,10 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [Route("/register")]
-    public void Register([FromBody] RegisterDTO registerDTO)
+    public IActionResult Register([FromBody] RegisterDTO registerDTO)
     {
-        _hasher.Hash(registerDTO.Password, out string hashedPassword);
-        var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, hashedPassword);
-        response.ToActionResult();
+        var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, registerDTO.Password);
+        return response.ToActionResult();
     }
 
     /// <summary>
