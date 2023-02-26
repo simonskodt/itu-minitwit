@@ -5,7 +5,7 @@ using MiniTwit.Core.IRepositories;
 using MiniTwit.Security;
 using MiniTwit.Server.Controllers;
 
-namespace MiniTwit.Tests.Server;
+namespace MiniTwit.Tests.Server.Controllers;
 
 public class TwitterControllerTests
 {
