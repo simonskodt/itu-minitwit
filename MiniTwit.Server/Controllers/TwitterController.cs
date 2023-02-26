@@ -153,7 +153,7 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Logs out the user
     /// <summary>
-    [HttpPost]
+    [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Route("/logout")]
