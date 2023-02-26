@@ -1,12 +1,19 @@
+using MiniTwit.Security;
+using Moq;
+
 namespace MiniTwit.Tests.Infrastructure.Repositories;
 
 public class UserRepositoryTests : RepoTests
 {
     private readonly UserRepository _repository;
+    private Mock<IHasher> _hasher;
 
     public UserRepositoryTests()
     {
-        _repository = new UserRepository(_context);
+        _hasher = new Mock<IHasher>();
+        var password = "password";
+        _hasher.Setup(h => h.Hash("password", out password));
+        _repository = new UserRepository(_context, _hasher.Object);
     }
 
     [Fact]
