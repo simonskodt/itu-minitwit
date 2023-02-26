@@ -65,7 +65,7 @@ public class MessageRepository : IMessageRepository
             };
         }
 
-        var messages = _context.Messages.Find(m => m.Flagged == 0 && m.AuthorId == userId).ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == userId).SortByDescending(m => m.PubDate).ToList();
 
         return new Response<IEnumerable<Message>>
         {
