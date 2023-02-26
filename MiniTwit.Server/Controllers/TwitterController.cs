@@ -119,14 +119,14 @@ public class TwitterController : ControllerBase
     [Route("/login")]
     public IActionResult Login([FromBody]LoginDTO loginDTO)
     {
-        var response = _userRepository.GetByUsername(loginDTO.Username);
+        var response = _userRepository.GetByUsername(loginDTO.Username!);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
             return Unauthorized("Invalid username");
         }
 
-        var validPassword = _hasher.VerifyHash(loginDTO.Password, response.Model!.Password!);
+        var validPassword = _hasher.VerifyHash(loginDTO.Password!, response.Model!.Password!);
 
         if (!validPassword)
         {
@@ -146,7 +146,7 @@ public class TwitterController : ControllerBase
     [Route("/register")]
     public IActionResult Register([FromBody] RegisterDTO registerDTO)
     {
-        var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, registerDTO.Password);
+        var response = _userRepository.Create(registerDTO.Username!, registerDTO.Email!, registerDTO.Password!);
         return response.ToActionResult();
     }
 
