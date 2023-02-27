@@ -1,5 +1,8 @@
-public record RegisterDTO{
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+namespace MiniTwit.Core.Entities;
+
+public record RegisterDTO
+{
+    public string? Username { get; set; }
+    public string? Email { get; set; }
+    public string? Password { get; set; }
 }
