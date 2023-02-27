@@ -9,8 +9,8 @@ public class MongoDBContext : IMongoDBContext
 {
     public IMongoCollection<User> Users { get; init; }
     public IMongoCollection<Follower> Followers { get; init; }
-
     public IMongoCollection<Message> Messages { get; init; }
+    public IMongoCollection<Latest> Latests { get; init; }
 
     public MongoDBContext(IOptions<MiniTwitDatabaseSettings> databaseSettings)
     {
@@ -20,5 +20,6 @@ public class MongoDBContext : IMongoDBContext
         Users = mongoDatabase.GetCollection<User>(databaseSettings.Value.UsersCollectionName);
         Followers = mongoDatabase.GetCollection<Follower>(databaseSettings.Value.FollowersCollectionName);
         Messages = mongoDatabase.GetCollection<Message>(databaseSettings.Value.TweetsCollectionName);
+        Latests = mongoDatabase.GetCollection<Latest>(databaseSettings.Value.LatestsCollectionName);
     }
 }

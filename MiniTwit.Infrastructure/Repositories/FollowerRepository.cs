@@ -63,6 +63,29 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
+    public Response<IEnumerable<Follower>> GetAllFollowersByUsername(string username)
+    {
+        // .g. username = Simon. Method gets all followers who follow Simon. 
+    
+        var user = GetUserByUsername(username);
+
+        if (user is null)
+        {
+            return new Response<IEnumerable<Follower>>
+            {
+                HTTPResponse = HTTPResponse.NotFound,
+            };
+        }
+
+        var followers = _context.Followers.Find(f => f.WhomId == user.Id).ToList();
+
+        return new Response<IEnumerable<Follower>>
+        {
+            HTTPResponse = HTTPResponse.Success,
+            Model = followers
+        };
+    }
+
     private User? GetUserByUsername(string username)
     {
         return _context.Users.Find(u => u.Username == username).FirstOrDefault();

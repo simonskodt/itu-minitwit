@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MiniTwit.Core.Entities;
 
+[BsonIgnoreExtraElements]
 public class Follower
 {
     [BsonRepresentation(BsonType.ObjectId)]
