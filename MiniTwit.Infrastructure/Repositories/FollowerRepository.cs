@@ -65,8 +65,8 @@ public class FollowerRepository : IFollowerRepository
 
     public Response<IEnumerable<Follower>> GetAllFollowersByUsername(string username)
     {
-        // TODO: Fix this method (_id error)
-
+        // .g. username = Simon. Method gets all followers who follow Simon. 
+    
         var user = GetUserByUsername(username);
 
         if (user is null)

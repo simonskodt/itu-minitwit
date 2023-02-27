@@ -9,5 +9,4 @@ public interface IMessageRepository
     Response<IEnumerable<Message>> GetAllNonFlagged();
     Response<IEnumerable<Message>> GetAllFollowedByUser(string userId);
     Response<Message> Create(string userId, string text);
-    User? GetUserByUsername(string username);
 }

@@ -120,7 +120,7 @@ public class MessageRepository : IMessageRepository
         return _context.Users.Find(u => u.Id == userId).FirstOrDefault();
     }
 
-    public User? GetUserByUsername(string username)
+    private User? GetUserByUsername(string username)
     {
         return _context.Users.Find(u => u.Username == username).FirstOrDefault();
     }

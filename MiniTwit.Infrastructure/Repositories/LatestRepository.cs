@@ -20,7 +20,7 @@ public class LatestRepository : ILatestRepository
 
         if (latest is null)
         {
-            latest.LatestVal = -1;
+            latest!.LatestVal = -1;
         }
 
         return new Response<Latest>

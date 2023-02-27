@@ -18,7 +18,9 @@ public class SimController : ControllerBase
     private ILatestRepository _latestRepository;
     private int LATEST;
 
-    public SimController(IHasher hasher, IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository, ILatestRepository latestRepository)
+    public SimController(IHasher hasher, IUserRepository userRepository, 
+                         IMessageRepository messageRepository, IFollowerRepository followerRepository, 
+                         ILatestRepository latestRepository)
     {
         _hasher = hasher;
         _userRepository = userRepository;
@@ -102,8 +104,9 @@ public class SimController : ControllerBase
     {
         UpdateLatest();
 
-        var user = _messageRepository.GetUserByUsername(username);
-        var response = _messageRepository.Create(user.Id, text);
+        var userResponse = _userRepository.GetByUsername(username);
+        var user = userResponse.Model;
+        var response = _messageRepository.Create(user!.Id!, text);
 
         return response.ToActionResult();
     }
@@ -128,25 +131,23 @@ public class SimController : ControllerBase
     /// <summary>
     /// Follow user by username
     /// <summary>
-    /*[ HttpPost]
+    [ HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(typeof(Latest), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Route("fllws/{username}")]
-    public IActionResult FollowUser(string username, string text)
+    public IActionResult FollowUser(string userId, string username)
     {
         UpdateLatest();
 
-        var user = _messageRepository.GetUserByUsername(username);
-        var response = _messageRepository.Create(user.Id, text);
-
+        var response = _followerRepository.Create(userId, username);
         return response.ToActionResult();
-    } */
+    } 
     
     private void UpdateLatest()
     {
         var latest = _latestRepository.Update(LATEST);
 
-        LATEST = latest.Model.LatestVal;
+        LATEST = latest.Model!.LatestVal;
     }
 }
