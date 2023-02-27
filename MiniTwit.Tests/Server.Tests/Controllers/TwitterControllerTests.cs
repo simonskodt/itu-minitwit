@@ -37,10 +37,11 @@ public class TwitterControllerTests
         var controller = new TwitterController(_hasher.Object, _userRepository.Object, _messageRepository.Object, _followerRepository.Object);
 
         // Act
-        var actual = controller.Timeline("1") as OkResult;
+        var actual = controller.Timeline("1") as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
+        Assert.Equal(expected.Model, actual.Value);
     }
 
     [Fact]
@@ -79,10 +80,11 @@ public class TwitterControllerTests
         var controller = new TwitterController(_hasher.Object, _userRepository.Object, _messageRepository.Object, _followerRepository.Object);
 
         // Act
-        var actual = controller.PublicTimeline() as OkResult;
+        var actual = controller.PublicTimeline() as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
+        Assert.Equal(expected.Model, actual.Value);
     }
 
     [Fact]
@@ -100,10 +102,11 @@ public class TwitterControllerTests
         var controller = new TwitterController(_hasher.Object, _userRepository.Object, _messageRepository.Object, _followerRepository.Object);
 
         // Act
-        var actual = controller.UserTimeline("test") as OkResult;
+        var actual = controller.UserTimeline("test") as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
+        Assert.Equal(expected.Model, actual.Value);
     }
 
     [Fact]
@@ -184,7 +187,7 @@ public class TwitterControllerTests
         var controller = new TwitterController(_hasher.Object, _userRepository.Object, _messageRepository.Object, _followerRepository.Object);
 
         // Act
-        var actual = controller.UnfollowUser("1", "test") as OkResult;
+        var actual = controller.UnfollowUser("1", "test") as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
@@ -271,10 +274,11 @@ public class TwitterControllerTests
         var controller = new TwitterController(_hasher.Object, _userRepository.Object, _messageRepository.Object, _followerRepository.Object);
         
         // Act
-        var actual = controller.Login(loginDTO) as OkResult;
+        var actual = controller.Login(loginDTO) as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
+        Assert.Equal(expected.Model, actual.Value);
     }
 
     [Fact]
