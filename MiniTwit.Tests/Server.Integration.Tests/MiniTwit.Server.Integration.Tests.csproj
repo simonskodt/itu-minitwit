@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\MiniTwit.Server\MiniTwit.Server.csproj" />
     <ProjectReference Include="..\..\MiniTwit.Infrastructure\MiniTwit.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MiniTwit.Security\MiniTwit.Security.csproj" />
   </ItemGroup>
 
 </Project>

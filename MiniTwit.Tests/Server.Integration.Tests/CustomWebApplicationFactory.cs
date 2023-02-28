@@ -3,16 +3,23 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using MiniTwit.Core;
 using MiniTwit.Infrastructure;
 using MiniTwit.Infrastructure.Data.DataCreators;
+using MiniTwit.Security;
 using Mongo2Go;
 
 namespace MiniTwit.Tests.Integration;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private MongoDbRunner _runner;
+
+    public CustomWebApplicationFactory()
+    {
+        _runner = MongoDbRunner.Start(additionalMongodArguments: "--quiet --logpath /dev/null");
+    }
+
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.ConfigureServices(services =>
@@ -24,10 +31,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 services.Remove(mongoDBContext);
             }
             
-            var runner = MongoDbRunner.Start(additionalMongodArguments: "--quiet --logpath /dev/null");
             var settings = new MiniTwitDatabaseSettings
             {
-                ConnectionString = runner.ConnectionString,
+                ConnectionString = _runner.ConnectionString,
                 Database = "MiniTwit",
                 UsersCollectionName = "Users",
                 TweetsCollectionName = "Messages",
@@ -39,20 +45,23 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             var provider = services.BuildServiceProvider();
             using var scope = provider.CreateScope();
             var appContext = scope.ServiceProvider.GetRequiredService<IMongoDBContext>();
-            Seed(appContext);
+            var hasher = scope.ServiceProvider.GetRequiredService<IHasher>();
+            
+            Seed(appContext, hasher);
         });
 
         builder.UseEnvironment("Integration");
         return base.CreateHost(builder);
     }
 
-    private void Seed(IMongoDBContext context)
+    private void Seed(IMongoDBContext context, IHasher hasher)
     {
+        hasher.Hash("password", out string hash);
         // Users
-        var gustav  = UserCreator.Create("000000000000000000000001", "Gustav", "g@minitwit.com", "password");
-        var simon   = UserCreator.Create("000000000000000000000002", "Simon", "s@minitwit.com", "password");
-        var nikolaj = UserCreator.Create("000000000000000000000003", "Nikolaj", "n@minitwit.com", "password");
-        var victor  = UserCreator.Create("000000000000000000000004", "Victor", "v@minitwit.com", "password");
+        var gustav  = UserCreator.Create("000000000000000000000001", "Gustav", "g@minitwit.com", hash);
+        var simon   = UserCreator.Create("000000000000000000000002", "Simon", "s@minitwit.com", hash);
+        var nikolaj = UserCreator.Create("000000000000000000000003", "Nikolaj", "n@minitwit.com", hash);
+        var victor  = UserCreator.Create("000000000000000000000004", "Victor", "v@minitwit.com", hash);
 
         context.Users.InsertMany(new[] { gustav, simon, nikolaj, victor });
 
