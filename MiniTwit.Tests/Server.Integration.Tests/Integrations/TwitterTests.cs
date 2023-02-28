@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
 
 namespace MiniTwit.Tests.Integration.Integrations;

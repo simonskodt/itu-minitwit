@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core;
+using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Security;
