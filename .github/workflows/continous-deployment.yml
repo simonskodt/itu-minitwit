@@ -69,4 +69,4 @@ jobs:
           command: |
             docker pull ${{ secrets.SSH_USERNAME }}/itu-minitwit-server
             docker pull ${{ secrets.SSH_USERNAME }}/itu-minitwit-web
-            docker stack deploy -c docker-compose.yml
+            docker-compose up
