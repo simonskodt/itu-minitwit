@@ -59,7 +59,7 @@ public class FollowerRepository : IFollowerRepository
 
         return new Response
         {
-            HTTPResponse = HTTPResponse.Success
+            HTTPResponse = HTTPResponse.NoContent
         };
     }
 

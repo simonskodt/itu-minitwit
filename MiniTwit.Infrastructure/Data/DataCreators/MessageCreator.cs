@@ -25,4 +25,13 @@ public static class MessageCreator
             Flagged = flagged
         };
     }
+
+    public static Message Create(string id, string authorId, string text, DateTime pubDate, int flagged = 0)
+    {
+        var message = Create(authorId, text, pubDate, flagged);
+
+        message.Id = id;
+
+        return message;
+    }
 }
