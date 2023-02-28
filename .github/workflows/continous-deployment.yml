@@ -33,6 +33,6 @@ jobs:
           user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           command: |
-            git pull
+            echo hello
 
 
