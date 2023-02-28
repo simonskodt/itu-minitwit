@@ -29,10 +29,9 @@ jobs:
       - name: Deploy to production
         uses: fifsky/ssh-action@master
         with:
-          HOST: ${{ secrets.SSH_HOST }}
-          USER: ${{ secrets.SSH_USERNAME }}
-          KEY: ${{ secrets.SSH_KEY }}
-          SSH_PASSPHRASE: ${{secrets.SSH_PASSPHRASE}}
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           command: |
             git pull
 
