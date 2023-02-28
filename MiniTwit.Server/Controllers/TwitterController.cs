@@ -38,7 +38,7 @@ public class TwitterController : ControllerBase
     {
         var response = _messageRepository.GetAllFollowedByUser(userId);
         return response.ToActionResult();
-    } 
+    }
 
     /// <summary>
     /// Displays the latest messages of all users.
@@ -51,7 +51,7 @@ public class TwitterController : ControllerBase
     {
         var response = _messageRepository.GetAllNonFlagged();
         return response.ToActionResult();
-    } 
+    }
 
     /// <summary>
     /// Display's a users tweets.
@@ -84,7 +84,7 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Removes the current user as follower of the given user.
     /// <summary>
-    [HttpPost]
+    [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -117,7 +117,7 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public IActionResult Login([FromBody]LoginDTO loginDTO)
+    public IActionResult Login([FromBody] LoginDTO loginDTO)
     {
         var response = _userRepository.GetByUsername(loginDTO.Username!);
 
