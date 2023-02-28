@@ -32,5 +32,3 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: cxr48ges
-          command: |
-            echo hello
