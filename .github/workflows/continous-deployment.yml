@@ -35,12 +35,12 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           
       - name: executing remote ssh commands
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: cxr48ges
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             whoami
             ls -a
