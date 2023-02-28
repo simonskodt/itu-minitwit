@@ -44,3 +44,5 @@ jobs:
           script: |
             whoami
             ls -a
+            cd itu-minitwit/
+            docker-compose up
