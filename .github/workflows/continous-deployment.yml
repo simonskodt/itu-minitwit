@@ -11,16 +11,9 @@ on:
   workflow_dispatch:
     manual: true
 
-# Remember to set the following secrets in your repository's settings:
-# https://github.com/your_username/itu-minitwit-ci/settings/secrets/actions
-# DOCKER_USERNAME
-# DOCKER_PASSWORD
-# SSH_USER
-# SSH_KEY
-# SSH_HOST
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,17 +25,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Deploy to server
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+          
+      - name: Deploy to production
+        uses: fifsky/ssh-action@master
+        with:
+          HOST: ${{ secrets.SSH_HOST }}
+          USER: ${{ secrets.SSH_USERNAME }}
+          KEY: ${{ secrets.SSH_KEY }}
           SSH_PASSPHRASE: ${{secrets.SSH_PASSPHRASE}}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          ssh $SSH_USER@$SSH_HOST
-          echo 'echo $SSH_PASSPHRASE' > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
-          echo hello
+          command: |
+            git pull
 
 
