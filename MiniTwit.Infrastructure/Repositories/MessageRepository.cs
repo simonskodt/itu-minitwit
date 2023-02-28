@@ -95,6 +95,30 @@ public class MessageRepository : IMessageRepository
         };
     }
 
+    public Response<IEnumerable<Message>> GetAllNonFlaggedByUsername(string username)
+    {
+        var user = GetUserByUsername(username);
+
+        if (user == null)
+        {
+            return new Response<IEnumerable<Message>>
+            {
+                HTTPResponse = HTTPResponse.NotFound
+            };
+        }
+
+        var messages = _context.Messages.
+            Find(m => m.AuthorId == user.Id && m.Flagged == 0).
+            SortByDescending(m => m.PubDate).
+            ToList();
+
+        return new Response<IEnumerable<Message>>
+        {
+            HTTPResponse = HTTPResponse.Success,
+            Model = messages
+        };
+    }
+
     public Response<IEnumerable<Message>> GetAllFollowedByUser(string userId)
     {
         var user = GetUserByUserId(userId);
@@ -113,11 +137,11 @@ public class MessageRepository : IMessageRepository
         var followers = _context.Followers.AsQueryable();
 
         var result = from m in messages
-            join u in users on m.AuthorId equals u.Id
-            join f in followers on m.AuthorId equals f.WhomId
-            where m.Flagged == 0 && u.Id == userId || f.WhoId == userId
-            orderby m.PubDate descending
-            select m;
+                     join u in users on m.AuthorId equals u.Id
+                     join f in followers on m.AuthorId equals f.WhomId
+                     where m.Flagged == 0 && u.Id == userId || f.WhoId == userId
+                     orderby m.PubDate descending
+                     select m;
 
         return new Response<IEnumerable<Message>>
         {

@@ -10,3 +10,8 @@ public record SimFollowDTO
     [JsonPropertyName("unfollow")]
     public string? Unfollow { get; set; } = null;
 }
+
+public record SimFollowDetailsDTO
+{
+    public IList<string> Follows { get; set; } = new List<string>();
+}
