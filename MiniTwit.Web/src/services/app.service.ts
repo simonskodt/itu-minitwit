@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { LOCALHOST, PRODUCTION } from '../App';
+
 
 export class AppService {
   
@@ -11,7 +13,7 @@ export class AppService {
     const config: AxiosRequestConfig = {
     method: 'post',
     maxBodyLength: Infinity,
-      url: 'https://localhost:7111/register',
+      url: PRODUCTION + 'register',
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -35,7 +37,7 @@ export class AppService {
     const config: AxiosRequestConfig = {
       method: 'post',
     maxBodyLength: Infinity,
-      url: 'https://localhost:7111/login',
+      url: PRODUCTION+'login',
       headers: { 
         'Content-Type': 'application/json'
       },

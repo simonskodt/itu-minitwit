@@ -9,10 +9,10 @@ interface Request {
 function TimeLine() {
   return (
     <div className="page">
-      <Header 
-        isLoggedIn={false}
-      />
-        <h2>Public Timeline</h2>
+      <Header isLoggedIn={false} />
+        <div className="body">
+          <h2>Timeline</h2>
+        </div>
       <Footer />
     </div>
   );
