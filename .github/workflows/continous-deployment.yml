@@ -60,13 +60,12 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Deploy to production
-        uses: fifsky/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USERNAME }}
-          key:  ${{ secrets.SSH_KEY }}
-          run: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
-            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
-            docker-compose up
+      - name: Deploy to server
+        run: >
+          ssh $SSH_USER@$SSH_HOST
+          cd itu-minitwit/
+          docker-compose up
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
