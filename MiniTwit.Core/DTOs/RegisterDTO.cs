@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace MiniTwit.Core.DTOs;
+
 public record RegisterDTO
 {
     [Required]
