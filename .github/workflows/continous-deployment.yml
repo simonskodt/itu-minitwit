@@ -40,6 +40,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          pass: ${{ secrets.SSH_PASSPHRASE }}
           command: |
             echo hello
