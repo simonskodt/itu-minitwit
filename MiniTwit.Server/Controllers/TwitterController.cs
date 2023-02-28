@@ -38,7 +38,7 @@ public class TwitterController : ControllerBase
     {
         var response = _messageRepository.GetAllFollowedByUser(userId);
         return response.ToActionResult();
-    } 
+    }
 
     /// <summary>
     /// Displays the latest messages of all users.
@@ -51,7 +51,7 @@ public class TwitterController : ControllerBase
     {
         var response = _messageRepository.GetAllNonFlagged();
         return response.ToActionResult();
-    } 
+    }
 
     /// <summary>
     /// Display's a users tweets.
@@ -84,7 +84,7 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Removes the current user as follower of the given user.
     /// <summary>
-    [HttpPost]
+    [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,6 +101,7 @@ public class TwitterController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/add_message")]
     public IActionResult AddMessage(string userId, string text)
     {
@@ -116,16 +117,16 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public IActionResult Login([FromBody]LoginDTO loginDTO)
+    public IActionResult Login([FromBody] LoginDTO loginDTO)
     {
-        var response = _userRepository.GetByUsername(loginDTO.Username);
+        var response = _userRepository.GetByUsername(loginDTO.Username!);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
             return Unauthorized("Invalid username");
         }
 
-        var validPassword = _hasher.VerifyHash(loginDTO.Password, response.Model!.Password!);
+        var validPassword = _hasher.VerifyHash(loginDTO.Password!, response.Model!.Password!);
 
         if (!validPassword)
         {
@@ -143,17 +144,16 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [Route("/register")]
-    public void Register([FromBody] RegisterDTO registerDTO)
+    public IActionResult Register([FromBody] RegisterDTO registerDTO)
     {
-        _hasher.Hash(registerDTO.Password, out string hashedPassword);
-        var response = _userRepository.Create(registerDTO.Username, registerDTO.Email, hashedPassword);
-        response.ToActionResult();
+        var response = _userRepository.Create(registerDTO.Username!, registerDTO.Email!, registerDTO.Password!);
+        return response.ToActionResult();
     }
 
     /// <summary>
     /// Logs out the user
     /// <summary>
-    [HttpPost]
+    [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Route("/logout")]

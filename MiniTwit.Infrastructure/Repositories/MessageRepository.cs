@@ -16,6 +16,17 @@ public class MessageRepository : IMessageRepository
 
     public Response<Message> Create(string userId, string text)
     {
+        var user = GetUserByUserId(userId);
+
+        // User not existing
+        if (user == null)
+        {
+            return new Response<Message>
+            {
+                HTTPResponse = HTTPResponse.NotFound,
+            };
+        }
+
         var message = new Message
         {
             AuthorId = userId,
@@ -54,7 +65,7 @@ public class MessageRepository : IMessageRepository
             };
         }
 
-        var messages = _context.Messages.Find(m => m.Flagged == 0 && m.AuthorId == userId).ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == userId).SortByDescending(m => m.PubDate).ToList();
 
         return new Response<IEnumerable<Message>>
         {

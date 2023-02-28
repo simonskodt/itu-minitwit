@@ -4,11 +4,11 @@ using Konscious.Security.Cryptography;
 
 namespace MiniTwit.Security;
 
-public class Hasher : IHasher
+public class Argon2Hasher : IHasher
 {
     private readonly HashSettings _settings;
 
-    public Hasher(IOptions<HashSettings> settings)
+    public Argon2Hasher(IOptions<HashSettings> settings)
     {
         _settings = settings.Value;
     }

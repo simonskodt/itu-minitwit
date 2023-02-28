@@ -21,7 +21,7 @@ builder.Services.Configure<MiniTwitDatabaseSettings>(options => options.Connecti
 
 // Configure Hasher
 builder.Services.Configure<HashSettings>(builder.Configuration.GetSection(nameof(HashSettings)));
-builder.Services.AddScoped<IHasher, Hasher>();
+builder.Services.AddScoped<IHasher, Argon2Hasher>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,3 +72,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program {}
