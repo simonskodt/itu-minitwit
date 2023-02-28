@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MiniTwit.Core.Entities;
+namespace MiniTwit.Core.DTOs;
 
 public record SimFollowDTO
 {
