@@ -42,12 +42,15 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Deploy to server
-        run: >
-          ssh $SSH_USER@$SSH_HOST
-          docker-compose up
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PASSPHRASE: ${{secrets.SSH_PASSPHRASE}}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          ssh $SSH_USER@$SSH_HOST
+          echo 'echo $SSH_PASSPHRASE' > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
+          echo hello
+
 
