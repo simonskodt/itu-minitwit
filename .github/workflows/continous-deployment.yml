@@ -34,15 +34,12 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
+      - name: DeployIng
+        uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
+          user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            whoami
-            ls -a
-            cd itu-minitwit/
-            docker-compose up
+          command: |
+            echo hello
