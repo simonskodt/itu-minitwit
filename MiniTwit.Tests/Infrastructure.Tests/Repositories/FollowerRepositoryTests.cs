@@ -43,7 +43,7 @@ public class FollowerRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void Delete_given_existing_targetUsername_deletes_user_and_returns_Success()
+    public void Delete_given_existing_targetUsername_deletes_user_and_returns_NoContent()
     {
         var existing = _context.Followers.Find(f => f.WhoId == "000000000000000000000001" && f.WhomId == "000000000000000000000002").FirstOrDefault();
 
@@ -53,7 +53,7 @@ public class FollowerRepositoryTests : RepoTests
 
         var actual = _repository.Delete("000000000000000000000001", "Simon");
 
-        Assert.Equal(HTTPResponse.Success, actual.HTTPResponse);
+        Assert.Equal(HTTPResponse.NoContent, actual.HTTPResponse);
         
         existing = _context.Followers.Find(f => f.WhoId == "000000000000000000000001" && f.WhomId == "000000000000000000000002").FirstOrDefault();
 
