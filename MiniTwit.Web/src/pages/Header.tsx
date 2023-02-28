@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { isPropertySignature } from 'typescript';
 import './Layout.css';
 
-
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
         return (
             <>
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
                 <a href="./register">sign up</a>&nbsp;|&nbsp;
-                <a href="./login">sign in</a>&nbsp;|&nbsp;
+                <a href="./login">sign in</a>
             </>
         );
     } else {
@@ -17,7 +16,7 @@ function getMenu(isLoggedIn: boolean) {
             <>
                 <a href="./">my timeline</a>&nbsp;|&nbsp;
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
-                <a href="./logout">sign out</a>&nbsp;|&nbsp;
+                <a href="./logout">sign out</a>
             </>
         );
     }
