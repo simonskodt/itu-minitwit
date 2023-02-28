@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MiniTwit.Core.Entities;
+namespace MiniTwit.Core.DTOs;
 
 public record LoginDTO
 {
