@@ -59,13 +59,13 @@ jobs:
           chmod 600 ~/.ssh/minitwit.key
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
-
+          
       - name: Deploy to server
-        uses: fifsky/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USERNAME }}
-          key:  ${{ secrets.SSH_KEY }}
-          command: |
-            docker pull
-            docker-compose up
+        # Configure the ~./bash_profile and deploy.sh file on the Vagrantfile
+        run: >
+          ssh $SSH_USER@$SSH_HOST
+          -i ~/.ssh/minitwit.key -o StrictHostKeyChecking=no
+          '/itu-minitwit/deploy.sh'
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
