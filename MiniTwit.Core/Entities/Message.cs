@@ -1,11 +1,16 @@
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace MiniTwit.Core.Entities;
 
 public class Message
 {
-    public ObjectId MessageId { get; set; }
-    public ObjectId AuthorId { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? AuthorId { get; set; }
     public string? Text { get; set; }
-    public int? Flagged { get; set; }
+    public DateTime PubDate { get; set; }
+    public int Flagged { get; set; }
 }
