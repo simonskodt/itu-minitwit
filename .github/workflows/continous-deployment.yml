@@ -66,7 +66,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           user: ${{ secrets.SSH_USERNAME }}
           key:  ${{ secrets.SSH_KEY }}
-          command: |
+          run: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
             docker-compose up
