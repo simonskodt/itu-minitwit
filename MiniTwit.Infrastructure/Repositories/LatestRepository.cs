@@ -37,7 +37,7 @@ public class LatestRepository : ILatestRepository
 
         if (latest != null)
         {
-            var update = Builders<Latest>.Update.Set("latestVal", latest);
+            var update = Builders<Latest>.Update.Set("LatestVal", latestVal);
             latest = _context.Latests.FindOneAndUpdate(_ => true, update);
         }
 

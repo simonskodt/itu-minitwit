@@ -60,7 +60,7 @@ public class DataInitializer
         _context.Followers.InsertMany(new [] { f1, f2, f3, f4 });
 
         //Latest
-        var l = LatestCreator.Create(1);
+        var l = LatestCreator.Create(-1);
 
         _context.Latests.InsertOne(l);
     }

@@ -24,7 +24,7 @@ public class UserService : IUserService
         var dbResult = _repository.GetByUsername(userCreateDTO.Username!);
 
         // Username taken
-        if (dbResult.ErrorType != null)
+        if (dbResult.Model != null)
         {
             return new Response<UserDTO>(Conflict, null, USERNAME_TAKEN);
         }

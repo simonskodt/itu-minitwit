@@ -40,7 +40,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Route("register")]
-    public ActionResult Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery(Name = "latest")] int latestVal)
     {
         UpdateLatest(latestVal);
 
@@ -75,7 +75,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<SimMessageDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public ActionResult<IEnumerable<SimMessageDTO>> Msgs([FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
+    public ActionResult<IEnumerable<SimMessageDTO>> Msgs([FromQuery(Name = "latest")] int latestVal, [FromQuery] int no = 100, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
@@ -95,7 +95,7 @@ public class SimController : ControllerBase
             messageDTOList.Add(dto);
         }
 
-        return Ok(messageDTOList.OrderByDescending(m => m.PubDate));
+        return Ok(messageDTOList.OrderByDescending(m => m.PubDate).Take(no));
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public ActionResult<IEnumerable<SimMessageDTO>> MsgUsername(string username, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
+    public ActionResult<IEnumerable<SimMessageDTO>> MsgUsername(string username, [FromQuery(Name = "latest")] int latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
@@ -147,7 +147,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public ActionResult MsgUsernamePost(string username, [FromQuery] string text, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
+    public ActionResult MsgUsernamePost(string username, [FromQuery] string text, [FromQuery(Name = "latest")] int latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
@@ -167,7 +167,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("fllws/{username}")]
-    public ActionResult<SimFollowerDetailsDTO> FollowUser(string username, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
+    public ActionResult<SimFollowerDetailsDTO> FollowUser(string username, [FromQuery(Name = "latest")] int latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
@@ -199,7 +199,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Route("fllws/{username}")]
-    public ActionResult FollowUser([FromQuery] string userId, string username, [FromBody] SimFollowerDTO followSim, [FromQuery(Name = "latest")] int? latestMessage)
+    public ActionResult FollowUser([FromQuery] string userId, string username, [FromBody] SimFollowerDTO followSim, [FromQuery(Name = "latest")] int latestMessage)
     {
         UpdateLatest(latestMessage);
 
@@ -228,11 +228,8 @@ public class SimController : ControllerBase
         }
     }
 
-    private void UpdateLatest(int? latestVal)
+    private void UpdateLatest(int latestVal)
     {
-        if (latestVal is not null)
-        {
-            _serviceManager.LatestService.Update((int)latestVal);
-        }
+        _serviceManager.LatestService.Update(latestVal);
     }
 }
