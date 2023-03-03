@@ -1,6 +1,7 @@
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.IRepositories;
+using MiniTwit.Core.Responses;
 using MongoDB.Driver;
 
 namespace MiniTwit.Infrastructure.Repositories;
@@ -14,42 +15,36 @@ public class LatestRepository : ILatestRepository
         _context = context;
     }
 
-    public Response<Latest> GetLatest()
+    public DBResult<Latest> Get(CancellationToken ct = default)
     {
-        var latest = _context.Latests.Find(_ => true).First();
+        var latest = _context.Latests.Find(_ => true).First(ct);
 
         if (latest is null)
         {
             latest!.LatestVal = -1;
         }
 
-        return new Response<Latest>
+        return new DBResult<Latest>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = latest
+            Model = latest,
+            ErrorType = null
         };
     }
 
-    public Response<Latest> Update(int latestVal)
+    public DBResult<Latest> Update(int latestVal)
     {
         var latest = _context.Latests.Find(_ => true).FirstOrDefault();
 
-        if (latest is not null)
+        if (latest != null)
         {
-            _context.Latests.DeleteOne(_ => true);
+            var update = Builders<Latest>.Update.Set("latestVal", latest);
+            latest = _context.Latests.FindOneAndUpdate(_ => true, update);
         }
 
-        latest = new Latest
+        return new DBResult<Latest>
         {
-            LatestVal = latestVal
-        };
-
-        _context.Latests.InsertOne(latest);
-
-        return new Response<Latest>
-        {
-            HTTPResponse = HTTPResponse.Created,
-            Model = latest
+            Model = latest,
+            ErrorType = null
         };
     }
 }
