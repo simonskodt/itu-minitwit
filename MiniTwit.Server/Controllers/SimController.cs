@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MiniTwit.Core;
+using MiniTwit.Core.Responses;
 using MiniTwit.Core.DTOs;
-using MiniTwit.Core.Entities;
-using MiniTwit.Core.IRepositories;
-using MiniTwit.Security;
+using MiniTwit.Service;
 
 namespace MiniTwit.Server.Controllers;
 
@@ -12,20 +10,13 @@ namespace MiniTwit.Server.Controllers;
 [Route("[controller]")]
 public class SimController : ControllerBase
 {
-    private IHasher _hasher;
-    private IUserRepository _userRepository;
-    private IMessageRepository _messageRepository;
-    private IFollowerRepository _followerRepository;
-    private ILatestRepository _latestRepository;
-    private int _latest;
+    private readonly IServiceManager _serviceManager;
+    private readonly ILogger<SimController> _logger;
 
-    public SimController(IHasher hasher, IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository, ILatestRepository latestRepository)
+    public SimController(IServiceManager serviceManager, ILogger<SimController> logger)
     {
-        _hasher = hasher;
-        _userRepository = userRepository;
-        _messageRepository = messageRepository;
-        _followerRepository = followerRepository;
-        _latestRepository = latestRepository;
+        _serviceManager = serviceManager;
+        _logger = logger;
     }
 
     /// <summary>
@@ -33,16 +24,12 @@ public class SimController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(Latest), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(LatestDTO), StatusCodes.Status200OK)]
     [Route("latest")]
-    public IActionResult Latest()
+    public ActionResult<LatestDTO> Latest(CancellationToken ct = default)
     {
-        var response = _latestRepository.GetLatest();
-
-        var latestDTO = new LastestDTO { LatestVal = response.Model!.LatestVal };
-
-        return Ok(latestDTO);
+        var response = _serviceManager.LatestService.Get(ct);
+        return response.ToActionResult();
     }
 
     /// <summary>
@@ -53,24 +40,24 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Route("register")]
-    public IActionResult Register([FromBody] RegisterDTO registerDTO, [FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery(Name = "latest")] int? latestVal)
     {
         UpdateLatest(latestVal);
 
-        if (registerDTO.Username! == "")
+        if (userCreateDTO.Username! == "")
         {
             return BadRequest(new { status = 400, error_msg = "You have to enter a username" });
         }
-        else if (!registerDTO.Email!.Contains("@"))
+        else if (!userCreateDTO.Email!.Contains("@"))
         {
             return BadRequest(new { status = 400, error_msg = "You have to enter a valid email address" });
         }
-        else if (registerDTO.Password == "")
+        else if (userCreateDTO.Password == "")
         {
             return BadRequest(new { status = 400, error_msg = "You have to enter a password" });
         }
 
-        var response = _userRepository.Create(registerDTO.Username!, registerDTO.Email!, registerDTO.Password!);
+        var response = _serviceManager.UserService.Create(userCreateDTO);
 
         if (response.HTTPResponse == HTTPResponse.Conflict)
         {
@@ -85,24 +72,21 @@ public class SimController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(IList<SimMessageDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<SimMessageDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public IActionResult Msgs([FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult<IEnumerable<SimMessageDTO>> Msgs([FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
-        var response = _messageRepository.GetAllNonFlagged();
-        var reponseList = response.Model!;
-
+        var messages = _serviceManager.MessageService.GetAllNonFlagged(ct).Model!.ToList();
         var messageDTOList = new List<SimMessageDTO>();
 
-        foreach (var message in reponseList)
+        foreach (var message in messages)
         {
-            var userResponse = _userRepository.GetByUserId(message.AuthorId!);
-            var user = userResponse.Model;
+            var user = _serviceManager.UserService.GetByUserId(message.AuthorId!).Model;
 
-            var dto = new SimMessageDTO()
+            var dto = new SimMessageDTO
             {
                 Content = message.Text,
                 Username = user!.Username,
@@ -111,7 +95,7 @@ public class SimController : ControllerBase
             messageDTOList.Add(dto);
         }
 
-        return Ok(messageDTOList);
+        return Ok(messageDTOList.OrderByDescending(m => m.PubDate));
     }
 
     /// <summary>
@@ -119,17 +103,15 @@ public class SimController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(IList<SimMessageDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<SimMessageDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public IActionResult MsgUsername(
-        string username,
-        [FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult<IEnumerable<SimMessageDTO>> MsgUsername(string username, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
-        var response = _messageRepository.GetAllNonFlaggedByUsername(username);
+        var response = _serviceManager.MessageService.GetAllNonFlaggedByUsername(username, ct);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
@@ -142,7 +124,7 @@ public class SimController : ControllerBase
 
         foreach (var message in reponseList)
         {
-            var userResponse = _userRepository.GetByUserId(message.AuthorId!);
+            var userResponse = _serviceManager.UserService.GetByUserId(message.AuthorId!, ct);
             var user = userResponse.Model;
 
             var dto = new SimMessageDTO()
@@ -165,17 +147,13 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public IActionResult MsgUsernamePost(
-        string username,
-        string text,
-        [FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult MsgUsernamePost(string username, [FromQuery] string text, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
-        var userResponse = _userRepository.GetByUsername(username);
+        var user = _serviceManager.UserService.GetByUsername(username, ct).Model!;
 
-        var user = userResponse.Model;
-        var response = _messageRepository.Create(user!.Id!, text);
+        var response = _serviceManager.MessageService.Create(user.Id!, text);
 
         return NoContent();
     }
@@ -185,17 +163,15 @@ public class SimController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(SimFollowDetailsDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SimFollowerDetailsDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("fllws/{username}")]
-    public IActionResult FollowUser(
-        string username,
-        [FromQuery(Name = "latest")] int? latestVal)
+    public ActionResult<SimFollowerDetailsDTO> FollowUser(string username, [FromQuery(Name = "latest")] int? latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 
-        var followers = _followerRepository.GetAllFollowersByUsername(username);
+        var followers = _serviceManager.FollowerService.GetAllFollowersByUsername(username, ct);
 
 
         if (followers.HTTPResponse == HTTPResponse.NotFound)
@@ -203,12 +179,12 @@ public class SimController : ControllerBase
             return NotFound();
         }
 
-        var followersDTOs = new SimFollowDetailsDTO();
+        var followersDTOs = new SimFollowerDetailsDTO();
 
 
         foreach (var follower in followers.Model!)
         {
-            var user = _userRepository.GetByUserId(follower.WhoId!);
+            var user = _serviceManager.UserService.GetByUserId(follower.WhoId!, ct);
             followersDTOs.Follows.Add(user.Model!.Username!);
         }
 
@@ -223,36 +199,32 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Route("fllws/{username}")]
-    public IActionResult FollowUser(
-        string userId,
-        string username,
-        [FromBody] SimFollowDTO followSim,
-        [FromQuery(Name = "latest")] int? latestMessage)
+    public ActionResult FollowUser([FromQuery] string userId, string username, [FromBody] SimFollowerDTO followSim, [FromQuery(Name = "latest")] int? latestMessage)
     {
         UpdateLatest(latestMessage);
 
         // If followsim.Follow is not null make a follow
         if (followSim.Follow is not null)
         {
-            var followResponse = _followerRepository.Create(userId, username);
+            var followResponse = _serviceManager.FollowerService.Create(userId, username);
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
                 return NotFound();
             }
 
-            return NoContent();//followResponse.ToActionResult();
+            return NoContent();
         }
         else
         {
-            var unfollowResponse = _followerRepository.Delete(userId, username);
+            var unfollowResponse = _serviceManager.FollowerService.Delete(userId, username);
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
                 return NotFound();
             }
 
-            return NoContent();//unfollowResponse.ToActionResult();
+            return NoContent();
         }
     }
 
@@ -260,9 +232,7 @@ public class SimController : ControllerBase
     {
         if (latestVal is not null)
         {
-            var latest = _latestRepository.Update((int)latestVal);
-
-            _latest = latest.Model!.LatestVal;
+            _serviceManager.LatestService.Update((int)latestVal);
         }
     }
 }

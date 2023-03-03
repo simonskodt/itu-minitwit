@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MiniTwit.Core;
 using MiniTwit.Core.DTOs;
-using MiniTwit.Core.Entities;
-using MiniTwit.Core.IRepositories;
-using MiniTwit.Security;
+using MiniTwit.Service;
 
 namespace MiniTwit.Server.Controllers;
 
@@ -12,17 +9,13 @@ namespace MiniTwit.Server.Controllers;
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
-    private IHasher _hasher;
-    private IUserRepository _userRepository;
-    private IMessageRepository _messageRepository;
-    private IFollowerRepository _followerRepository;
+    private readonly IServiceManager _serviceManager;
+    private readonly ILogger<TwitterController> _logger;
 
-    public TwitterController(IHasher hasher, IUserRepository userRepository, IMessageRepository messageRepository, IFollowerRepository followerRepository)
+    public TwitterController(IServiceManager serviceManager, ILogger<TwitterController> logger)
     {
-        _hasher = hasher;
-        _userRepository = userRepository;
-        _messageRepository = messageRepository;
-        _followerRepository = followerRepository;
+        _serviceManager = serviceManager;
+        _logger = logger;
     }
 
     /// <summary>
@@ -32,12 +25,12 @@ public class TwitterController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<MessageDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/")]
-    public IActionResult Timeline(string userId)
+    public ActionResult<IEnumerable<MessageDTO>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
-        var response = _messageRepository.GetAllFollowedByUser(userId);
+        var response = _serviceManager.MessageService.GetAllFollowedByUserId(userId, ct);
         return response.ToActionResult();
     }
 
@@ -46,11 +39,11 @@ public class TwitterController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<MessageDTO>), StatusCodes.Status200OK)]
     [Route("/public")]
-    public IActionResult PublicTimeline()
+    public ActionResult<IEnumerable<MessageDTO>> PublicTimeline(CancellationToken ct = default)
     {
-        var response = _messageRepository.GetAllNonFlagged();
+        var response = _serviceManager.MessageService.GetAllNonFlagged(ct);
         return response.ToActionResult();
     }
 
@@ -59,12 +52,12 @@ public class TwitterController : ControllerBase
     /// <summary>
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<MessageDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}")]
-    public IActionResult UserTimeline(string username)
+    public ActionResult<IEnumerable<MessageDTO>> UserTimeline(string username, CancellationToken ct = default)
     {
-        var response = _messageRepository.GetAllByUsername(username);
+        var response = _serviceManager.MessageService.GetAllByUsername(username, ct);
         return response.ToActionResult();
     }
 
@@ -76,9 +69,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}/follow")]
-    public IActionResult FollowUser(string userId, string username)
+    public ActionResult<FollowerDTO> FollowUser([FromQuery] string userId, string username)
     {
-        var response = _followerRepository.Create(userId, username);
+        var response = _serviceManager.FollowerService.Create(userId, username);
         return response.ToActionResult();
     }
 
@@ -90,9 +83,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}/unfollow")]
-    public IActionResult UnfollowUser(string userId, string username)
+    public ActionResult UnfollowUser([FromQuery] string userId, string username)
     {
-        var response = _followerRepository.Delete(userId, username);
+        var response = _serviceManager.FollowerService.Delete(userId, username);
         return response.ToActionResult();
     }
 
@@ -104,9 +97,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/add_message")]
-    public IActionResult AddMessage(string userId, string text)
+    public ActionResult<MessageDTO> AddMessage([FromQuery] string userId, [FromQuery] string text)
     {
-        var response = _messageRepository.Create(userId, text);
+        var response = _serviceManager.MessageService.Create(userId, text);
         return response.ToActionResult();
     }
 
@@ -115,25 +108,12 @@ public class TwitterController : ControllerBase
     /// <summary>
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public IActionResult Login([FromBody] LoginDTO loginDTO)
+    public ActionResult Login([FromBody] LoginDTO loginDTO)
     {
-        var response = _userRepository.GetByUsername(loginDTO.Username!);
-
-        if (response.HTTPResponse == HTTPResponse.NotFound)
-        {
-            return Unauthorized("Invalid username");
-        }
-
-        var validPassword = _hasher.VerifyHash(loginDTO.Password!, response.Model!.Password!);
-
-        if (!validPassword)
-        {
-            return Unauthorized("Invalid password");
-        }
-
+        var response = _serviceManager.AuthenticationService.Authenticate(loginDTO.Username!, loginDTO.Password!);
         return response.ToActionResult();
     }
 
@@ -145,9 +125,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [Route("/register")]
-    public IActionResult Register([FromBody] RegisterDTO registerDTO)
+    public ActionResult<UserDTO> Register([FromBody] UserCreateDTO userCreateDTO)
     {
-        var response = _userRepository.Create(registerDTO.Username!, registerDTO.Email!, registerDTO.Password!);
+        var response = _serviceManager.UserService.Create(userCreateDTO);
         return response.ToActionResult();
     }
 
@@ -158,7 +138,7 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Route("/logout")]
-    public IActionResult Logout()
+    public ActionResult Logout()
     {
         return Ok();
     }
