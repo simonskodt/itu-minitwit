@@ -2,7 +2,7 @@
 using System.Text;
 using Konscious.Security.Cryptography;
 
-namespace MiniTwit.Security;
+namespace MiniTwit.Security.Hashers;
 
 public class Argon2Hasher : IHasher
 {

@@ -2,11 +2,18 @@ using System.Text.Json.Serialization;
 
 namespace MiniTwit.Core.DTOs;
 
+public record MessageDTO
+{
+    public string? Id { get; init; }
+    public string? AuthorId { get; init; }
+    public string? Text { get; init; }
+    public DateTime PubDate { get; init; }
+    public int Flagged { get; init; }
+}
+
 public record SimMessageDTO
 {
-    [JsonPropertyName("content")]
     public string? Content { get; init; }
-    [JsonPropertyName("username")]
     public string? Username { get; init; }
     [JsonPropertyName("pub_date")]
     public DateTime PubDate { get; init; }

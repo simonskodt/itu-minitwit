@@ -1,6 +1,8 @@
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
+using MiniTwit.Core.Responses;
 using MongoDB.Driver;
 
 namespace MiniTwit.Infrastructure.Repositories;
@@ -14,16 +16,29 @@ public class FollowerRepository : IFollowerRepository
         _context = context;
     }
 
-    public Response<Follower> Create(string userId, string targetUsername)
+    public DBResult<Follower> Create(string userId, string username)
     {
-        var toFollow = GetUserByUsername(targetUsername);
+        var user = GetUserByUserId(userId);
 
-        // Target does not exist
+        // See if user exists
+        if (user == null)
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        var toFollow = GetUserByUsername(username);
+
+        // See if target exists
         if (toFollow == null)
         {
-            return new Response<Follower>
+            return new DBResult<Follower>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
@@ -35,59 +50,73 @@ public class FollowerRepository : IFollowerRepository
 
         _context.Followers.InsertOne(follower);
 
-        return new Response<Follower>
+        return new DBResult<Follower>
         {
-            HTTPResponse = HTTPResponse.Created,
-            Model = follower
+            Model = follower,
+            ErrorType = null
         };
     }
 
-    public Response Delete(string userId, string targetUsername)
+    public DBResult Delete(string userId, string username)
     {
-        var toUnfollow = GetUserByUsername(targetUsername);
+        var user = GetUserByUserId(userId);
 
-        // Target does not exist
+        if (user == null)
+        {
+            return new DBResult
+            {
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        var toUnfollow = GetUserByUsername(username);
+
         if (toUnfollow == null)
         {
-            return new Response
+            return new DBResult<Follower>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
         _context.Followers.DeleteOne(f => f.WhoId == userId && f.WhomId == toUnfollow.Id);
 
-        return new Response
+        return new DBResult
         {
-            HTTPResponse = HTTPResponse.NoContent
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Follower>> GetAllFollowersByUsername(string username)
+    public DBResult<IEnumerable<Follower>> GetAllFollowersByUsername(string username, CancellationToken ct = default)
     {
-        // .g. username = Simon. Method gets all followers who follow Simon. 
-    
-        var user = GetUserByUsername(username);
+        var user = GetUserByUsername(username, ct);
 
-        if (user is null)
+        if (user == null)
         {
-            return new Response<IEnumerable<Follower>>
+            return new DBResult<IEnumerable<Follower>>
             {
-                HTTPResponse = HTTPResponse.NotFound,
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
-        var followers = _context.Followers.Find(f => f.WhomId == user.Id).ToList();
+        var followers = _context.Followers.Find(f => f.WhomId == user.Id).ToList(ct);
 
-        return new Response<IEnumerable<Follower>>
+        return new DBResult<IEnumerable<Follower>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = followers
+            Model = followers,
+            ErrorType = null
         };
     }
 
-    private User? GetUserByUsername(string username)
+    private User? GetUserByUserId(string userId, CancellationToken ct = default)
     {
-        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
+        return _context.Users.Find(u => u.Id == userId).FirstOrDefault(ct);
+    }
+
+    private User? GetUserByUsername(string username, CancellationToken ct = default)
+    {
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault(ct);
     }
 }

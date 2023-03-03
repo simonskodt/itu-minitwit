@@ -5,7 +5,9 @@ using MiniTwit.Infrastructure;
 using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
+using MiniTwit.Security.Hashers;
 using MiniTwit.Server.Extensions;
+using MiniTwit.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<ILatestRepository, LatestRepository>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
 
 var app = builder.Build();
@@ -60,10 +63,10 @@ if (app.Environment.IsDevelopment())
 
 // Cross-origin Request Blocked
 app.UseCors(x => x
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .SetIsOriginAllowed(origin => true) // allow any origin
-                    .AllowCredentials());
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials());
 
 app.UseHttpsRedirection();
 

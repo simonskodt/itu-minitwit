@@ -2,7 +2,6 @@ using MiniTwit.Core;
 using MiniTwit.Infrastructure.Data.DataCreators;
 using MiniTwit.Security;
 using MongoDB.Bson;
-using MiniTwit.Core.Entities;
 
 namespace MiniTwit.Infrastructure.Data;
 
