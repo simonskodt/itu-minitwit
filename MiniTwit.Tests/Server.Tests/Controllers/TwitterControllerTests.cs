@@ -29,7 +29,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
+            HTTPResponse = HTTPResponse.Ok,
             Model = Array.Empty<Message>()
         };
 
@@ -72,7 +72,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
+            HTTPResponse = HTTPResponse.Ok,
             Model = Array.Empty<Message>()
         };
 
@@ -94,7 +94,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
+            HTTPResponse = HTTPResponse.Ok,
             Model = Array.Empty<Message>()
         };
 
@@ -180,7 +180,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response
         {
-            HTTPResponse = HTTPResponse.Success
+            HTTPResponse = HTTPResponse.Ok
         };
 
         _followerRepository.Setup(r => r.Delete("1", "test")).Returns(expected);
@@ -263,7 +263,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<User>
         {
-            HTTPResponse = HTTPResponse.Success,
+            HTTPResponse = HTTPResponse.Ok,
             Model = new User{ Id = "1", Username = "test", Email = "test@test.com", Password = "password" }
         };
 
@@ -311,7 +311,7 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<User>
         {
-            HTTPResponse = HTTPResponse.Success,
+            HTTPResponse = HTTPResponse.Ok,
             Model = new User{ Id = "1", Username = "test", Email = "test@test.com", Password = "password" }
         };
 
