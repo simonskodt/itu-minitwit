@@ -6,13 +6,13 @@ public record FollowerDTO
     public string? WhomId { get; init; }
 }
 
-public record SimFollowerDTO
+public record FollowerCreateDTO
 {
     public string? Follow { get; set; } = null;
     public string? Unfollow { get; set; } = null;
 }
 
-public record SimFollowerDetailsDTO
+public record FollowerDetailsDTO
 {
     public ICollection<string> Follows { get; set; } = new List<string>();
 }
