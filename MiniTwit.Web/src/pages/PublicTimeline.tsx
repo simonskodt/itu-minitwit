@@ -9,6 +9,7 @@ import { MessageObject } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
 
+
 function PublicTimeline() {
   //const {messages} = useContext(MessagesContext)
   //const { setMessages } = useContext(MessagesContext);
@@ -34,17 +35,20 @@ function PublicTimeline() {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
-        {messages.map((mes) => (
-          <view key={mes.messageId}>
-            <view>
-              <Message
-                username = {mes.authorId}
-                text = {mes.text}
-                date = {mes.pubDate}
-              />
+        <div className="body">
+          <h2>Public TimeLine</h2>
+          {messages.map((mes) => (
+            <view key={mes.messageId}>
+              <view>
+                <Message
+                  username = {mes.authorId}
+                  text = {mes.text}
+                  date = {mes.pubDate}
+                />
+              </view>
             </view>
-          </view>
-        ))}
+          ))}
+        </div>
         <Footer />
       </div>
     );

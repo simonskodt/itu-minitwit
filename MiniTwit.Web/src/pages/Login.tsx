@@ -26,25 +26,27 @@ const Login = () => {
     return (
       <div className="page">
         <Header isLoggedIn = {false}/>
-          <div className='login-form'>
-          <h2>Sign In</h2>
-            <label htmlFor="username">Username</label>
-            <input 
-              type="text"
-              placeholder="Username"
-              name="username"
-              required
-              onChange={e => setUsername(e.target.value)}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              required
-              onChange={e => setPassword(e.target.value)}
-            />
-            <button onClick={submit}>Login</button>
+          <div className="body">
+            <div className='login-form'>
+            <h2>Sign In</h2>
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                placeholder="Username"
+                name="username"
+                required
+                onChange={e => setUsername(e.target.value)}
+              />
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                required
+                onChange={e => setPassword(e.target.value)}
+              />
+              <button onClick={submit}>Login</button>
+            </div>
           </div>
         <Footer />
      </div>

@@ -1,10 +1,24 @@
 # DevOps Course
 
+- [Missing Implementations](#missing-implementations)
 - [Weeks](#weeks)
   * [Week 1](#week-1)
   * [Week 2](#week-2)
   * [Week 3](#week-3)
+  * [Week 4](#week-4)
 - [Course description](#course-description)
+
+## Missing Implementations
+
+We currently **lack the following features**:
+
+- Completing our front-end design.
+- Making our server go live.
+- Creating a CI/CD setup for your ITU-MiniTwit.
+
+It would be **nice to have the following features**:
+
+- An introduced service layer.
 
 ## Weeks
 
@@ -21,7 +35,7 @@ Refactor ITU-MiniTwit to work on modern system.
 
 Refactor ITU-MiniTwit in another programming language and tech stack.
 
-- [ ] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
+- [x] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
 - [x] 2) Containerize ITU-MiniTwit with Docker.
 - [x] 3) Describe Distributed Workflow.
 
@@ -29,8 +43,20 @@ Refactor ITU-MiniTwit in another programming language and tech stack.
 
 Continue refactoring, introduction of DB abstraction layer, and deployment of your ITU-MiniTwit to a remote server.
 
-- [ ] 1) Implement an API for the simulator in your ITU-MiniTwit.
-- [ ] 2) Continue refactoring of your ITU-MiniTwit.
+- [x] 1) Implement an API for the simulator in your ITU-MiniTwit.
+- [x] 2) Continue refactoring of your ITU-MiniTwit.
+
+### Week 4
+
+Continue refactoring, Setup CI & CD for reproducible builds, tests, delivery, and deployment.
+
+- [x] 1) Complete implementing an API for the simulator in your ITU-MiniTwit.
+- [ ] 2) Creating a CI/CD setup for your ITU-MiniTwit.
+- [x] 3) Continue refactoring of your ITU-MiniTwit.
+
+### Week 5
+
+Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction layer, and entering maintenance (Simulator starts).
 
 ## Course description
 
