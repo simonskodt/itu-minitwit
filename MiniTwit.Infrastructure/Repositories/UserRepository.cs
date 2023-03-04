@@ -1,7 +1,8 @@
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
-using MiniTwit.Security;
+using MiniTwit.Core.Responses;
 using MongoDB.Driver;
 
 namespace MiniTwit.Infrastructure.Repositories;
@@ -9,85 +10,72 @@ namespace MiniTwit.Infrastructure.Repositories;
 public class UserRepository : IUserRepository
 {
     private IMongoDBContext _context;
-    private IHasher _hasher;
 
-    public UserRepository(IMongoDBContext context, IHasher hasher)
+    public UserRepository(IMongoDBContext context)
     {
         _context = context;
-        _hasher = hasher;
     }
 
-    public Response<User> Create(string username, string email, string password)
+    public DBResult<User> Create(string username, string email, string password)
     {
-        var existingUser = GetUserByUsername(username);
-
-        // Username already taken
-        if (existingUser != null)
-        {
-            return new Response<User>
-            {
-                HTTPResponse = HTTPResponse.Conflict
-            };
-        }
-
-        _hasher.Hash(password, out string hashedPassword);
-
         var user = new User
         {
             Username = username,
             Email = email,
-            Password = hashedPassword,
+            Password = password,
         };
 
         _context.Users.InsertOne(user);
 
-        return new Response<User>
+        return new DBResult<User>
         {
-            HTTPResponse = HTTPResponse.Created,
-            Model = user
+            Model = user,
+            ErrorType = null
         };
     }
 
-    public Response<User> GetByUserId(string userId)
+    public DBResult<User> GetByUserId(string userId, CancellationToken ct = default)
     {
-        var user = _context.Users.Find(u => u.Id == userId).FirstOrDefault();
+        var user = _context.Users.Find(u => u.Id == userId).FirstOrDefault(ct);
 
         if (user == null)
         {
-            return new Response<User>
+            return new DBResult<User>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
             };
         }
 
-        return new Response<User>
+        return new DBResult<User>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = user
+            Model = user,
+            ErrorType = null
         };
     }
 
-    public Response<User> GetByUsername(string username)
+    public DBResult<User> GetByUsername(string username, CancellationToken ct = default)
     {
-        var user = GetUserByUsername(username);
+        var user = GetUserByUsername(username, ct);
 
         if (user == null)
         {
-            return new Response<User>
+            return new DBResult<User>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
-        return new Response<User>
+        return new DBResult<User>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = user
+            Model = user,
+            ErrorType = null
         };
     }
 
-    private User? GetUserByUsername(string username)
+    private User? GetUserByUsername(string username, CancellationToken ct = default)
     {
-        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault(ct);
     }
 }

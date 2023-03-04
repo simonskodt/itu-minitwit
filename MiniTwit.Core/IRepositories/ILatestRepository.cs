@@ -1,10 +1,10 @@
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Responses;
 
 namespace MiniTwit.Core.IRepositories;
 
 public interface ILatestRepository
 {
-    Response<Latest> GetLatest();
-
-    Response<Latest> Update(int latestVal);
+    DBResult<Latest> Get(CancellationToken ct = default);
+    DBResult<Latest> Update(int latestVal);
 }

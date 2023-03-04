@@ -59,7 +59,7 @@ public class UserRepositoryTests : RepoTests
     {
         var actual = _repository.GetByUserId("000000000000000000000001");
 
-        Assert.Equal(HTTPResponse.Success, actual.HTTPResponse);
+        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
         Assert.Equal("000000000000000000000001", actual.Model!.Id);
     }
 
@@ -77,7 +77,7 @@ public class UserRepositoryTests : RepoTests
     {
         var actual = _repository.GetByUsername("Gustav");
 
-        Assert.Equal(HTTPResponse.Success, actual.HTTPResponse);
+        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
         Assert.Equal("Gustav", actual.Model!.Username);
     }
 

@@ -1,10 +1,11 @@
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Responses;
 
 namespace MiniTwit.Core.IRepositories;
 
 public interface IFollowerRepository
 {
-    Response<Follower> Create(string userId, string targetUsername);
-    Response Delete(string userId, string targetUsername);
-    Response<IEnumerable<Follower>> GetAllFollowersByUsername(string username);
+    DBResult<Follower> Create(string userId, string username);
+    DBResult Delete(string userId, string username);
+    DBResult<IEnumerable<Follower>> GetAllFollowersByUsername(string username, CancellationToken ct = default);
 }

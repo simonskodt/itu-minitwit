@@ -1,6 +1,8 @@
 using MiniTwit.Core;
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
+using MiniTwit.Core.Responses;
 using MongoDB.Driver;
 
 namespace MiniTwit.Infrastructure.Repositories;
@@ -14,16 +16,17 @@ public class MessageRepository : IMessageRepository
         _context = context;
     }
 
-    public Response<Message> Create(string userId, string text)
+    public DBResult<Message> Create(string userId, string text)
     {
         var user = GetUserByUserId(userId);
 
         // User not existing
         if (user == null)
         {
-            return new Response<Message>
+            return new DBResult<Message>
             {
-                HTTPResponse = HTTPResponse.NotFound,
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
             };
         }
 
@@ -37,98 +40,101 @@ public class MessageRepository : IMessageRepository
 
         _context.Messages.InsertOne(message);
 
-        return new Response<Message>
+        return new DBResult<Message>
         {
-            HTTPResponse = HTTPResponse.Created,
-            Model = message
+            Model = message,
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Message>> GetAllNonFlagged()
+    public DBResult<IEnumerable<Message>> GetAllNonFlagged(CancellationToken ct = default)
     {
-        return new Response<IEnumerable<Message>>
+        var messages = _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToList(ct); 
+        
+        return new DBResult<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToList()
+            Model = messages,
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Message>> GetAllByUserId(string userId)
+    public DBResult<IEnumerable<Message>> GetAllByUserId(string userId, CancellationToken ct = default)
     {
-        var user = GetUserByUserId(userId);
+        var user = GetUserByUserId(userId, ct);
 
         if (user == null)
         {
-            return new Response<IEnumerable<Message>>
+            return new DBResult<IEnumerable<Message>>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
             };
         }
 
-        var messages = _context.Messages.Find(m => m.AuthorId == userId).SortByDescending(m => m.PubDate).ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == userId).SortByDescending(m => m.PubDate).ToList(ct);
 
-        return new Response<IEnumerable<Message>>
+        return new DBResult<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = messages
+            Model = messages,
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Message>> GetAllByUsername(string username)
+    public DBResult<IEnumerable<Message>> GetAllByUsername(string username, CancellationToken ct = default)
     {
-        var user = GetUserByUsername(username);
+        var user = GetUserByUsername(username, ct);
 
         if (user == null)
         {
-            return new Response<IEnumerable<Message>>
+            return new DBResult<IEnumerable<Message>>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
-        var messages = _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToList(ct);
 
-        return new Response<IEnumerable<Message>>
+        return new DBResult<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = messages
+            Model = messages,
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Message>> GetAllNonFlaggedByUsername(string username)
+    public DBResult<IEnumerable<Message>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default)
     {
-        var user = GetUserByUsername(username);
+        var user = GetUserByUsername(username, ct);
 
         if (user == null)
         {
-            return new Response<IEnumerable<Message>>
+            return new DBResult<IEnumerable<Message>>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
             };
         }
 
-        var messages = _context.Messages.
-            Find(m => m.AuthorId == user.Id && m.Flagged == 0).
-            SortByDescending(m => m.PubDate).
-            ToList();
+        var messages = _context.Messages.Find(m => m.AuthorId == user.Id && m.Flagged == 0).SortByDescending(m => m.PubDate).ToList(ct);
 
-        return new Response<IEnumerable<Message>>
+        return new DBResult<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = messages
+            Model = messages,
+            ErrorType = null
         };
     }
 
-    public Response<IEnumerable<Message>> GetAllFollowedByUser(string userId)
+    public DBResult<IEnumerable<Message>> GetAllFollowedByUserId(string userId, CancellationToken ct = default)
     {
-        var user = GetUserByUserId(userId);
+        var user = GetUserByUserId(userId, ct);
 
         // User not found
         if (user == null)
         {
-            return new Response<IEnumerable<Message>>
+            return new DBResult<IEnumerable<Message>>
             {
-                HTTPResponse = HTTPResponse.NotFound
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
             };
         }
 
@@ -143,20 +149,20 @@ public class MessageRepository : IMessageRepository
                      orderby m.PubDate descending
                      select m;
 
-        return new Response<IEnumerable<Message>>
+        return new DBResult<IEnumerable<Message>>
         {
-            HTTPResponse = HTTPResponse.Success,
-            Model = result
+            Model = result,
+            ErrorType = null
         };
     }
 
-    private User? GetUserByUserId(string userId)
+    private User? GetUserByUserId(string userId, CancellationToken ct = default)
     {
-        return _context.Users.Find(u => u.Id == userId).FirstOrDefault();
+        return _context.Users.Find(u => u.Id == userId).FirstOrDefault(ct);
     }
 
-    private User? GetUserByUsername(string username)
+    private User? GetUserByUsername(string username, CancellationToken ct = default)
     {
-        return _context.Users.Find(u => u.Username == username).FirstOrDefault();
+        return _context.Users.Find(u => u.Username == username).FirstOrDefault(ct);
     }
 }
