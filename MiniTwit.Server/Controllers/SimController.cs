@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core.Responses;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Service;
+using MiniTwit.Core.Error;
 
 namespace MiniTwit.Server.Controllers;
 
@@ -44,27 +45,8 @@ public class SimController : ControllerBase
     {
         UpdateLatest(latest);
 
-        if (userCreateDTO.Username! == "")
-        {
-            return BadRequest(new { status = 400, error_msg = "You have to enter a username" });
-        }
-        else if (!userCreateDTO.Email!.Contains("@"))
-        {
-            return BadRequest(new { status = 400, error_msg = "You have to enter a valid email address" });
-        }
-        else if (userCreateDTO.Password == "")
-        {
-            return BadRequest(new { status = 400, error_msg = "You have to enter a password" });
-        }
-
         var response = _serviceManager.UserService.Create(userCreateDTO);
-
-        if (response.HTTPResponse == HTTPResponse.Conflict)
-        {
-            return BadRequest(new { status = 400, error_msg = "The username is already taken" });
-        }
-
-        return NoContent();
+        return response.ToActionResult();
     }
 
     /// <summary>
@@ -79,7 +61,12 @@ public class SimController : ControllerBase
     {
         UpdateLatest(latest);
 
-        var messages = _serviceManager.MessageService.GetAllNonFlagged(ct).Model!.ToList();
+        if (!IsAuthorized(auth))
+        {
+            return Forbidden();
+        }
+
+        var messages = _serviceManager.MessageService.GetAllNonFlagged(ct).Model!.ToList().Take(no);
         var messageDTOList = new List<MessageDetailsDTO>();
 
         foreach (var message in messages)
@@ -95,7 +82,7 @@ public class SimController : ControllerBase
             messageDTOList.Add(dto);
         }
 
-        return Ok(messageDTOList.OrderByDescending(m => m.PubDate).Take(no));
+        return Ok(messageDTOList.OrderByDescending(m => m.PubDate));
     }
 
     /// <summary>
@@ -110,6 +97,11 @@ public class SimController : ControllerBase
     public ActionResult<IEnumerable<MessageDetailsDTO>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         UpdateLatest(latest);
+
+        if (!IsAuthorized(auth))
+        {
+            return Forbidden();
+        }
 
         var response = _serviceManager.MessageService.GetAllNonFlaggedByUsername(username, ct);
 
@@ -151,17 +143,13 @@ public class SimController : ControllerBase
     {
         UpdateLatest(latest);
 
-        // if (auth != "Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh")
-        // {
-        //     _logger.LogInformation("FORBIDDEN");
-        //     return StatusCode(403, new { status = 403, error_msg = "You are not authorized to use this resource!" });
-        // }
+        if (!IsAuthorized(auth))
+        {
+            return Forbidden();
+        }
 
-        var user = _serviceManager.UserService.GetByUsername(username, ct).Model!;
-
-        var response = _serviceManager.MessageService.Create(user.Id!, messageCreateDTO.Content!);
-
-        return NoContent();
+        var response = _serviceManager.MessageService.CreateByUsername(username, messageCreateDTO.Content!);
+        return response.ToActionResult();
     }
 
     /// <summary>
@@ -176,6 +164,11 @@ public class SimController : ControllerBase
     public ActionResult<FollowerDetailsDTO> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int latest = -1, [FromQuery] int no = 100, CancellationToken ct = default)
     {
         UpdateLatest(latest);
+
+        if (!IsAuthorized(auth))
+        {
+            return Forbidden();
+        }
 
         var followers = _serviceManager.FollowerService.GetAllFollowersByUsername(username, ct);
 
@@ -207,6 +200,11 @@ public class SimController : ControllerBase
     {
         UpdateLatest(latest);
 
+        if (!IsAuthorized(auth))
+        {
+            return Forbidden();
+        }
+
         // If Follow is not null make a follow
         if (followerCreateDTO.Follow is not null)
         {
@@ -230,6 +228,11 @@ public class SimController : ControllerBase
 
             return NoContent();
         }
+    }
+
+    private ActionResult Forbidden()
+    {
+        return StatusCode(403, new APIError { Status = 403, ErrorMsg = "You are not authorized to use this resource!" });
     }
 
     private void UpdateLatest(int latestVal)

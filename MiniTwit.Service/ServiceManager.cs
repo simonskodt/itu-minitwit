@@ -24,7 +24,7 @@ public class ServiceManager : IServiceManager
         _lazyUserService = new Lazy<IUserService>(() => new UserService(userRepository, hasher));
         _lazyFollowerService = new Lazy<IFollowerService>(() => new FollowerService(followerRepository));
         _lazyLatestService = new Lazy<ILatestService>(() => new LatestService(latestRepository));
-        _lazyMessageService = new Lazy<IMessageService>(() => new MessageService(messageRepository));
+        _lazyMessageService = new Lazy<IMessageService>(() => new MessageService(messageRepository, userRepository));
         _lazyAuthenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userRepository, hasher));
     }
 }

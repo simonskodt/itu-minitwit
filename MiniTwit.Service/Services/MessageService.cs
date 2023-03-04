@@ -8,28 +8,49 @@ namespace MiniTwit.Service.Services;
 
 public class MessageService : IMessageService
 {
-    private readonly IMessageRepository _repository;
+    private readonly IMessageRepository _messageRepository;
+    private readonly IUserRepository _userRepository;
 
-    public MessageService(IMessageRepository repository)
+    public MessageService(IMessageRepository messageRepository, IUserRepository userRepository)
     {
-        _repository = repository;
+        _messageRepository = messageRepository;
+        _userRepository = userRepository;
     }
 
-    public Response<MessageDTO> Create(string userId, string text)
+    public Response Create(string userId, string text)
     {
-        var dbResult = _repository.Create(userId, text);
+        var dbResult = _messageRepository.Create(userId, text);
 
         if (dbResult.ErrorType != null)
         {
-            return new Response<MessageDTO>(NotFound, null, dbResult.ErrorType);
+            return new Response(NotFound, dbResult.ErrorType);
         }
 
-        return new Response<MessageDTO>(Created, dbResult.ConvertModelTo<MessageDTO>());
+        return new Response(NoContent);
+    }
+
+    public Response CreateByUsername(string username, string text)
+    {
+        var userDBResult = _userRepository.GetByUsername(username);
+
+        if (userDBResult.ErrorType != null)
+        {
+            return new Response(NotFound, userDBResult.ErrorType);
+        }
+
+        var dbResult = _messageRepository.Create(userDBResult.Model!.Id, text);
+
+        if (userDBResult.ErrorType != null)
+        {
+            return new Response(NotFound, dbResult.ErrorType);
+        }
+
+        return new Response(NoContent);
     }
 
     public Response<IEnumerable<MessageDTO>> GetAllByUserId(string userId, CancellationToken ct = default)
     {
-        var dbResult = _repository.GetAllByUserId(userId, ct);
+        var dbResult = _messageRepository.GetAllByUserId(userId, ct);
 
         if (dbResult.ErrorType != null)
         {
@@ -41,7 +62,7 @@ public class MessageService : IMessageService
 
     public Response<IEnumerable<MessageDTO>> GetAllByUsername(string username, CancellationToken ct = default)
     {
-        var dbResult = _repository.GetAllByUsername(username, ct);
+        var dbResult = _messageRepository.GetAllByUsername(username, ct);
 
         if (dbResult.ErrorType != null)
         {
@@ -53,7 +74,7 @@ public class MessageService : IMessageService
 
     public Response<IEnumerable<MessageDTO>> GetAllFollowedByUserId(string userId, CancellationToken ct = default)
     {
-        var dbResult = _repository.GetAllFollowedByUserId(userId, ct);
+        var dbResult = _messageRepository.GetAllFollowedByUserId(userId, ct);
 
         if (dbResult.ErrorType != null)
         {
@@ -65,14 +86,14 @@ public class MessageService : IMessageService
 
     public Response<IEnumerable<MessageDTO>> GetAllNonFlagged(CancellationToken ct = default)
     {
-        var dbResult = _repository.GetAllNonFlagged(ct);
+        var dbResult = _messageRepository.GetAllNonFlagged(ct);
 
         return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
 
     public Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default)
     {
-        var dbResult = _repository.GetAllNonFlaggedByUsername(username, ct);
+        var dbResult = _messageRepository.GetAllNonFlaggedByUsername(username, ct);
 
         if (dbResult.ErrorType != null)
         {
