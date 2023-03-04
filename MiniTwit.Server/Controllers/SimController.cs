@@ -147,7 +147,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public ActionResult MsgUsernamePost(string username, [FromQuery] string text, [FromQuery(Name = "latest")] int latestVal, CancellationToken ct = default)
+    public ActionResult MsgUsernamePost(string username, [FromQuery(Name = "content")] string text, [FromQuery(Name = "latest")] int latestVal, CancellationToken ct = default)
     {
         UpdateLatest(latestVal);
 

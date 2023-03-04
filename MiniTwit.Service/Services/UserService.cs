@@ -54,7 +54,7 @@ public class UserService : IUserService
 
         if (dbResult.ErrorType != null)
         {
-            return new Response<UserDTO>(NotFound, null, dbResult.ErrorType);
+            return new Response<UserDTO>(BadRequest, null, dbResult.ErrorType);
         }
 
         return new Response<UserDTO>(Ok, dbResult.ConvertModelTo<UserDTO>());
