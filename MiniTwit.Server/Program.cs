@@ -48,6 +48,9 @@ builder.Services.AddScoped<DataInitializer>();
 
 var app = builder.Build();
 
+// Seed DB
+app.SeedDatabase(app.Environment.IsDevelopment());
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -58,7 +61,6 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "MiniTwit API - Swagger";
         options.DisplayRequestDuration();
     });
-    app.SeedDB();
 }
 
 // Cross-origin Request Blocked

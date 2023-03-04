@@ -16,11 +16,26 @@ public class DataInitializer
         _hasher = hasher;
     }
 
-    public void Seed()
+    public void Seed(bool isInDevelopment)
+    {
+        if (isInDevelopment)
+        {
+            SeedForDev();
+        }
+
+        if (_context.Latests.CountDocuments(new BsonDocument()) != 0)
+        {
+            return;
+        }
+
+        var latest = LatestCreator.Create(0);
+        _context.Latests.InsertOne(latest);
+    }
+
+    private void SeedForDev()
     {
         if (_context.Users.CountDocuments(new BsonDocument()) != 0)
         {
-            Console.WriteLine("SEEDING STOPPED. DB ALREADY CONTAINS DATA!");
             return;
         }
 
@@ -57,11 +72,6 @@ public class DataInitializer
         var f3 = FollowerCreator.Create(simon.Id!, victor.Id!);
         var f4 = FollowerCreator.Create(victor.Id!, gustav.Id!);
 
-        _context.Followers.InsertMany(new [] { f1, f2, f3, f4 });
-
-        //Latest
-        var l = LatestCreator.Create(-1);
-
-        _context.Latests.InsertOne(l);
+        _context.Followers.InsertMany(new[] { f1, f2, f3, f4 });
     }
 }
