@@ -74,7 +74,7 @@ public class MessageService : IMessageService
     {
         var dbResult = _repository.GetAllNonFlaggedByUsername(username, ct);
 
-        if (dbResult.ErrorType == null)
+        if (dbResult.ErrorType != null)
         {
             return new Response<IEnumerable<MessageDTO>>(NotFound, null, dbResult.ErrorType);
         }
