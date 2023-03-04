@@ -6,5 +6,5 @@ namespace MiniTwit.Service.IServices;
 public interface ILatestService
 {
     Response<LatestDTO> Get(CancellationToken ct = default);
-    Response<LatestDTO> Update(int latestVal);
+    Response Update(int latestVal);
 }

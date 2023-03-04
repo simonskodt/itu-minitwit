@@ -14,15 +14,15 @@ public class Response
         Error = errorType == null ? null : errorType.ToAPIError(HTTPResponse);
     }
 
-    public ActionResult ToActionResult() => ToActionResult();
+    public ActionResult ToActionResult() => ConvertToActionResult();
 
-    protected ActionResult ToActionResult(object? model = null, string location = "") => HTTPResponse switch
+    protected ActionResult ConvertToActionResult(object? model = null, string location = "") => HTTPResponse switch
     {
         HTTPResponse.Ok => new OkObjectResult(model),
         HTTPResponse.Created => new CreatedResult(location, model),
         HTTPResponse.NoContent => new NoContentResult(),
         HTTPResponse.BadRequest => new BadRequestObjectResult(Error),
-        HTTPResponse.NotFound => new NotFoundResult(),
+        HTTPResponse.NotFound => new NotFoundObjectResult(Error),
         HTTPResponse.Conflict => new ConflictObjectResult(Error),
         _ => throw new NotSupportedException($"{HTTPResponse} not supported!")
     };
@@ -37,6 +37,6 @@ public class Response<T> : Response
         Model = model;
     }
 
-    public ActionResult<T> ToActionResult(string location) => base.ToActionResult(Model, location);
-    public new ActionResult<T> ToActionResult() => base.ToActionResult(Model);
+    public ActionResult<T> ToActionResult(string location) => base.ConvertToActionResult(Model, location);
+    public new ActionResult<T> ToActionResult() => base.ConvertToActionResult(Model);
 }

@@ -19,21 +19,35 @@ public class UserService : IUserService
         _hasher = hasher;
     }
 
-    public Response<UserDTO> Create(UserCreateDTO userCreateDTO)
+    public Response Create(UserCreateDTO userCreateDTO)
     {
         var dbResult = _repository.GetByUsername(userCreateDTO.Username!);
 
-        // Username taken
-        if (dbResult.ErrorType != null)
+        if (dbResult.Model != null)
         {
-            return new Response<UserDTO>(Conflict, null, USERNAME_TAKEN);
+            return new Response(BadRequest, USERNAME_TAKEN);
         }
 
-        _hasher.Hash(userCreateDTO.Password!, out string passwordHash);
+        if (userCreateDTO.Username! == "")
+        {
+            return new Response(BadRequest, USERNAME_MISSING);
+        }
+
+        if (!userCreateDTO.Email!.Contains("@"))
+        {
+            return new Response(BadRequest, EMAIL_MISSING_OR_INVALID);
+        }
+
+        if (userCreateDTO.Password! == "")
+        {
+            return new Response(BadRequest, PASSWORD_MISSING);   
+        }
+
+        var passwordHash = _hasher.Hash(userCreateDTO.Password!);
 
         dbResult = _repository.Create(userCreateDTO.Username!, userCreateDTO.Email!, passwordHash);
 
-        return new Response<UserDTO>(Created, dbResult.ConvertModelTo<UserDTO>());
+        return new Response(NoContent);
     }
 
     public Response<UserDTO> GetByUserId(string userId, CancellationToken ct = default)
@@ -54,7 +68,7 @@ public class UserService : IUserService
 
         if (dbResult.ErrorType != null)
         {
-            return new Response<UserDTO>(NotFound, null, dbResult.ErrorType);
+            return new Response<UserDTO>(BadRequest, null, dbResult.ErrorType);
         }
 
         return new Response<UserDTO>(Ok, dbResult.ConvertModelTo<UserDTO>());

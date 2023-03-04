@@ -5,7 +5,7 @@ namespace MiniTwit.Service.IServices;
 
 public interface IFollowerService
 {
-    Response<FollowerDTO> Create(string userId, string targetUsername);
+    Response Create(string userId, string targetUsername);
     Response Delete(string userId, string targetUsername);
     Response<IEnumerable<FollowerDTO>> GetAllFollowersByUsername(string username, CancellationToken ct = default);
 }

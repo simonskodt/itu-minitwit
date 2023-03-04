@@ -11,10 +11,15 @@ public record MessageDTO
     public int Flagged { get; init; }
 }
 
-public record SimMessageDTO
+public record MessageDetailsDTO
 {
     public string? Content { get; init; }
     public string? Username { get; init; }
     [JsonPropertyName("pub_date")]
     public DateTime PubDate { get; init; }
+}
+
+public record MessageCreateDTO
+{
+    public string? Content { get; init; }
 }
