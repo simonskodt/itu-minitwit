@@ -30,6 +30,8 @@ public class TwitterController : ControllerBase
     [Route("/")]
     public ActionResult<IEnumerable<MessageDTO>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
+        _logger.LogInformation("We got a visitor from: " + Request.HttpContext.Connection.RemoteIpAddress);
+        
         var response = _serviceManager.MessageService.GetAllFollowedByUserId(userId, ct);
         return response.ToActionResult();
     }
