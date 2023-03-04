@@ -7,5 +7,5 @@ public interface IUserService
 {
     Response<UserDTO> GetByUserId(string userId, CancellationToken ct = default);
     Response<UserDTO> GetByUsername(string username, CancellationToken ct = default);
-    Response<UserDTO> Create(UserCreateDTO userCreateDTO);
+    Response Create(UserCreateDTO userCreateDTO);
 }

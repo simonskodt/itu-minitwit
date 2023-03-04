@@ -22,10 +22,10 @@ public class LatestService : ILatestService
         return new Response<LatestDTO>(Ok, dbResult.ConvertModelTo<LatestDTO>());
     }
 
-    public Response<LatestDTO> Update(int latestVal)
+    public Response Update(int latestVal)
     {
         var dbResult = _repository.Update(latestVal);
 
-        return new Response<LatestDTO>(NoContent, dbResult.ConvertModelTo<LatestDTO>());
+        return new Response(NoContent);
     }
 }

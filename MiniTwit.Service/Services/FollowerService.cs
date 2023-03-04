@@ -15,16 +15,16 @@ public class FollowerService : IFollowerService
         _repository = repository;
     }
 
-    public Response<FollowerDTO> Create(string userId, string targetUsername)
+    public Response Create(string userId, string targetUsername)
     {
         var dbResult = _repository.Create(userId, targetUsername);
         
         if (dbResult.Model == null)
         {
-            return new Response<FollowerDTO>(NotFound, null, dbResult.ErrorType);
+            return new Response(NotFound, dbResult.ErrorType);
         }
 
-        return new Response<FollowerDTO>(Created, dbResult.ConvertModelTo<FollowerDTO>());
+        return new Response(NoContent);
     }
 
     public Response Delete(string userId, string targetUsername)

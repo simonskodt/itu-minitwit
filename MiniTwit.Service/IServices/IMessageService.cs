@@ -10,5 +10,6 @@ public interface IMessageService
     Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlagged(CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllFollowedByUserId(string userId, CancellationToken ct = default);
-    Response<MessageDTO> Create(string userId, string text);
+    Response Create(string userId, string text);
+    Response CreateByUsername(string username, string text);
 }
