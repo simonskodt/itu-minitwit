@@ -29,7 +29,7 @@ public class UserService : IUserService
             return new Response<UserDTO>(Conflict, null, USERNAME_TAKEN);
         }
 
-        _hasher.Hash(userCreateDTO.Password!, out string passwordHash);
+        var passwordHash = _hasher.Hash(userCreateDTO.Password!);
 
         dbResult = _repository.Create(userCreateDTO.Username!, userCreateDTO.Email!, passwordHash);
 

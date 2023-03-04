@@ -13,25 +13,50 @@ public class Argon2Hasher : IHasher
         _settings = settings.Value;
     }
 
-    public void Hash(string data, out string hash)
+    public string Hash(string data)
     {
-        hash = Convert.ToBase64String(Hash(data));
+        return Convert.ToBase64String(HashPassword(data));
     }
 
-    private byte[] Hash(string password)
+    public bool VerifyHash(string data, string hash)
+    {
+        byte[] hashByte = HashPassword(data);
+        return Convert.FromBase64String(hash).SequenceEqual(hashByte);
+    }
+
+    public async Task<string> HashAsync(string data)
+    {
+        byte[] hashByte = await HashPasswordAsync(data);
+        return Convert.ToBase64String(hashByte);
+    }
+
+    public async Task<bool> VerifyHashAsync(string data, string hash)
+    {
+        byte[] hashByte = await HashPasswordAsync(data);
+        return Convert.FromBase64String(hash).SequenceEqual(hashByte);
+    }
+
+    private byte[] HashPassword(string password)
+    {
+        var argon2Hash = SetupArgon2(password);
+        return argon2Hash.GetBytes(_settings.TagLength);
+    }
+
+    private async Task<byte[]> HashPasswordAsync(string password)
+    {
+        var argon2Hash = SetupArgon2(password);
+        return await argon2Hash.GetBytesAsync(_settings.TagLength);
+    }
+
+    private Argon2id SetupArgon2(string password)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(password);
         using var argon2 = new Argon2id(bytes);
 
         argon2.DegreeOfParallelism = _settings.DegreeOfParallelism;
         argon2.Iterations = _settings.Iterations;
-        argon2.MemorySize = _settings.MemorySize * 128;
-        return argon2.GetBytes(32);
-    }
+        argon2.MemorySize = _settings.MemorySize;
 
-    public bool VerifyHash(string data, string hash)
-    {
-        byte[] hashByte = Hash(data);
-        return Convert.FromBase64String(hash).SequenceEqual(hashByte);
+        return argon2;
     }
 }

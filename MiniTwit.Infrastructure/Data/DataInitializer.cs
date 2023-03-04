@@ -24,7 +24,7 @@ public class DataInitializer
             return;
         }
 
-        _hasher.Hash("password", out string hash);
+        var hash = _hasher.Hash("password");
 
         // Users
         var gustav = UserCreator.Create("Gustav", "g@minitwit.com", hash);

@@ -2,6 +2,8 @@ namespace MiniTwit.Security;
 
 public interface IHasher
 {
-    void Hash(string data, out string hash);
+    string Hash(string data);
     bool VerifyHash(string data, string hash);
+    Task<bool> VerifyHashAsync(string data, string hash);
+    Task<string> HashAsync(string data);
 }
