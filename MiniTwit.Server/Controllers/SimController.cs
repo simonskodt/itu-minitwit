@@ -40,7 +40,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("register")]
-    public async Task<ActionResult> Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery] int latest = -1)
+    public ActionResult Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery] int latest = -1)
     {
         UpdateLatest(latest);
 
@@ -57,7 +57,7 @@ public class SimController : ControllerBase
             return BadRequest(new { status = 400, error_msg = "You have to enter a password" });
         }
 
-        var response = await _serviceManager.UserService.CreateAsync(userCreateDTO);
+        var response = _serviceManager.UserService.Create(userCreateDTO);
 
         if (response.HTTPResponse == HTTPResponse.Conflict)
         {
@@ -111,8 +111,6 @@ public class SimController : ControllerBase
     {
         UpdateLatest(latest);
 
-        _logger.LogError($"{username}");
-
         var response = _serviceManager.MessageService.GetAllNonFlaggedByUsername(username, ct);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
@@ -152,8 +150,6 @@ public class SimController : ControllerBase
     public ActionResult MsgUsernamePost(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         UpdateLatest(latest);
-
-        _logger.LogError($"{messageCreateDTO.Content}");
 
         // if (auth != "Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh")
         // {
