@@ -22,7 +22,7 @@ public class Response
         HTTPResponse.Created => new CreatedResult(location, model),
         HTTPResponse.NoContent => new NoContentResult(),
         HTTPResponse.BadRequest => new BadRequestObjectResult(Error),
-        HTTPResponse.NotFound => new NotFoundResult(),
+        HTTPResponse.NotFound => new NotFoundObjectResult(Error),
         HTTPResponse.Conflict => new ConflictObjectResult(Error),
         _ => throw new NotSupportedException($"{HTTPResponse} not supported!")
     };
