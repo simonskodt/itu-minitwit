@@ -59,10 +59,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs(
-        [FromHeader(Name = "Authorization")] string auth, 
-        [FromQuery] int no, [FromQuery] int latest = -1, 
-        CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -99,11 +96,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("msgs/{username}")]
-    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(
-        string username, [FromHeader(Name = "Authorization")] string auth, 
-        [FromQuery] int no, 
-        [FromQuery] int latest = -1, 
-        CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -148,11 +141,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public async Task<ActionResult> MsgUsernamePost(
-        string username, 
-        [FromHeader(Name = "Authorization")] string auth, 
-        [FromBody] MessageCreateDTO messageCreateDTO, 
-        [FromQuery] int latest = -1)
+    public async Task<ActionResult> MsgUsernamePost(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
 
@@ -174,12 +163,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(
-        string username, 
-        [FromHeader(Name = "Authorization")] string auth, 
-        [FromQuery] int latest = -1, 
-        [FromQuery] int no = 100, 
-        CancellationToken ct = default)
+    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int latest = -1, [FromQuery] int no = 100, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -214,12 +198,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public async Task<ActionResult> FollowUser(
-        string username, 
-        [FromHeader(Name = "Authorization")] string auth, 
-        [FromQuery] string userId, 
-        [FromBody] FollowerCreateDTO followerCreateDTO, 
-        [FromQuery] int latest = -1)
+    public async Task<ActionResult> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
 
@@ -228,10 +207,17 @@ public class SimController : ControllerBase
             return Forbidden();
         }
 
+        var userResponse = await _serviceManager.UserService.GetByUsernameAsync(username);
+
+        if (userResponse.HTTPResponse == HTTPResponse.BadRequest)
+        {
+            return NotFound();
+        }
+
         // If Follow is not null make a follow
         if (followerCreateDTO.Follow is not null)
         {
-            var followResponse = await _serviceManager.FollowerService.CreateAsync(userId, username);
+            var followResponse = await _serviceManager.FollowerService.CreateAsync(userResponse.Model!.Id!, username);
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
@@ -242,7 +228,7 @@ public class SimController : ControllerBase
         }
         else
         {
-            var unfollowResponse = await _serviceManager.FollowerService.DeleteAsync(userId, username);
+            var unfollowResponse = await _serviceManager.FollowerService.DeleteAsync(userResponse.Model!.Id!, username);
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
