@@ -22,9 +22,23 @@ public class LatestService : ILatestService
         return new Response<LatestDTO>(Ok, dbResult.ConvertModelTo<LatestDTO>());
     }
 
+    public async Task<Response<LatestDTO>> GetAsync(CancellationToken ct = default)
+    {
+        var dbResult = await _repository.GetAsync(ct);
+
+        return new Response<LatestDTO>(Ok, dbResult.ConvertModelTo<LatestDTO>());
+    }
+
     public Response Update(int latestVal)
     {
         var dbResult = _repository.Update(latestVal);
+
+        return new Response(NoContent);
+    }
+
+    public async Task<Response> UpdateAsync(int latestVal)
+    {
+        var dbResult = await _repository.UpdateAsync(latestVal);
 
         return new Response(NoContent);
     }
