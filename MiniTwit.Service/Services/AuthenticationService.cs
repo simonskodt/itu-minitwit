@@ -37,4 +37,23 @@ public class AuthenticationService : IAuthenticationService
 
         return new Response(NoContent, null);
     }
+
+    public async Task<Response> AuthenticateAsync(string username, string password)
+    {
+        var dbResult = await _repository.GetByUsernameAsync(username);
+
+        if (dbResult.ErrorType == ErrorType.INVALID_USERNAME)
+        {
+            return new Response(Unauthorized, dbResult.ErrorType);
+        }
+
+        var validPassword = await _hasher.VerifyHashAsync(password, dbResult.Model!.Password);
+
+        if (!validPassword)
+        {
+            return new Response(Unauthorized, INVALID_PASSWORD);
+        }
+
+        return new Response(NoContent, null);
+    }
 }
