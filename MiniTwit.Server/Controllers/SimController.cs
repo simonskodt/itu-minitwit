@@ -59,7 +59,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -96,7 +96,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("msgs/{username}")]
-    public Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -198,7 +198,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public Task<ActionResult> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
+    public async Task<ActionResult> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
 
