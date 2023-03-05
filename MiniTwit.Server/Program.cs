@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication;
 using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Infrastructure;
@@ -6,6 +6,7 @@ using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
 using MiniTwit.Security.Hashers;
+using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
 using MiniTwit.Service;
 
@@ -25,18 +26,14 @@ builder.Services.Configure<MiniTwitDatabaseSettings>(options => options.Connecti
 builder.Services.Configure<HashSettings>(builder.Configuration.GetSection(nameof(HashSettings)));
 builder.Services.AddScoped<IHasher, Argon2Hasher>();
 
+// Add Basic Authentication
+builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => {});
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.SwaggerDoc("v1", new OpenApiInfo()
-    {
-        Title = "MiniTwit API",
-        Version = "v1",
-        Description = "A refactor of a Twitter clone handed out in the elective course DevOps on the IT University of Copenhagen.",
-        Contact = new OpenApiContact() { Name = "Group Radiator" },
-    });
-});
+builder.Services.ConfigureSwagger();
 
 builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -72,6 +69,7 @@ app.UseCors(x => x
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
