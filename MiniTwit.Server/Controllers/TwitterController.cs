@@ -28,11 +28,11 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/")]
-    public ActionResult<IEnumerable<MessageDTO>> Timeline([FromQuery] string userId, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDTO>>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
         _logger.LogInformation("We got a visitor from: " + Request.HttpContext.Connection.RemoteIpAddress);
         
-        var response = _serviceManager.MessageService.GetAllFollowedByUserId(userId, ct);
+        var response = await _serviceManager.MessageService.GetAllFollowedByUserIdAsync(userId, ct);
         return response.ToActionResult();
     }
 
@@ -43,9 +43,9 @@ public class TwitterController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Route("/public")]
-    public ActionResult<IEnumerable<MessageDTO>> PublicTimeline(CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(CancellationToken ct = default)
     {
-        var response = _serviceManager.MessageService.GetAllNonFlagged(ct);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
         return response.ToActionResult();
     }
 
@@ -57,9 +57,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}")]
-    public ActionResult<IEnumerable<MessageDTO>> UserTimeline(string username, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDTO>>> UserTimeline(string username, CancellationToken ct = default)
     {
-        var response = _serviceManager.MessageService.GetAllByUsername(username, ct);
+        var response = await _serviceManager.MessageService.GetAllByUsernameAsync(username, ct);
         return response.ToActionResult();
     }
 
@@ -71,9 +71,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}/follow")]
-    public ActionResult<FollowerDTO> FollowUser(string username, [FromQuery] string userId)
+    public async Task<ActionResult<FollowerDTO>> FollowUser(string username, [FromQuery] string userId)
     {
-        var response = _serviceManager.FollowerService.Create(userId, username);
+        var response = await _serviceManager.FollowerService.CreateAsync(userId, username);
         return response.ToActionResult();
     }
 
@@ -85,9 +85,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/{username}/unfollow")]
-    public ActionResult UnfollowUser(string username, [FromQuery] string userId)
+    public async Task<ActionResult> UnfollowUser(string username, [FromQuery] string userId)
     {
-        var response = _serviceManager.FollowerService.Delete(userId, username);
+        var response = await _serviceManager.FollowerService.DeleteAsync(userId, username);
         return response.ToActionResult();
     }
 
@@ -99,9 +99,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("/add_message")]
-    public ActionResult<MessageDTO> AddMessage([FromQuery] string userId, [FromQuery] string text)
+    public async Task<ActionResult<MessageDTO>> AddMessage([FromQuery] string userId, [FromQuery] string text)
     {
-        var response = _serviceManager.MessageService.Create(userId, text);
+        var response = await _serviceManager.MessageService.CreateAsync(userId, text);
         return response.ToActionResult();
     }
 
@@ -113,9 +113,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [Route("/login")]
-    public ActionResult Login([FromBody] LoginDTO loginDTO)
+    public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
     {
-        var response = _serviceManager.AuthenticationService.Authenticate(loginDTO.Username!, loginDTO.Password!);
+        var response = await _serviceManager.AuthenticationService.AuthenticateAsync(loginDTO.Username!, loginDTO.Password!);
         return response.ToActionResult();
     }
 
@@ -127,9 +127,9 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("/register")]
-    public ActionResult<UserDTO> Register([FromBody] UserCreateDTO userCreateDTO)
+    public async Task<ActionResult<UserDTO>> Register([FromBody] UserCreateDTO userCreateDTO)
     {
-        var response = _serviceManager.UserService.Create(userCreateDTO);
+        var response = await _serviceManager.UserService.CreateAsync(userCreateDTO);
         return response.ToActionResult();
     }
 

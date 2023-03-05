@@ -27,6 +27,18 @@ public class FollowerService : IFollowerService
         return new Response(NoContent);
     }
 
+    public async Task<Response> CreateAsync(string userId, string targetUsername)
+    {
+        var dbResult = await _repository.CreateAsync(userId, targetUsername);
+        
+        if (dbResult.Model == null)
+        {
+            return new Response(NotFound, dbResult.ErrorType);
+        }
+
+        return new Response(NoContent);
+    }
+
     public Response Delete(string userId, string targetUsername)
     {
         var dbResult = _repository.Delete(userId, targetUsername);
@@ -39,9 +51,33 @@ public class FollowerService : IFollowerService
         return new Response(NoContent);
     }
 
+    public async Task<Response> DeleteAsync(string userId, string targetUsername)
+    {
+        var dbResult = await _repository.DeleteAsync(userId, targetUsername);
+
+        if (dbResult.ErrorType != null)
+        {
+            return new Response(NotFound, dbResult.ErrorType);
+        }
+
+        return new Response(NoContent);
+    }
+
     public Response<IEnumerable<FollowerDTO>> GetAllFollowersByUsername(string username, CancellationToken ct = default)
     {
         var dbResult = _repository.GetAllFollowersByUsername(username, ct);
+
+        if (dbResult.Model == null)
+        {
+            return new Response<IEnumerable<FollowerDTO>>(NotFound, null, dbResult.ErrorType);
+        }
+
+        return new Response<IEnumerable<FollowerDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<FollowerDTO>>());
+    }
+
+    public async Task<Response<IEnumerable<FollowerDTO>>> GetAllFollowersByUsernameAsync(string username, CancellationToken ct = default)
+    {
+        var dbResult = await _repository.GetAllFollowersByUsernameAsync(username, ct);
 
         if (dbResult.Model == null)
         {

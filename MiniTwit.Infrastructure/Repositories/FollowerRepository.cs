@@ -57,6 +57,47 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
+    public async Task<DBResult<Follower>> CreateAsync(string userId, string username)
+    {
+        var user = await GetUserByUserIdAsync(userId);
+
+        // See if user exists
+        if (user == null)
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        var toFollow = await GetUserByUsernameAsync(username);
+
+        // See if target exists
+        if (toFollow == null)
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
+            };
+        }
+
+        var follower = new Follower
+        {
+            WhoId = userId,
+            WhomId = toFollow.Id
+        };
+
+        await _context.Followers.InsertOneAsync(follower);
+
+        return new DBResult<Follower>
+        {
+            Model = follower,
+            ErrorType = null
+        };
+    }
+
     public DBResult Delete(string userId, string username)
     {
         var user = GetUserByUserId(userId);
@@ -88,6 +129,37 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
+    public async Task<DBResult> DeleteAsync(string userId, string username)
+    {
+        var user = await GetUserByUserIdAsync(userId);
+
+        if (user == null)
+        {
+            return new DBResult
+            {
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        var toUnfollow = await GetUserByUsernameAsync(username);
+
+        if (toUnfollow == null)
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
+            };
+        }
+
+        await _context.Followers.DeleteOneAsync(f => f.WhoId == userId && f.WhomId == toUnfollow.Id);
+
+        return new DBResult
+        {
+            ErrorType = null
+        };
+    }
+
     public DBResult<IEnumerable<Follower>> GetAllFollowersByUsername(string username, CancellationToken ct = default)
     {
         var user = GetUserByUsername(username, ct);
@@ -110,13 +182,45 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
+    public async Task<DBResult<IEnumerable<Follower>>> GetAllFollowersByUsernameAsync(string username, CancellationToken ct = default)
+    {
+        var user = await GetUserByUsernameAsync(username, ct);
+
+        if (user == null)
+        {
+            return new DBResult<IEnumerable<Follower>>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
+            };
+        }
+
+        var followers = await _context.Followers.Find(f => f.WhomId == user.Id).ToListAsync(ct);
+
+        return new DBResult<IEnumerable<Follower>>
+        {
+            Model = followers,
+            ErrorType = null
+        };
+    }
+
     private User? GetUserByUserId(string userId, CancellationToken ct = default)
     {
         return _context.Users.Find(u => u.Id == userId).FirstOrDefault(ct);
     }
 
+    private async Task<User?> GetUserByUserIdAsync(string userId, CancellationToken ct = default)
+    {
+        return await _context.Users.Find(u => u.Id == userId).FirstOrDefaultAsync(ct);
+    }
+
     private User? GetUserByUsername(string username, CancellationToken ct = default)
     {
         return _context.Users.Find(u => u.Username == username).FirstOrDefault(ct);
+    }
+
+    private async Task<User?> GetUserByUsernameAsync(string username, CancellationToken ct = default)
+    {
+        return await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync(ct);
     }
 }
