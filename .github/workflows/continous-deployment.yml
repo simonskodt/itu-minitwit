@@ -26,6 +26,22 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
+      - name: Build and push itu-minitwit-server
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./MiniTwit.Server/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
+
+      - name: Build and push itu-minitwit-web
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./MiniTwit.Web/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
+          
       - name: Deploy
         uses: fifsky/ssh-action@master
         with:
@@ -34,5 +50,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           args: "-vvv"
           command: |
-            cd /tmp
-            ls -a
+            cd itu-minitwit/
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
+
