@@ -13,12 +13,11 @@
 We currently **lack the following features**:
 
 - Completing our front-end design.
-- Making our server go live.
 - Creating a CI/CD setup for your ITU-MiniTwit.
 
 It would be **nice to have the following features**:
 
-- An introduced service layer.
+- 
 
 ## Weeks
 
