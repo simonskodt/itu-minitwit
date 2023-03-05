@@ -53,4 +53,5 @@ jobs:
             cd itu-minitwit/
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
+            ls -a
 
