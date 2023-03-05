@@ -6,6 +6,7 @@ using MiniTwit.Service;
 namespace MiniTwit.Server.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("[controller]")]
 [Produces("application/json")]
 public class TwitterController : ControllerBase
@@ -28,7 +29,6 @@ public class TwitterController : ControllerBase
     /// <response code="200">If the userId exists, return all the messages belonging to the userId and the ones they follow</response>
     /// <response code="404">If the userId does not exist</response>
     [HttpGet("/")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> Timeline([FromQuery] string userId, CancellationToken ct = default)
@@ -46,7 +46,6 @@ public class TwitterController : ControllerBase
     /// <returns>A list of all non-flagged Messages</returns>
     /// <response code="200">Every time, return all non-flagged messages</response>
     [HttpGet("/public")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(CancellationToken ct = default)
     {
@@ -63,7 +62,6 @@ public class TwitterController : ControllerBase
     /// <response code="200">If the username exists, return all the messages belonging to the username</response>
     /// <response code="404">If the username does not exist</response>
     [HttpGet("/{username}")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> UserTimeline(string username, CancellationToken ct = default)
@@ -81,7 +79,6 @@ public class TwitterController : ControllerBase
     /// <response code="204">If the username and userId exists, create a new Follower</response>
     /// <response code="404">If the username or userId does not exist</response>
     [HttpPost("/{username}/follow")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> FollowUser(string username, [FromQuery] string userId)
@@ -99,7 +96,6 @@ public class TwitterController : ControllerBase
     /// <response code="204">If the username and userId exists, delete the Follower</response>
     /// <response code="404">If the username or userId does not exist</response>
     [HttpDelete("/{username}/unfollow")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> UnfollowUser(string username, [FromQuery] string userId)
@@ -117,7 +113,6 @@ public class TwitterController : ControllerBase
     /// <response code="204">If userId exists, create a new Message</response>
     /// <response code="404">If the userId does not exist</response>
     [HttpPost("/add_message")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> AddMessage([FromQuery] string userId, [FromQuery] string text)
@@ -134,7 +129,6 @@ public class TwitterController : ControllerBase
     /// <response code="204">If the credentials match an existing user</response>
     /// <response code="401">If the credentials are invalid</response>
     [HttpPost("/login")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
@@ -151,7 +145,6 @@ public class TwitterController : ControllerBase
     /// <response code="204">If the username is not taken, create a new User</response>
     /// <response code="400">If the username is taken</response>
     [HttpPost("/register")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<UserDTO>> Register([FromBody] UserCreateDTO userCreateDTO)
@@ -166,7 +159,6 @@ public class TwitterController : ControllerBase
     /// <returns></returns>
     /// <response code="200">Always</response>
     [HttpPost("/logout")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult Logout()
     {
