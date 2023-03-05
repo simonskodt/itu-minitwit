@@ -57,7 +57,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public ActionResult<IEnumerable<MessageDetailsDTO>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public ActionResult<IEnumerable<MessageDetailsDTO>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         UpdateLatest(latest);
 
@@ -94,7 +94,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("msgs/{username}")]
-    public ActionResult<IEnumerable<MessageDetailsDTO>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public ActionResult<IEnumerable<MessageDetailsDTO>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         UpdateLatest(latest);
 
@@ -196,7 +196,7 @@ public class SimController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public ActionResult FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] string userId, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
+    public ActionResult FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
     {
         UpdateLatest(latest);
 
@@ -205,10 +205,17 @@ public class SimController : ControllerBase
             return Forbidden();
         }
 
+        var userResponse = _serviceManager.UserService.GetByUsername(username);
+
+        if (userResponse.HTTPResponse == HTTPResponse.BadRequest)
+        {
+            return NotFound();
+        }
+
         // If Follow is not null make a follow
         if (followerCreateDTO.Follow is not null)
         {
-            var followResponse = _serviceManager.FollowerService.Create(userId, username);
+            var followResponse = _serviceManager.FollowerService.Create(userResponse.Model!.Id!, username);
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
@@ -219,7 +226,7 @@ public class SimController : ControllerBase
         }
         else
         {
-            var unfollowResponse = _serviceManager.FollowerService.Delete(userId, username);
+            var unfollowResponse = _serviceManager.FollowerService.Delete(userResponse.Model!.Id!, username);
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
