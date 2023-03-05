@@ -21,7 +21,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all messages for a specific user and from all the users they follow.
+    /// Get all messages for a specific user and from all the users they follow.
     /// </summary>
     /// <param name="userId">The id of the user to target</param>
     /// <param name="ct"></param>
@@ -40,7 +40,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all the latest non-flagged messages from all users.
+    /// Get all the latest non-flagged messages from all users.
     /// </summary>
     /// <param name="ct"></param>
     /// <returns>A list of all non-flagged Messages</returns>
@@ -54,7 +54,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all messages for a specific user and from all the users they follow.
+    /// Get all messages for a specific user and from all the users they follow.
     /// </summary>
     /// <param name="username">The username of the user to get all messages from</param>
     /// <param name="ct"></param>
