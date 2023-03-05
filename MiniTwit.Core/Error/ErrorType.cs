@@ -11,12 +11,13 @@ public enum ErrorType
     USERNAME_TAKEN,
     USERNAME_MISSING,
     PASSWORD_MISSING,
-    EMAIL_MISSING_OR_INVALID
+    EMAIL_MISSING_OR_INVALID,
+    UNAUTHORIZED_CREDENTIALS
 }
 
 public static class ErrorTypeExtensions
 {
-    public static string ErrorMsg(this ErrorType? errorType) => errorType switch
+    public static string ErrorMsg(this ErrorType errorType) => errorType switch
     {
         INVALID_USER_ID => "Invalid user id",
         INVALID_USERNAME => "Invalid username",
@@ -25,10 +26,13 @@ public static class ErrorTypeExtensions
         USERNAME_MISSING => "You have to enter a username",
         PASSWORD_MISSING => "You have to enter a password",
         EMAIL_MISSING_OR_INVALID => "You have to enter a valid email address",
+        UNAUTHORIZED_CREDENTIALS => "You are not authorized to use this resource!",
         _ => "Unknown error"
     };
 
-    public static APIError ToAPIError(this ErrorType? errorType, HTTPResponse HTTPResponse)
+    public static string ErrorMsg(this ErrorType? errorType) => ErrorMsg((ErrorType) errorType!);
+
+    public static APIError ToAPIError(this ErrorType errorType, HTTPResponse HTTPResponse)
     {
         return new APIError
         {
@@ -36,4 +40,6 @@ public static class ErrorTypeExtensions
             ErrorMsg = errorType.ErrorMsg()
         };
     }
+
+    public static APIError ToAPIError(this ErrorType? errorType, HTTPResponse HTTPResponse) => ToAPIError((ErrorType) errorType!, HTTPResponse);
 }
