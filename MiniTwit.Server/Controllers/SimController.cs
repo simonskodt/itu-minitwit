@@ -240,6 +240,11 @@ public class SimController : ControllerBase
         _serviceManager.LatestService.Update(latestVal);
     }
 
+    private async Task UpdateLatestAsync(int latestVal)
+    {
+        await _serviceManager.LatestService.UpdateAsync(latestVal);
+    }
+
     private bool IsAuthorized(string authHeader)
     {
         return authHeader == "Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh";
