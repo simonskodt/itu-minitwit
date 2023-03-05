@@ -34,12 +34,11 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           
-      - name: DeployIng
+      - name: Deploy
         uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           user: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          pass: ${{ secrets.SSH_PASSPHRASE }}
           command: |
-            echo hello
+            echo hello 
