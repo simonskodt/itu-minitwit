@@ -1,4 +1,4 @@
-# DevOps Course
+# DevOps&mdash;Twitter Project
 
 ### :love_letter: **Live at:** [http://164.92.167.188:3000/](http://164.92.167.188:3000/)
 
@@ -10,6 +10,8 @@
   * [Week 2](#week-2)
   * [Week 3](#week-3)
   * [Week 4](#week-4)
+  * [Week 5](#week-5)
+  * [Week 6](#week-6)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -17,11 +19,11 @@
 We currently **lack the following features**:
 
 - Completing our front-end design.
-- Creating a CI/CD setup for your ITU-MiniTwit.
+- Refactor the tests to work with new design.
 
 It would be **nice to have the following features**:
 
-- 
+- Create automatic releases when merging into main branch.
 
 ## Weeks
 
@@ -54,13 +56,19 @@ Continue refactoring, introduction of DB abstraction layer, and deployment of yo
 Continue refactoring, Setup CI & CD for reproducible builds, tests, delivery, and deployment.
 
 - [x] 1) Complete implementing an API for the simulator in your ITU-MiniTwit.
-- [ ] 2) Creating a CI/CD setup for your ITU-MiniTwit.
+- [x] 2) Creating a CI/CD setup for your ITU-MiniTwit.
 - [x] 3) Continue refactoring of your ITU-MiniTwit.
 
 ### Week 5
 
 Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction layer, and entering maintenance (Simulator starts).
 
+- Complete and polish your ITU-MiniTwit implementation
+  - [ ] Add missing features.
+  - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
+  
+### Week 6  
+  
 ## Course description
 
 As a participant of the DevOps course at the IT University of Copenhagen, we are in for a hands-on learning experience. Every week, we will make changes to a Twitter project to put into practice the concepts and tools that we learn in class. Here is what we will be covering during this course:
