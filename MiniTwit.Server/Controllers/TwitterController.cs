@@ -22,7 +22,7 @@ public class TwitterController : ControllerBase
     /// Shows a users timeline or if no user is logged in it will
     /// redirect to the public timeline. This timeline shows the user's
     /// messages as well as all the messages of followed users.
-    /// <summary>
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -38,7 +38,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Displays the latest messages of all users.
-    /// <summary>
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,7 +51,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Display's a users tweets.
-    /// <summary>
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -65,7 +65,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Adds the current user as follower of the given user.
-    /// <summary>
+    /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -79,7 +79,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Removes the current user as follower of the given user.
-    /// <summary>
+    /// </summary>
     [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -93,7 +93,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Registers a new message for the user.
-    /// <summary>
+    /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -107,7 +107,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Logs the user in.
-    /// <summary>
+    /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -121,7 +121,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Registers the user.
-    /// <summary>
+    /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -135,7 +135,7 @@ public class TwitterController : ControllerBase
 
     /// <summary>
     /// Logs out the user
-    /// <summary>
+    /// </summary>
     [HttpDelete]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
