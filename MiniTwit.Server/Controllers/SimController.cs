@@ -8,6 +8,7 @@ namespace MiniTwit.Server.Controllers;
 
 [ApiController]
 [Authorize(AuthenticationSchemes = "BasicAuthentication", Roles = "Simulator")]
+[Produces("application/json")]
 [Route("[controller]")]
 public class SimController : ControllerBase
 {
@@ -21,12 +22,14 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Get the latest value
+    /// Get the latest value.
     /// </summary>
-    [HttpGet]
+    /// <param name="ct"></param>
+    /// <returns>An Ok result, containing the latest value.</returns>
+    /// <response code="200">Always, with the body containing the latest value.</response>
+    [HttpGet("latest")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Route("latest")]
     public async Task<ActionResult<LatestDTO>> Latest(CancellationToken ct = default)
     {
         var response = await _serviceManager.LatestService.GetAsync(ct);
@@ -34,13 +37,17 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Registers the user
+    /// Create (register) a new user.
     /// </summary>
-    [HttpPost]
+    /// <param name="userCreateDTO">The information and credentials of the user to register.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <returns>Either No Content on success or Bad Request if the username is taken.</returns>
+    /// <response code="204">On success.</response>
+    /// <response code="400">If the username is already taken.</response>
+    [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("register")]
     public async Task<ActionResult> Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
@@ -50,12 +57,17 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all the messages 
+    /// Get a specific number of the most recent non-flagged messages.
     /// </summary>
-    [HttpGet]
+    /// <param name="no">The number maximum number of messages to return.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <param name="ct"></param>
+    /// <returns>Either a number of the most recent messages or Forbidden if unauthorized.</returns>
+    /// <response code="200">If authorized, return the number of the most recent messages.</response>
+    /// <response code="403">If unauthorized.</response>
+    [HttpGet("msgs")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [Route("msgs")]
     public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
@@ -80,13 +92,20 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all the messages 
+    /// Get a specific number of the most recent non-flagged messages from username.
     /// </summary>
-    [HttpGet]
+    /// <param name="username">The number maximum number of messages to return.</param>
+    /// <param name="no">The number maximum number of messages to return.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <param name="ct"></param>
+    /// <returns>Either a number of the most recent messages from username, Not Found if the user does not exist or Forbidden if unauthorized.</returns>
+    /// <response code="200">If authorized and the user exists, return the number of the most recent messages.</response>
+    /// <response code="403">If unauthorized.</response>
+    /// <response code="404">If authorized and the username is invalid.</response>
+    [HttpGet("msgs/{username}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("msgs/{username}")]
     public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
@@ -120,12 +139,17 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Add message by username
+    /// Create a message for the specified username.
     /// </summary>
-    [HttpPost]
+    /// <param name="username">The number maximum number of messages to return.</param>
+    /// <param name="messageCreateDTO">The content of the message to be created.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <returns>Either creates a new message for the given username or Forbidden if unauthorized.</returns>
+    /// <response code="204">If authorized, the message was created.</response>
+    /// <response code="403">If unauthorized.</response>
+    [HttpPost("msgs/{username}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [Route("msgs/{username}")]
     public async Task<ActionResult> MsgUsernamePost(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
@@ -135,14 +159,21 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Get followers by username
+    /// Get a specific number of the usernames of the followers of the specified username.
     /// </summary>
-    [HttpGet]
+    /// <param name="username">The username </param>
+    /// <param name="no">The number maximum number of messages to return.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <param name="ct"></param>
+    /// <returns>Either a specific number of usernames belonging to the followers of the specified username, Not Found if the username does not exist, or Forbidden if unauthorized.</returns>
+    /// <response code="200">If authorized, the specified number usernames of the followers of the specified username.</response>
+    /// <response code="403">If unauthorized.</response>
+    /// <response code="404">If authorized, but the username does not exist.</response>
+    [HttpGet("fllws/{username}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("fllws/{username}")]
-    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(string username, [FromQuery] int latest = -1, [FromQuery] int no = 100, CancellationToken ct = default)
+    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(string username, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
 
@@ -165,12 +196,19 @@ public class SimController : ControllerBase
     }
 
     /// <summary>
-    /// Follow user by username
+    /// Create or delete a follower, making the provided userId either follow or unfollow {username}.
     /// </summary>
-    [HttpPost]
+    /// <param name="username">The username of the user wanting to follow/unfollow the specified user.</param>
+    /// <param name="followerCreateDTO">The username of the user to follow/unfollow.</param>
+    /// <param name="latest">The latest value of the request.</param>
+    /// <returns>Either No Content on successfull create/delete of a follower, Not Found if the username is invalid or Forbidden if unauthorized.</returns>
+    /// <response code="204">If authorized, either creates or deletes a follower.</response>
+    /// <response code="403">If unauthorized.</response>
+    /// <response code="404">If authorized, but the username is invalid.</response>
+    [HttpPost("fllws/{username}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("fllws/{username}")]
     public async Task<ActionResult> FollowUser(string username, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
