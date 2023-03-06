@@ -223,7 +223,7 @@ public class SimController : ControllerBase
         // If Follow is not null make a follow
         if (followerCreateDTO.Follow is not null)
         {
-            var followResponse = await _serviceManager.FollowerService.CreateAsync(userResponse.Model!.Id!, username);
+            var followResponse = await _serviceManager.FollowerService.CreateAsync(userResponse.Model!.Id!, followerCreateDTO.Follow);
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
@@ -234,7 +234,7 @@ public class SimController : ControllerBase
         }
         else
         {
-            var unfollowResponse = await _serviceManager.FollowerService.DeleteAsync(userResponse.Model!.Id!, username);
+            var unfollowResponse = await _serviceManager.FollowerService.DeleteAsync(userResponse.Model!.Id!, followerCreateDTO.Unfollow!);
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
