@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
+using MiniTwit.Core.Error;
 
 namespace MiniTwit.Tests.Integration.Integrations;
 
@@ -83,11 +84,11 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task FollowUser_given_valid_username_returns_Created()
+    public async Task FollowUser_given_valid_username_returns_NoContent()
     {
         var actual = await _factory.CreateClient().PostAsync("/Victor/follow?userId=000000000000000000000002", null);
 
-        Assert.Equal(HttpStatusCode.Created, actual.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
 
     [Fact]
@@ -113,12 +114,12 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
     }
 
-    [Fact]
-    public async Task AddMessage_given_valid_userId_returns_Created()
+   [Fact]
+    public async Task AddMessage_given_valid_userId_returns_NoContent()
     {
         var actual = await _factory.CreateClient().PostAsync("/add_message?userId=000000000000000000000001&text=test", null);
 
-        Assert.Equal(HttpStatusCode.Created, actual.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
 
     [Fact]
@@ -136,7 +137,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
         var loginDTO = new LoginDTO { Username = "Gustav", Password = "password" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
 
-        Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
 
     [Fact]
@@ -144,10 +145,11 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     {
         var loginDTO = new LoginDTO { Username = "G", Password = "password" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
-        var content = await actual.Content.ReadAsStringAsync();
+        var content = await actual.Content.ReadFromJsonAsync<APIError>();
 
         Assert.Equal(HttpStatusCode.Unauthorized, actual.StatusCode);
-        Assert.Equal("Invalid username", content);
+        Assert.Equal(401, content!.Status);
+        Assert.Equal("Invalid username", content.ErrorMsg);
     }
 
     [Fact]
@@ -155,34 +157,35 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     {
         var loginDTO = new LoginDTO { Username = "Gustav", Password = "pass" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
-        var content = await actual.Content.ReadAsStringAsync();
+        var content = await actual.Content.ReadFromJsonAsync<APIError>();
 
         Assert.Equal(HttpStatusCode.Unauthorized, actual.StatusCode);
-        Assert.Equal("Invalid password", content);
+        Assert.Equal(401, content!.Status);
+        Assert.Equal("Invalid password", content.ErrorMsg);
     }
 
     [Fact]
-    public async Task Register_given_non_taken_username_returns_Created()
+    public async Task Register_given_non_taken_username_returns_NoContent()
     {
-        var registerDTO = new RegisterDTO { Username = "The Tester", Email = "test@test.com", Password = "password" };
+        var registerDTO = new UserCreateDTO { Username = "The Tester", Email = "test@test.com", Password = "password" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/register", registerDTO);
 
-        Assert.Equal(HttpStatusCode.Created, actual.StatusCode);
-    }
+        Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
+    } 
 
     [Fact]
-    public async Task Register_given_taken_username_returns_Conflict()
+    public async Task Register_given_taken_username_returns_BadRequest()
     {
-        var registerDTO = new RegisterDTO { Username = "Gustav", Email = "test@test.com", Password = "password" };
+        var registerDTO = new UserCreateDTO { Username = "Gustav", Email = "test@test.com", Password = "password" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/register", registerDTO);
 
-        Assert.Equal(HttpStatusCode.Conflict, actual.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, actual.StatusCode);
     }
 
     [Fact]
     public async Task Logout_returns_OK()
     {
-        var actual = await _factory.CreateClient().DeleteAsync("/logout");
+        var actual = await _factory.CreateClient().PostAsync("/logout", null);
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
     }

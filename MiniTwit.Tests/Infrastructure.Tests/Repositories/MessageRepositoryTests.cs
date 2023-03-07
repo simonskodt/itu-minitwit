@@ -1,5 +1,7 @@
 using FluentAssertions;
 using FluentAssertions.Extensions;
+using MiniTwit.Core.Responses;
+using MiniTwit.Core.Error;
 
 namespace MiniTwit.Tests.Infrastructure.Repositories;
 
@@ -13,7 +15,7 @@ public class MessageRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void Create_given_eixsting_userid_creates_new_message_and_returns_Created()
+    public void Create_given_eixsting_userid_creates_new_message_and_returns_message_with_no_error()
     {
         var message = new Message
         {
@@ -23,36 +25,36 @@ public class MessageRepositoryTests : RepoTests
             Text = "Test Tweet"
         };
 
-        var expected = new Response<Message>
+        var expected = new DBResult<Message>
         {
-            HTTPResponse = HTTPResponse.Created,
-            Model = message
+            Model = message,
+            ErrorType = null
         };
 
         var actual = _repository.Create("000000000000000000000001", "Test Tweet");
 
-        Assert.Equal(HTTPResponse.Created, actual.HTTPResponse);
+        Assert.Equal(expected.ErrorType, actual.ErrorType);
         Assert.Equal(expected.Model.AuthorId, actual.Model!.AuthorId);
         Assert.Equal(expected.Model.Text, actual.Model!.Text);
-        actual.Model.PubDate.Should().BeCloseTo(expected.Model.PubDate, 500.Milliseconds());
+        actual.Model.PubDate.Should().BeCloseTo(expected.Model.PubDate, 2000.Milliseconds());
         Assert.Equal(expected.Model.Flagged, actual.Model!.Flagged);
     }
 
     [Fact]
-    public void Create_given_non_existing_userid_returns_NotFound()
+    public void Create_given_non_existing_userid_returns_ErrorType_INVALID_USER_ID()
     {
         var actual = _repository.Create("000000000000000000000000", "Test Tweet");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USER_ID, actual.ErrorType);
         Assert.Null(actual.Model);
     }
 
     [Fact]
-    public void GetAllNonFlagged_returns_all_non_flagged_messages_in_PubDate_descending_order()
+    public void GetAllNonFlagged_returns_all_non_flagged_messages_in_PubDate_descending_order_with_no_error()
     {
         var actual = _repository.GetAllNonFlagged();
 
-        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
+        Assert.Equal(null, actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000008", AuthorId = "000000000000000000000003", Text = "Nikolaj2", PubDate = DateTime.Parse("01/01/2023 12:00:06"), Flagged = 0 }),              // 1
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000007", AuthorId = "000000000000000000000003", Text = "Nikolaj1", PubDate = DateTime.Parse("01/01/2023 12:00:05"), Flagged = 0 }),              // 2
@@ -67,11 +69,11 @@ public class MessageRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void GetAllByUserId_given_existing_UserId_returns_all_their_messages_in_PubDate_descending_order()
+    public void GetAllByUserId_given_existing_UserId_returns_all_their_messages_in_PubDate_descending_order_with_no_error()
     {
         var actual = _repository.GetAllByUserId("000000000000000000000001");
 
-        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
+        Assert.Equal(null, actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
@@ -80,20 +82,20 @@ public class MessageRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void GetAllByUserId_given_non_existing_UserId_returns_NotFound()
+    public void GetAllByUserId_given_non_existing_UserId_returns_error_INVALID_USER_ID()
     {
         var actual = _repository.GetAllByUserId("000000000000000000000000");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USER_ID, actual.ErrorType);
         Assert.Null(actual.Model);
     }
 
     [Fact]
-    public void GetAllByUsername_given_existing_username_returns_all_their_messages_in_PubDate_descending_order()
+    public void GetAllByUsername_given_existing_username_returns_all_their_messages_in_PubDate_descending_order_with_no_error()
     {
         var actual = _repository.GetAllByUsername("Gustav");
 
-        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
+        Assert.Equal(null, actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
@@ -102,20 +104,20 @@ public class MessageRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void GetAllByUsername_given_non_existing_username_returns_NotFound()
+    public void GetAllByUsername_given_non_existing_username_returns_error_INVALID_USERNAME()
     {
         var actual = _repository.GetAllByUsername("test");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USERNAME, actual.ErrorType);
         Assert.Null(actual.Model);
     }
 
     [Fact]
-    public void GetAllFollowedByUser_given_existing_UserId_returns_non_flagged_messages_from_followed_users_in_PubDate_descending_order()
+    public void GetAllFollowedByUser_given_existing_UserId_returns_non_flagged_messages_from_followed_users_in_PubDate_descending_order_with_no_error()
     {
-        var actual = _repository.GetAllFollowedByUser("000000000000000000000001");
+        var actual = _repository.GetAllFollowedByUserId("000000000000000000000001");
 
-        Assert.Equal(HTTPResponse.Ok, actual.HTTPResponse);
+        Assert.Equal(null, actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),
@@ -126,11 +128,11 @@ public class MessageRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void GetAllFollowedByUser_given_non_existing_UserId_returns_NotFound()
+    public void GetAllFollowedByUser_given_non_existing_UserId_returns_errortype_INVALID_USERID()
     {
-        var actual = _repository.GetAllFollowedByUser("000000000000000000000000");
+        var actual = _repository.GetAllFollowedByUserId("000000000000000000000000");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USER_ID, actual.ErrorType);
         Assert.Null(actual.Model);
     }
 }

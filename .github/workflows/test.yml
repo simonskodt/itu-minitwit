@@ -1,14 +1,14 @@
 ---
 name: Build / Test
 
-on:  # yamllint disable-line rule:truthy
+on: 
   pull_request:
     branches: [main]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2

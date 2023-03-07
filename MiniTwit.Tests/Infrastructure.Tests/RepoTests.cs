@@ -12,6 +12,7 @@ public class RepoTests : IDisposable
     private MongoDbRunner _runner;
 
     public RepoTests()
+
     {
         _runner = MongoDbRunner.Start(additionalMongodArguments: "--quiet --logpath /dev/null");
 
@@ -21,7 +22,8 @@ public class RepoTests : IDisposable
             Database = "MiniTwit",
             UsersCollectionName = "Users",
             TweetsCollectionName = "Messages",
-            FollowersCollectionName = "Followers"
+            FollowersCollectionName = "Followers",
+            LatestsCollectionName = "Latests"
         };
 
         _context = new MongoDBContext(Options.Create<MiniTwitDatabaseSettings>(settings));

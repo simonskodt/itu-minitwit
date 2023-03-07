@@ -41,7 +41,7 @@ jobs:
           file: ./MiniTwit.Web/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
-          
+
       - name: Deploy
         uses: fifsky/ssh-action@master
         with:
