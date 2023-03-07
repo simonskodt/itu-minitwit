@@ -37,7 +37,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 Database = "MiniTwit",
                 UsersCollectionName = "Users",
                 TweetsCollectionName = "Messages",
-                FollowersCollectionName = "Followers"
+                FollowersCollectionName = "Followers",
+                LatestsCollectionName = "Latests"
             };
 
             services.AddScoped<IMongoDBContext, MongoDBContext>(c => new MongoDBContext(Options.Create<MiniTwitDatabaseSettings>(settings)));
@@ -56,12 +57,12 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
     private void Seed(IMongoDBContext context, IHasher hasher)
     {
-        hasher.Hash("password", out string hash);
+        var hashedPasswrod = hasher.Hash("password");
         // Users
-        var gustav  = UserCreator.Create("000000000000000000000001", "Gustav", "g@minitwit.com", hash);
-        var simon   = UserCreator.Create("000000000000000000000002", "Simon", "s@minitwit.com", hash);
-        var nikolaj = UserCreator.Create("000000000000000000000003", "Nikolaj", "n@minitwit.com", hash);
-        var victor  = UserCreator.Create("000000000000000000000004", "Victor", "v@minitwit.com", hash);
+        var gustav  = UserCreator.Create("000000000000000000000001", "Gustav", "g@minitwit.com", hashedPasswrod);
+        var simon   = UserCreator.Create("000000000000000000000002", "Simon", "s@minitwit.com", hashedPasswrod);
+        var nikolaj = UserCreator.Create("000000000000000000000003", "Nikolaj", "n@minitwit.com", hashedPasswrod);
+        var victor  = UserCreator.Create("000000000000000000000004", "Victor", "v@minitwit.com", hashedPasswrod);
 
         context.Users.InsertMany(new[] { gustav, simon, nikolaj, victor });
 
