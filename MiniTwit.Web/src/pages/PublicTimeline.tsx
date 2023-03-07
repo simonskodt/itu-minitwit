@@ -15,54 +15,53 @@ function PublicTimeline() {
   //const { setMessages } = useContext(MessagesContext);
 
   const [messages, setMessages] = useState<MessageObject[]>();
-  
+  const MesWithUsername : MessageObjectWithName [] = [] 
 
   useEffect(() => {
     FetchPublicTimeline().then((messages) => {
-      //fetchUserByID("63f8b294082250d882e1860d");
       console.log(messages);
       setMessages(messages);
     });
   }, []);
 
-  const fetchUser = (message: MessageObject, id: string) => {
-    FetchUserByid(id).then((u)=>{
-      var user = buildUser(u);
-      var userWithName = makeMessageObjectWithName(message, user.username)
-      console.log(userWithName);
-    });
-  }
 
-  if (messages!= undefined)
+  useEffect(() => {
+    if (messages != undefined){
+      console.log(":::::A:SDFASDF")
+    messages.forEach(element => {
+      FetchUserByid(element.authorId).then((u)=>{
+      var user = buildUser(u);
+      var userWithName = makeMessageObjectWithName(element, user.username);
+      MesWithUsername.push(userWithName);
+      console.log(MesWithUsername);
+        }); 
+      });
+      
+    }
+  }, []);
+/*   if (messages != undefined)
   {
     messages.forEach(element => {
-      fetchUser(element, element.authorId);
+      //console.log(element.text);
+      FetchUserByid(element.authorId).then((u)=>{
+      var user = buildUser(u);
+      var userWithName = makeMessageObjectWithName(element, user.username);
+      MesWithUsername.push(userWithName);
+      console.log(MesWithUsername);
+      }); 
     });
-
-  }
-
-
-/*   if (messages != undefined){
-    for(let i = 0; i<10; i++){
-      var user = fetchUser(messages[i].authorId);
-      var fullUserObject = makeMessageObjectWithName(user, messages[i].authorId);
-      MessageAndName.push(fullUserObject);
-      console.log(MessageAndName);
-    }
-  } else {
-    console.log("error in loop");
-  }   */
-
+  } */
+ 
 
  var slicedArray = messages?.slice(0, 50)
 
-  if (messages != undefined && slicedArray!= undefined) {
+  if (messages != undefined )  {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
         <div className="body">
           <h2>Public TimeLine</h2>
-          {slicedArray.map((mes) => (
+          {MesWithUsername.map((mes) => (
             <view key={mes.messageId}>
               <view>
                 <Message
