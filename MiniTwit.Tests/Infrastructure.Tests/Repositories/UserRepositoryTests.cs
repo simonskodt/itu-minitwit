@@ -72,6 +72,6 @@ public class UserRepositoryTests : RepoTests
         var actual = _repository.GetByUsername("test");
 
         Assert.Equal(ErrorType.INVALID_USERNAME, actual.ErrorType);
-        Assert.Null(2);
+        Assert.Null(actual.Model);
     }
 }
