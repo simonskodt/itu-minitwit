@@ -52,6 +52,7 @@ jobs:
           command: |
             cd itu-minitwit/
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
-            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
-            ls -a
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
+            docker-compose down
+            docker-compose up -d
 
