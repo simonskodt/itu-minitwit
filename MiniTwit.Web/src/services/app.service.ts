@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { LOCALHOST, PRODUCTION } from '../App';
+import { API_URL } from '../App';
 
 
 export class AppService {
@@ -13,7 +13,7 @@ export class AppService {
     const config: AxiosRequestConfig = {
     method: 'post',
     maxBodyLength: Infinity,
-      url: PRODUCTION + 'register',
+      url: API_URL + 'register',
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -36,12 +36,12 @@ export class AppService {
 
     const config: AxiosRequestConfig = {
       method: 'post',
-    maxBodyLength: Infinity,
-      url: PRODUCTION+'login',
+      maxBodyLength: Infinity,
+      url: API_URL + 'login',
       headers: { 
         'Content-Type': 'application/json'
       },
-      data : data
+      data: data
     };
 
     try {
