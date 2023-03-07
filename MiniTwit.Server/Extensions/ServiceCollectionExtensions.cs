@@ -16,7 +16,8 @@ public static class ServiceCollectionExtensions
                 Title = "MiniTwit API",
                 Version = "v1",
                 Description = "A refactor of a Twitter clone handed out in the elective course DevOps on the IT University of Copenhagen.",
-                Contact = new OpenApiContact() { Name = "Group Radiator" },
+                Contact = new OpenApiContact { Name = "Group Radiator",  Url = new Uri("https://github.com/simonskodt/itu-minitwit") },
+                License = new OpenApiLicense { Name = "MIT License", Url = new Uri("https://github.com/simonskodt/itu-minitwit/blob/main/LICENSE") }
             });
 
             // Add Basic Authentication option for API explorer
