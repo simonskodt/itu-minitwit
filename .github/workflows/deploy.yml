@@ -51,6 +51,7 @@ jobs:
           args: "-vvv"
           command: |
             cd itu-minitwit/
+            git pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
             docker-compose down
