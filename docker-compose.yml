@@ -17,10 +17,7 @@ services:
       - db_password
 
   itu-minitwit-server:
-    image: itu-minitwit-server
-    build: 
-      context: .
-      dockerfile: 'MiniTwit.Server/Dockerfile'
+    image: vict2976/itu-minitwit-server
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
@@ -34,15 +31,12 @@ services:
         target: ConnectionStrings__MiniTwit
 
   itu-minitwit-web:
-    image: itu-minitwit-web
-    build:
-      context: .
-      dockerfile: 'MiniTwit.Web/Dockerfile'
+    image: vict2976/itu-minitwit-web
     ports:
       - '3000:3000'
     depends_on:
       - itu-minitwit-server
-
+      
 volumes:
   mongodb_data_container:
 
@@ -51,3 +45,6 @@ secrets:
     file: './.local/db_password.txt'
   connection_string:
     file: './.local/connection_string.txt'
+
+
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
