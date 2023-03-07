@@ -16,6 +16,8 @@ function PublicTimeline() {
 
   const [messages, setMessages] = useState<MessageObject[]>();
 
+  
+
   const fetchAllUsers = () => {
     FetchPublicTimeline().then((messages) => {
       console.log(messages);
@@ -31,13 +33,15 @@ function PublicTimeline() {
     });
   }, []);
 
-  if (messages != undefined) {
+ var slicedArray = messages?.slice(0, 50)
+
+  if (messages != undefined && slicedArray!= undefined) {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
         <div className="body">
           <h2>Public TimeLine</h2>
-          {messages.map((mes) => (
+          {slicedArray.map((mes) => (
             <view key={mes.messageId}>
               <view>
                 <Message
