@@ -1,4 +1,6 @@
+using MiniTwit.Core.Responses;
 using MongoDB.Driver;
+using MiniTwit.Core.Error;
 
 namespace MiniTwit.Tests.Infrastructure.Repositories;
 
@@ -12,7 +14,7 @@ public class FollowerRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void Create_given_existing_target_username_creates_new_follower_and_returns_Created()
+    public void Create_given_existing_target_username_creates_new_follower_and_returns_Created_with_no_error()
     {
         var follower = new Follower
         {
@@ -20,30 +22,30 @@ public class FollowerRepositoryTests : RepoTests
             WhomId = "000000000000000000000004"
         };
 
-        var expected = new Response<Follower>
+        var expected = new DBResult<Follower>
         {
-            HTTPResponse = HTTPResponse.Created,
+            ErrorType = null,
             Model = follower
         };
 
         var actual = _repository.Create("000000000000000000000001", "Victor");
 
-        Assert.Equal(HTTPResponse.Created, actual.HTTPResponse);
+        Assert.Equal(expected.ErrorType, actual.ErrorType);
         Assert.Equal("000000000000000000000001", actual.Model!.WhoId);
         Assert.Equal("000000000000000000000004", actual.Model!.WhomId);
     }
 
     [Fact]
-    public void Create_given_non_existing_target_username_returns_NotFound()
+    public void Create_given_non_existing_target_username_returns_errortype_INVALID_USERNAME()
     {
         var actual = _repository.Create("000000000000000000000001", "test");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USERNAME, actual.ErrorType);
         Assert.Null(actual.Model);
     }
 
     [Fact]
-    public void Delete_given_existing_targetUsername_deletes_user_and_returns_NoContent()
+    public void Delete_given_existing_targetUsername_deletes_user_with_no_error()
     {
         var existing = _context.Followers.Find(f => f.WhoId == "000000000000000000000001" && f.WhomId == "000000000000000000000002").FirstOrDefault();
 
@@ -53,7 +55,7 @@ public class FollowerRepositoryTests : RepoTests
 
         var actual = _repository.Delete("000000000000000000000001", "Simon");
 
-        Assert.Equal(HTTPResponse.NoContent, actual.HTTPResponse);
+        Assert.Equal(null, actual.ErrorType);
         
         existing = _context.Followers.Find(f => f.WhoId == "000000000000000000000001" && f.WhomId == "000000000000000000000002").FirstOrDefault();
 
@@ -61,10 +63,10 @@ public class FollowerRepositoryTests : RepoTests
     }
 
     [Fact]
-    public void Delete_given_non_existing_targetUsername_returns_NotFound()
+    public void Delete_given_non_existing_targetUsername_returns_errortype_INVALID_USERNAME()
     {
         var actual = _repository.Delete("000000000000000000000001", "test");
 
-        Assert.Equal(HTTPResponse.NotFound, actual.HTTPResponse);
+        Assert.Equal(ErrorType.INVALID_USERNAME, actual.ErrorType);
     }
 }
