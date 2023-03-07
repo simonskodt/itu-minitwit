@@ -16,7 +16,7 @@ function PublicTimeline() {
 
   const [messages, setMessages] = useState<MessageObject[]>();
 
-  
+
 
   const fetchAllUsers = () => {
     FetchPublicTimeline().then((messages) => {
@@ -33,9 +33,9 @@ function PublicTimeline() {
     });
   }, []);
 
- var slicedArray = messages?.slice(0, 50)
+  var slicedArray = messages?.slice(0, 50)
 
-  if (messages != undefined && slicedArray!= undefined) {
+  if (messages != undefined && slicedArray != undefined) {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
@@ -45,9 +45,9 @@ function PublicTimeline() {
             <view key={mes.messageId}>
               <view>
                 <Message
-                  username = {mes.authorId}
-                  text = {mes.text}
-                  date = {mes.pubDate}
+                  username={mes.authorId}
+                  text={mes.text}
+                  date={mes.pubDate}
                 />
               </view>
             </view>
@@ -60,7 +60,14 @@ function PublicTimeline() {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
-        <button onClick={() => console.log(messages)}> TEST </button>
+        <div className="body">
+          <h2>Public TimeLine</h2>
+          <ul className="messages">
+            <li>
+              <p>There's no messages so far.</p>
+            </li>
+          </ul>
+        </div>
         <Footer />
       </div>
     );
