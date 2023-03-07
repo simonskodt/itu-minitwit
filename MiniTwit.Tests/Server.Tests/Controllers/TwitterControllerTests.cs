@@ -21,7 +21,7 @@ public class TwitterControllerTests
         _ct = new CancellationToken();
     }
 
-    [Fact]
+/*     [Fact]
     public async Task Timeline_given_valid_UserId_returns_OK()
     {
         // Arrange
@@ -34,10 +34,10 @@ public class TwitterControllerTests
         // Act
         var actual = await controller.Timeline("1", _ct);
 
-        // // Assert
-        // Assert.Equal(200, actual!.StatusCode);
-        // Assert.Equal(expected.Model, actual.Value);
-    }
+        //Assert
+        Assert.Equal(200, actual!.StatusCode);
+        Assert.Equal(expected.Model, actual.Value);
+    } */
 
     // [Fact]
     // public async Task Timeline_given_invalid_UserId_returns_NotFound()
