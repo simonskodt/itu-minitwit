@@ -8,11 +8,11 @@ public record FollowerDTO
 
 public record FollowerCreateDTO
 {
-    public string? Follow { get; set; } = null;
-    public string? Unfollow { get; set; } = null;
+    public string? Follow { get; init; }
+    public string? Unfollow { get; init; }
 }
 
 public record FollowerDetailsDTO
 {
-    public ICollection<string> Follows { get; set; } = new List<string>();
+    public ICollection<string> Follows { get; init; } = new List<string>();
 }

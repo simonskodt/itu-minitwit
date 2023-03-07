@@ -6,6 +6,8 @@ using MiniTwit.Service;
 namespace MiniTwit.Server.Controllers;
 
 [ApiController]
+[AllowAnonymous]
+[Produces("application/json")]
 [Route("[controller]")]
 public class TwitterController : ControllerBase
 {
@@ -19,30 +21,32 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Shows a users timeline or if no user is logged in it will
-    /// redirect to the public timeline. This timeline shows the user's
-    /// messages as well as all the messages of followed users.
+    /// Get all messages for a specific user and the ones they follow, sorted in descending order after publish date.
     /// </summary>
-    [HttpGet]
-    [AllowAnonymous]
+    /// <param name="userId">The id of the user to target.</param>
+    /// <param name="ct"></param>
+    /// <returns>A list of Messages belonging to the user and the ones they follow sorted in descending order after publish date.</returns>
+    /// <response code="200">If the userId exists, return all the messages belonging to the userId and the ones they follow sorted in descending order after publish date.</response>
+    /// <response code="404">If the userId does not exist.</response>
+    [HttpGet("/")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/")]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
         _logger.LogInformation("We got a visitor from: " + Request.HttpContext.Connection.RemoteIpAddress);
-        
+
         var response = await _serviceManager.MessageService.GetAllFollowedByUserIdAsync(userId, ct);
         return response.ToActionResult();
     }
 
     /// <summary>
-    /// Displays the latest messages of all users.
+    /// Get all non-flagged messages from all users sorted in descending order after publish date.
     /// </summary>
-    [HttpGet]
-    [AllowAnonymous]
+    /// <param name="ct"></param>
+    /// <returns>A list of all non-flagged Messages sorted in descending order after publish date.</returns>
+    /// <response code="200">Every time, return all non-flagged messages sorted in descending order after publish date.</response>
+    [HttpGet("/public")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Route("/public")]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
@@ -50,13 +54,16 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Display's a users tweets.
+    /// Get all messages for a specific user and from all the users they follow sorted in descending order after publish date.
     /// </summary>
-    [HttpGet]
-    [AllowAnonymous]
+    /// <param name="username">The username of the user to get all messages from.</param>
+    /// <param name="ct"></param>
+    /// <returns>A list of all Messages belonging to the specific username.</returns>
+    /// <response code="200">If the username exists, return all the messages belonging to the username sorted in descending order after publish date.</response>
+    /// <response code="404">If the username does not exist.</response>
+    [HttpGet("/{username}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{username}")]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> UserTimeline(string username, CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllByUsernameAsync(username, ct);
@@ -64,27 +71,33 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Adds the current user as follower of the given user.
+    /// Create a new follower, making the specified userId follow {username}.
     /// </summary>
-    [HttpPost]
-    [AllowAnonymous]
+    /// <param name="username">The username of the user to follow.</param>
+    /// <param name="userId">The id of the user wanting to follow username.</param>
+    /// <returns>Either No Content on success or Not Found on failure.</returns>
+    /// <response code="204">If the username and userId exists, create a new Follower.</response>
+    /// <response code="404">If the username or userId does not exist.</response>
+    [HttpPost("/{username}/follow")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{username}/follow")]
-    public async Task<ActionResult<FollowerDTO>> FollowUser(string username, [FromQuery] string userId)
+    public async Task<ActionResult> FollowUser(string username, [FromQuery] string userId)
     {
         var response = await _serviceManager.FollowerService.CreateAsync(userId, username);
         return response.ToActionResult();
     }
 
     /// <summary>
-    /// Removes the current user as follower of the given user.
+    /// Delete an existing follower, making the specified userId unfollow {username}.
     /// </summary>
-    [HttpDelete]
-    [AllowAnonymous]
+    /// <param name="username">The username of the user to unfollow.</param>
+    /// <param name="userId">The id of the user wanting to unfollow username.</param>
+    /// <returns>Either No Content on success or Not Found on failure.</returns>
+    /// <response code="204">If the username and userId exists, delete the Follower.</response>
+    /// <response code="404">If the username or userId does not exist.</response>
+    [HttpDelete("/{username}/unfollow")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/{username}/unfollow")]
     public async Task<ActionResult> UnfollowUser(string username, [FromQuery] string userId)
     {
         var response = await _serviceManager.FollowerService.DeleteAsync(userId, username);
@@ -92,27 +105,32 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Registers a new message for the user.
+    /// Create a new message for the given userId.
     /// </summary>
-    [HttpPost]
-    [AllowAnonymous]
+    /// <param name="userId">The id of the user to post the message.</param>
+    /// <param name="text">The content of the Message to create.</param>
+    /// <returns>Either No Content on success or Not Found on failure.</returns>
+    /// <response code="204">If userId exists, create a new Message.</response>
+    /// <response code="404">If the userId does not exist.</response>
+    [HttpPost("/add_message")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Route("/add_message")]
-    public async Task<ActionResult<MessageDTO>> AddMessage([FromQuery] string userId, [FromQuery] string text)
+    public async Task<ActionResult> AddMessage([FromQuery] string userId, [FromQuery] string text)
     {
         var response = await _serviceManager.MessageService.CreateAsync(userId, text);
         return response.ToActionResult();
     }
 
     /// <summary>
-    /// Logs the user in.
+    /// Authenticate a user with the given credentials.
     /// </summary>
-    [HttpPost]
-    [AllowAnonymous]
+    /// <param name="loginDTO">The id of the user to target.</param>
+    /// <returns>Either No Content on success or Unauthorized on invalid credentials.</returns>
+    /// <response code="204">If the credentials match an existing user.</response>
+    /// <response code="401">If the credentials are invalid.</response>
+    [HttpPost("/login")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Route("/login")]
     public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
     {
         var response = await _serviceManager.AuthenticationService.AuthenticateAsync(loginDTO.Username!, loginDTO.Password!);
@@ -120,26 +138,28 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Registers the user.
+    /// Create a new user with the given information and credentials.
     /// </summary>
-    [HttpPost]
-    [AllowAnonymous]
+    /// <param name="userCreateDTO">The information and credentials to create a new User from.</param>
+    /// <returns>Either No Content on success or Bad Request on failure.</returns>
+    /// <response code="204">If the username is not taken, create a new user.</response>
+    /// <response code="400">If the username is taken.</response>
+    [HttpPost("/register")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Route("/register")]
-    public async Task<ActionResult<UserDTO>> Register([FromBody] UserCreateDTO userCreateDTO)
+    public async Task<ActionResult> Register([FromBody] UserCreateDTO userCreateDTO)
     {
         var response = await _serviceManager.UserService.CreateAsync(userCreateDTO);
         return response.ToActionResult();
     }
 
     /// <summary>
-    /// Logs out the user
+    /// Log a user out of the system.
     /// </summary>
-    [HttpDelete]
-    [AllowAnonymous]
+    /// <returns>An empty Ok result.</returns>
+    /// <response code="200">Always.</response>
+    [HttpPost("/logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Route("/logout")]
     public ActionResult Logout()
     {
         return Ok();
