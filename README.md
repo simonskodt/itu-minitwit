@@ -12,6 +12,7 @@
   * [Week 4](#week-4)
   * [Week 5](#week-5)
   * [Week 6](#week-6)
+  * [Week 7](#week-7)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -68,6 +69,11 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
   - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
   
 ### Week 6
+
+- [ ] Add Monitoring to Your Systems.
+- [ ] Software Maintenance II: Check the user interface of another group.
+
+### Week 7
 
 TBA
   
