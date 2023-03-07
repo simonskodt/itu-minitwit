@@ -24,6 +24,7 @@ public class Response
         HTTPResponse.BadRequest => new BadRequestObjectResult(Error),
         HTTPResponse.NotFound => new NotFoundObjectResult(Error),
         HTTPResponse.Conflict => new ConflictObjectResult(Error),
+        HTTPResponse.Unauthorized => new UnauthorizedObjectResult(Error),
         _ => throw new NotSupportedException($"{HTTPResponse} not supported!")
     };
 }
