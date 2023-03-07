@@ -6,8 +6,10 @@ import TimeLine from "./pages/TimeLine";
 import PublicTimeline from "./pages/PublicTimeline";
 import SignUp from "./pages/SignUp";
 
-export const LOCALHOST = "https://localhost:7111/";
-export const PRODUCTION = "http://164.92.167.188:80/";
+const DEVELOPMENT = "https://localhost:7111/";
+const PRODUCTION = "http://164.92.167.188:80/";
+
+export const API_URL = process.env.NODE_ENV === 'development' ? DEVELOPMENT : PRODUCTION;
 
 export default function App() {
   return (
@@ -15,8 +17,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<TimeLine />} />
         <Route path="/public" element={<PublicTimeline />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
       </Routes>
     </>
   );

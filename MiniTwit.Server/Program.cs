@@ -8,7 +8,9 @@ using MiniTwit.Security;
 using MiniTwit.Security.Hashers;
 using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
+using MiniTwit.Server.Prometheus;
 using MiniTwit.Service;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,7 @@ builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<ILatestRepository, LatestRepository>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
+builder.Services.AddScoped<MetricReporter>();
 
 var app = builder.Build();
 
@@ -71,6 +74,9 @@ app.UseCors(x => x
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMetricServer();
+app.UseMiddleware<ResponseMetricMiddleware>();
 
 app.MapControllers();
 
