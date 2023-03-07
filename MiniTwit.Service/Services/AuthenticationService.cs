@@ -5,6 +5,7 @@ using MiniTwit.Security;
 using MiniTwit.Service.IServices;
 using static MiniTwit.Core.Responses.HTTPResponse;
 using static MiniTwit.Core.Error.ErrorType;
+using MiniTwit.Core.DTOs;
 
 namespace MiniTwit.Service.Services;
 
@@ -19,41 +20,41 @@ public class AuthenticationService : IAuthenticationService
         _hasher = hasher;
     }
 
-    public Response Authenticate(string username, string password)
+    public Response<UserDTO> Authenticate(string username, string password)
     {
         var dbResult = _repository.GetByUsername(username);
 
         if (dbResult.ErrorType == ErrorType.INVALID_USERNAME)
         {
-            return new Response(Unauthorized, dbResult.ErrorType);
+            return new Response<UserDTO>(Unauthorized, null, dbResult.ErrorType);
         }
 
         var validPassword = _hasher.VerifyHash(password, dbResult.Model!.Password);
 
         if (!validPassword)
         {
-            return new Response(Unauthorized, INVALID_PASSWORD);
+            return new Response<UserDTO>(Unauthorized, null, INVALID_PASSWORD);
         }
 
-        return new Response(NoContent, null);
+        return new Response<UserDTO>(Ok, dbResult.ConvertModelTo<UserDTO>());
     }
 
-    public async Task<Response> AuthenticateAsync(string username, string password)
+    public async Task<Response<UserDTO>> AuthenticateAsync(string username, string password)
     {
         var dbResult = await _repository.GetByUsernameAsync(username);
 
         if (dbResult.ErrorType == ErrorType.INVALID_USERNAME)
         {
-            return new Response(Unauthorized, dbResult.ErrorType);
+            return new Response<UserDTO>(Unauthorized, null, dbResult.ErrorType);
         }
 
         var validPassword = await _hasher.VerifyHashAsync(password, dbResult.Model!.Password);
 
         if (!validPassword)
         {
-            return new Response(Unauthorized, INVALID_PASSWORD);
+            return new Response<UserDTO>(Unauthorized, null, INVALID_PASSWORD);
         }
 
-        return new Response(NoContent, null);
+        return new Response<UserDTO>(Ok, dbResult.ConvertModelTo<UserDTO>(), null);
     }
 }
