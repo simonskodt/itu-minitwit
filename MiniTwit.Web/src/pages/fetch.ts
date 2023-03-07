@@ -13,7 +13,23 @@ export async function FetchPublicTimeline() {
     };
 
     try {
-        const a = await axios.get(PRODUCTION + "public", config).then((response) => response.data);
+        const a = await axios.get(LOCALHOST + "public", config).then((response) => response.data);
+        return a;
+    } catch (error) {
+        console.log(error);
+        return Promise.reject('fetch order history failed');
+    }
+}
+
+export async function FetchUserByid(userId: string) {
+    const config: AxiosRequestConfig = {
+        method: 'GET',
+        headers: {
+        },
+    };
+
+    try {
+        const a = await axios.get(LOCALHOST + "user/" + userId, config).then((response) => response.data);
         return a;
     } catch (error) {
         console.log(error);

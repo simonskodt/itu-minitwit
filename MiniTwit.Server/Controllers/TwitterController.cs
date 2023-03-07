@@ -164,4 +164,16 @@ public class TwitterController : ControllerBase
     {
         return Ok();
     }
+
+
+    [HttpGet("/user/{userId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserDTO>> GetUserNameById(string userId)
+    {
+        var response = await _serviceManager.UserService.GetByUserIdAsync(userId);
+        return response.ToActionResult();
+    }
+
+
 }
