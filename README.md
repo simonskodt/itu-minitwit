@@ -67,7 +67,9 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
   - [ ] Add missing features.
   - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
   
-### Week 6  
+### Week 6
+
+TBA
   
 ## Course description
 
