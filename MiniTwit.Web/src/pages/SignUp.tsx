@@ -10,73 +10,76 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
 
-
   const appService = new AppService();
 
   const navigate = useNavigate();
-  
-  const goToHome= () => {
-    navigate('/'); 
+
+  const goToHome = () => {
+    navigate('/');
   };
 
   const submit = (e: React.FormEvent) => {
-    console.log("USERNAME:"+username)
-    if (password != passwordRepeat){
+    console.log("USERNAME:" + username)
+    if (password != passwordRepeat) {
       alert("Passwords doesnt match")
       return
     }
 
-    if(!email.includes('@')){
+    if (!email.includes('@')) {
       alert("Wrong Email Format")
       return
     }
 
     let promise = appService.registerUser(username, email, password);
-    promise.catch( () => alert("An error occured, all input fields must be filled"))
+    promise.catch(() => alert("An error occured, all input fields must be filled"))
     promise.then(goToHome)
-};
+  };
 
-return (
-  <div className="page">
-    <Header isLoggedIn = {false}/>
-      <div className='login-form'>
-      <h2>Sign Up</h2>
-        <label htmlFor="username">Username</label>
-        <input 
+  return (
+    <div className="page">
+      <Header isLoggedIn={false} />
+      <div className="body">
+        <h2>Sign Up</h2>
+        <label htmlFor="username">Username</label><br />
+        <input
+          className='text-field'
           type="text"
           placeholder="Username"
           name="username"
           required
           onChange={e => setUsername(e.target.value)}
-        />
-        <label htmlFor="email">Email</label>
-        <input 
+        /><br />
+        <label htmlFor="email">Email</label><br />
+        <input
+          className='text-field'
           type="text"
           placeholder="Email"
           name="email"
           required
           onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
+        /><br />
+        <label htmlFor="password">Password</label><br />
         <input
+          className='text-field'
           type="password"
           placeholder="Password"
           name="password"
           required
           onChange={e => setPassword(e.target.value)}
-        />
-        <label htmlFor="password(repeat)">Password(Repeat)</label>
+        /><br />
+        <label htmlFor="password(repeat)">Password (repeat)</label><br />
         <input
-          type="password(repeat)"
-          placeholder="Password(Repeart)"
+          className='text-field'
+          type="password"
+          placeholder="Password (repeat)"
           name="password(repeat)"
           required
           onChange={e => setPasswordRepeat(e.target.value)}
-        />
+        /><br />
         <button onClick={submit}>Sign Up</button>
       </div>
-    <Footer />
- </div>
-);
+        <Footer />
+    </div>
+  );
 }
 export default SignUp;
