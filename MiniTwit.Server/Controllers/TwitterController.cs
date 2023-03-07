@@ -160,8 +160,8 @@ public class TwitterController : ControllerBase
     /// <response code="200">Always.</response>
     [HttpPost("/logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult Logout()
+    public async Task<ActionResult> Logout()
     {
-        return Ok();
+        return await Task.FromResult(Ok());
     }
 }
