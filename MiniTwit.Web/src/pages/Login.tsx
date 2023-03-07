@@ -6,51 +6,56 @@ import Header from './Header';
 import Footer from './Footer';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    const appService = new AppService();
+  const appService = new AppService();
 
-    const navigate = useNavigate();
-    
-    const goToHome= () => {
-      navigate('/'); 
-    };
+  const navigate = useNavigate();
 
-    const submit = (e: React.FormEvent) => {
-        let promise = appService.Login(username, password);
-        promise.catch( () => alert("Wrong credentials"))
-        promise.then(goToHome)
-    };
+  const goToHome = () => {
+    navigate('/');
+  };
 
-    return (
-      <div className="page">
-        <Header isLoggedIn = {false}/>
-          <div className="body">
-            <div className='login-form'>
-            <h2>Sign In</h2>
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                placeholder="Username"
-                name="username"
-                required
-                onChange={e => setUsername(e.target.value)}
-              />
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                required
-                onChange={e => setPassword(e.target.value)}
-              />
-              <button onClick={submit}>Login</button>
-            </div>
-          </div>
-        <Footer />
-     </div>
-    );
-  }
+  const submit = (e: React.FormEvent) => {
+    let promise = appService.Login(username, password);
+    promise.catch(() => alert("Wrong credentials"))
+    promise.then(goToHome)
+  };
 
-  export default Login;
+  return (
+    <div className="page">
+      <Header isLoggedIn={false} />
+      <div className="body">
+        <div className='login-form'>
+          <h2>Sign In</h2>
+          <label htmlFor="username">Username </label><br />
+          <input
+            className="text-field"
+            type="text"
+            placeholder="Username"
+            name="username"
+            required
+            onChange={e => setUsername(e.target.value)}
+          /><br />
+          <label htmlFor="password">Password </label><br />
+          <input
+            className="text-field"
+            type="password"
+            placeholder="Password"
+            name="password"
+            required
+            onChange={e => setPassword(e.target.value)}
+          /><br />
+          <button
+            onClick={submit}
+            type="submit"
+          >Login</button>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+export default Login;
