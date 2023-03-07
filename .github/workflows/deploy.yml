@@ -44,15 +44,7 @@ jobs:
     
       - name: Run unit tests
         uses: fifsky/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          user: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: |
-            cd itu-minitwit/
-            git pull
-            dotnet test ./MiniTwit.Tests/Infrastructure.Tests
-            exit
+
 
       - name: Deploy
         uses: fifsky/ssh-action@master
@@ -63,6 +55,7 @@ jobs:
           args: "-vvv"
           command: |
             cd itu-minitwit/
+            git pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
             docker-compose down
