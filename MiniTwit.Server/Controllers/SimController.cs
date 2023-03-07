@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core.Responses;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Service;
-using MiniTwit.Core.Error;
 
 namespace MiniTwit.Server.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = "BasicAuthentication", Roles = "Simulator")]
 [Route("[controller]")]
 public class SimController : ControllerBase
 {
@@ -22,7 +22,7 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Get the latest value
-    /// <summary>
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,15 +35,13 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Registers the user
-    /// <summary>
+    /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Route("register")]
-    public async Task<ActionResult> Register(
-        [FromBody] UserCreateDTO userCreateDTO, 
-        [FromQuery] int latest = -1)
+    public async Task<ActionResult> Register([FromBody] UserCreateDTO userCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
 
@@ -53,20 +51,14 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Gets all the messages 
-    /// <summary>
+    /// </summary>
     [HttpGet]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs")]
-    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> Msgs([FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
-
-        if (!IsAuthorized(auth))
-        {
-            return Forbidden();
-        }
 
         var messages = (await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct)).Model!.ToList().Take(no);
         var messageDTOList = new List<MessageDetailsDTO>();
@@ -89,21 +81,15 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Gets all the messages 
-    /// <summary>
+    /// </summary>
     [HttpGet]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("msgs/{username}")]
-    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDetailsDTO>>> MsgUsername(string username, [FromQuery] int no = 100, [FromQuery] int latest = -1, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
-
-        if (!IsAuthorized(auth))
-        {
-            return Forbidden();
-        }
 
         var response = await _serviceManager.MessageService.GetAllNonFlaggedByUsernameAsync(username, ct);
 
@@ -135,20 +121,14 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Add message by username
-    /// <summary>
+    /// </summary>
     [HttpPost]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [Route("msgs/{username}")]
-    public async Task<ActionResult> MsgUsernamePost(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
+    public async Task<ActionResult> MsgUsernamePost(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
-
-        if (!IsAuthorized(auth))
-        {
-            return Forbidden();
-        }
 
         var response = await _serviceManager.MessageService.CreateByUsernameAsync(username, messageCreateDTO.Content!);
         return response.ToActionResult();
@@ -156,21 +136,15 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Get followers by username
-    /// <summary>
+    /// </summary>
     [HttpGet]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromQuery] int latest = -1, [FromQuery] int no = 100, CancellationToken ct = default)
+    public async Task<ActionResult<FollowerDetailsDTO>> FollowUser(string username, [FromQuery] int latest = -1, [FromQuery] int no = 100, CancellationToken ct = default)
     {
         await UpdateLatestAsync(latest);
-
-        if (!IsAuthorized(auth))
-        {
-            return Forbidden();
-        }
 
         var followers = await _serviceManager.FollowerService.GetAllFollowersByUsernameAsync(username, ct);
 
@@ -192,20 +166,14 @@ public class SimController : ControllerBase
 
     /// <summary>
     /// Follow user by username
-    /// <summary>
+    /// </summary>
     [HttpPost]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("fllws/{username}")]
-    public async Task<ActionResult> FollowUser(string username, [FromHeader(Name = "Authorization")] string auth, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
+    public async Task<ActionResult> FollowUser(string username, [FromBody] FollowerCreateDTO followerCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
-
-        if (!IsAuthorized(auth))
-        {
-            return Forbidden();
-        }
 
         var userResponse = await _serviceManager.UserService.GetByUsernameAsync(username);
 
@@ -239,23 +207,8 @@ public class SimController : ControllerBase
         }
     }
 
-    private ActionResult Forbidden()
-    {
-        return StatusCode(403, new APIError { Status = 403, ErrorMsg = "You are not authorized to use this resource!" });
-    }
-
-    private void UpdateLatest(int latestVal)
-    {
-        _serviceManager.LatestService.Update(latestVal);
-    }
-
     private async Task UpdateLatestAsync(int latestVal)
     {
         await _serviceManager.LatestService.UpdateAsync(latestVal);
-    }
-
-    private bool IsAuthorized(string authHeader)
-    {
-        return authHeader == "Basic c2ltdWxhdG9yOnN1cGVyX3NhZmUh";
     }
 }
