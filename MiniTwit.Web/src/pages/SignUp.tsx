@@ -10,7 +10,6 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
 
-
   const appService = new AppService();
 
   const navigate = useNavigate();
@@ -68,10 +67,10 @@ function SignUp() {
           required
           onChange={e => setPassword(e.target.value)}
         /><br />
-        <label htmlFor="password(repeat)">Password(Repeat)</label><br />
+        <label htmlFor="password(repeat)">Password (repeat)</label><br />
         <input
           className='text-field'
-          type="password(repeat)"
+          type="password"
           placeholder="Password (repeat)"
           name="password(repeat)"
           required
