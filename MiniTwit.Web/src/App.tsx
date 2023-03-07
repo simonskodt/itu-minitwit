@@ -15,8 +15,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<TimeLine />} />
         <Route path="/public" element={<PublicTimeline />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
       </Routes>
     </>
   );
