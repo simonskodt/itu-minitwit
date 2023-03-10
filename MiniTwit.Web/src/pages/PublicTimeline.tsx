@@ -9,53 +9,36 @@ import { MessageObject, MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
 
+//function connectIdToName (){}
 
 function PublicTimeline() {
   //const {messages} = useContext(MessagesContext)
   //const { setMessages } = useContext(MessagesContext);
 
-  const [messages, setMessages] = useState<MessageObject[]>();
+  const [AllMessages, setMessages] = useState<MessageObject[]>();
   const MesWithUsername : MessageObjectWithName [] = [] 
+
 
   useEffect(() => {
     FetchPublicTimeline().then((messages) => {
-      console.log(messages);
+      messages.forEach(element  => {
+        FetchUserByid(element.authorId).then((u)=>{
+          var user = buildUser(u);
+          var userWithName = makeMessageObjectWithName(element, user.username);
+          console.log(userWithName);
+          MesWithUsername.push(userWithName);
+          //console.log(MesWithUsername);
+
+          });
+      });
       setMessages(messages);
     });
   }, []);
 
-
-  useEffect(() => {
-    if (messages != undefined){
-      console.log(":::::A:SDFASDF")
-    messages.forEach(element => {
-      FetchUserByid(element.authorId).then((u)=>{
-      var user = buildUser(u);
-      var userWithName = makeMessageObjectWithName(element, user.username);
-      MesWithUsername.push(userWithName);
-      console.log(MesWithUsername);
-        }); 
-      });
-      
-    }
-  }, []);
-/*   if (messages != undefined)
-  {
-    messages.forEach(element => {
-      //console.log(element.text);
-      FetchUserByid(element.authorId).then((u)=>{
-      var user = buildUser(u);
-      var userWithName = makeMessageObjectWithName(element, user.username);
-      MesWithUsername.push(userWithName);
-      console.log(MesWithUsername);
-      }); 
-    });
-  } */
  
+ var slicedArray = AllMessages?.slice(0, 50)
 
- var slicedArray = messages?.slice(0, 50)
-
-  if (messages != undefined )  {
+  if (AllMessages != undefined )  {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
@@ -80,7 +63,7 @@ function PublicTimeline() {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
-        <button onClick={() => console.log(messages)}> TEST </button>
+        <button onClick={() => console.log(AllMessages)}> TEST </button>
         <Footer />
       </div>
     );
