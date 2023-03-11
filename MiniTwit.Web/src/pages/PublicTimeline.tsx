@@ -15,57 +15,36 @@ function PublicTimeline() {
   //const {messages} = useContext(MessagesContext)
   //const { setMessages } = useContext(MessagesContext);
 
-  const [AllMessages, setMessages] = useState<MessageObject[]>();
-  const MesWithUsername : MessageObjectWithName [] = [] 
+  const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
 
 
   useEffect(() => {
     FetchPublicTimeline().then((messages) => {
-      messages.forEach(element  => {
-        FetchUserByid(element.authorId).then((u)=>{
-          var user = buildUser(u);
-          var userWithName = makeMessageObjectWithName(element, user.username);
-          console.log(userWithName);
-          MesWithUsername.push(userWithName);
-          //console.log(MesWithUsername);
-
-          });
-      });
       setMessages(messages);
     });
   }, []);
 
- 
- var slicedArray = AllMessages?.slice(0, 50)
 
-  if (AllMessages != undefined )  {
-    return (
-      <div className="page">
-        <Header isLoggedIn={false} />
-        <div className="body">
-          <h2>Public TimeLine</h2>
-          {MesWithUsername.map((mes) => (
-            <view key={mes.messageId}>
+if (AllMessages!= undefined){
+  console.log(AllMessages);
+  return (
+    <div className="page">
+      <Header isLoggedIn={false} />
+      <div className="body">
+        <h2>Public TimeLine</h2>
+        {AllMessages.map((mes) => (
               <view>
-                <Message
-                  username = {mes.authorId}
-                  text = {mes.text}
-                  date = {mes.pubDate}
-                />
+                {mes.userName}
               </view>
-            </view>
           ))}
-        </div>
-        <Footer />
       </div>
-    );
-  } else {
+      <Footer />
+    </div>
+  );
+  }
+  else {
     return (
-      <div className="page">
-        <Header isLoggedIn={false} />
-        <button onClick={() => console.log(AllMessages)}> TEST </button>
-        <Footer />
-      </div>
+      <view>ELSE STATEMENT</view>
     );
   }
 }

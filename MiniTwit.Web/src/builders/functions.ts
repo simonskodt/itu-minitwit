@@ -25,7 +25,7 @@ export function getMessageArray(json: any) : MessageObject[]{
 
 
 
-export function makeMessageObjectWithName(message:MessageObject, name: string) : MessageObjectWithName{
+export function makeMessageObjectWithName(message:any, name: string) : MessageObjectWithName{
     let messageId: string;
     let authorId: string;
     let text: string;
@@ -34,7 +34,7 @@ export function makeMessageObjectWithName(message:MessageObject, name: string) :
     let userName:string;
 
     let messageObjwithName = {
-        messageId: message.messageId,
+        messageId: message.id,
         authorId: message.authorId,
         text: message.text,
         pubDate: message.pubDate,
