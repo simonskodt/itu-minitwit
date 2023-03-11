@@ -17,13 +17,15 @@ function PublicTimeline() {
     });
   }, []);
 
-  if (AllMessages !=undefined && AllMessages.length>0){
+
+  var slicedArray = AllMessages?.slice(0, 50)
+  if (slicedArray !=undefined ){
     return (
       <div className="page">
         <Header isLoggedIn={false} />
         <div className="body">
           <h2>Public TimeLine</h2>
-          {AllMessages.map((mes) => (
+          {slicedArray.map((mes) => (
               <view key={mes.messageId}>
                 <view>
                   <Message
