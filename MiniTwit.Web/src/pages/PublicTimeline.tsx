@@ -1,11 +1,9 @@
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Layout.css";
-import { Component, useContext } from "react";
-import { buildUser, getMessageArray, makeMessageObjectWithName } from "../builders/functions";
-import { FetchPublicTimeline, FetchUserByid } from "./fetch";
+import { FetchPublicTimeline } from "./fetch";
 import { useState } from "react";
-import { MessageObject, MessageObjectWithName } from "../builders/interface";
+import {MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
 
@@ -40,13 +38,22 @@ function PublicTimeline() {
         <Footer />
       </div>
     );
-    }
-    else {
-      console.log("Empty array " + AllMessages);
-      return (
-        <view>Loading</view>
-      );
-    }
+    } else {
+    return (
+      <div className="page">
+        <Header isLoggedIn={false} />
+        <div className="body">
+          <h2>Public TimeLine</h2>
+          <ul className="messages">
+            <li>
+              <p>There's no messages so far.</p>
+            </li>
+          </ul>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default PublicTimeline;

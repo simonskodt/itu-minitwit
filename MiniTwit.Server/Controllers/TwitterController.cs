@@ -125,13 +125,13 @@ public class TwitterController : ControllerBase
     /// Authenticate a user with the given credentials.
     /// </summary>
     /// <param name="loginDTO">The id of the user to target.</param>
-    /// <returns>Either No Content on success or Unauthorized on invalid credentials.</returns>
-    /// <response code="204">If the credentials match an existing user.</response>
+    /// <returns>Either a UserDTO on success or Unauthorized on invalid credentials.</returns>
+    /// <response code="200">If the credentials match an existing user.</response>
     /// <response code="401">If the credentials are invalid.</response>
     [HttpPost("/login")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
+    public async Task<ActionResult<UserDTO>> Login([FromBody] LoginDTO loginDTO)
     {
         var response = await _serviceManager.AuthenticationService.AuthenticateAsync(loginDTO.Username!, loginDTO.Password!);
         return response.ToActionResult();
