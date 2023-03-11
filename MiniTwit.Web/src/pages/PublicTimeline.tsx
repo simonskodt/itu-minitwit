@@ -15,13 +15,11 @@ function PublicTimeline() {
 
   useEffect(() => {
     FetchPublicTimeline().then((messages) => {
-      console.log(messages);
       setMessages(messages);
     });
   }, []);
 
   if (AllMessages !=undefined && AllMessages.length>0){
-    console.log(AllMessages);
     return (
       <div className="page">
         <Header isLoggedIn={false} />
@@ -44,6 +42,7 @@ function PublicTimeline() {
     );
     }
     else {
+      console.log("Empty array " + AllMessages);
       return (
         <view>Loading</view>
       );
