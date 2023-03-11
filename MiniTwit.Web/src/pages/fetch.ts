@@ -15,7 +15,6 @@ export async function FetchPublicTimeline() {
         },
     };
     const MesWithUsername : MessageObjectWithName[] = []; 
-
     try {
         const a = await axios.get(LOCALHOST + "public", config).then((response) => {
             response.data.forEach(element => {
