@@ -42,3 +42,21 @@ export async function FetchUserByid(userId: string) {
         return Promise.reject('fetch order history failed');
     }
 }
+
+export async function FetchPrivateTimeLine(username: string){
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers: {
+      },
+  };
+  try {
+    const a = await axios.get(API_URL + username, config).then((response) => response.data);
+    return a;
+} catch (error) {
+    console.log(error);
+    alert("User doesn't exist");
+    return Promise.reject('fetch order history failed');
+}
+
+
+}
