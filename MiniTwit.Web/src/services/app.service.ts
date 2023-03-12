@@ -7,7 +7,7 @@ export class AppService {
     var data = JSON.stringify({
       "username": username,
       "email": email,
-      "password": pw
+      "pwd": pw
     });
 
     const request: AxiosRequestConfig = {
