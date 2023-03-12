@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/public" element={<PublicTimeline />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<SignUp />} /> 
-        <Route path="public/:userName" element={<PrivateTimeline/>}></Route>
+        <Route path="/:userName" element={<PrivateTimeline/>}></Route>
       </Routes>
     </>
   );
