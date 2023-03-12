@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import TimeLine from "./pages/TimeLine";
 import PublicTimeline from "./pages/PublicTimeline";
 import SignUp from "./pages/SignUp";
+import PrivateTimeline from "./pages/PrivateTimeline";
 
 const DEVELOPMENT = "https://localhost:7111/";
 const PRODUCTION = "http://164.92.167.188:80/";
@@ -18,7 +19,8 @@ export default function App() {
         <Route path="/" element={<TimeLine />} />
         <Route path="/public" element={<PublicTimeline />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<SignUp />} />
+        <Route path="/register" element={<SignUp />} /> 
+        <Route path="public/:userName" element={<PrivateTimeline/>}></Route>
       </Routes>
     </>
   );
