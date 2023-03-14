@@ -89,6 +89,27 @@ export class AppService {
       return Promise.reject();
     }
   }
+
+  public async follow(UserToFollow: string, id: string){
+    //https://localhost:7111/Eriksen/follow?userId=6410920135626df320346d7a
+
+    const request: AxiosRequestConfig = {
+      method: 'post',
+      maxBodyLength: Infinity,
+        url: API_URL + UserToFollow +"/follow?userId=" + id,
+        headers: { }
+      };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+
+  }
 }
 
 

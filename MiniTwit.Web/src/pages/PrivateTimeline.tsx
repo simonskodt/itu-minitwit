@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import Header from "../components/Header";
 import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
+import FollowComponent from "../components/FollowComponent";
 
 function PrivateTimeline()
 {
@@ -26,6 +27,7 @@ function PrivateTimeline()
     <div className="page">
         <Header isLoggedIn={checkLogIn()} />
         <MessageComponent isLoggedIn={checkLogIn()} />
+        <FollowComponent isLoggedIn={checkLogIn()} userToFollow ={userName}/>
         <div className="body">
         <h2>{userName}'s TimeLine</h2>
         {messages.map((mes) => (
