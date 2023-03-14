@@ -1,9 +1,9 @@
 FROM node:17-alpine as builder
 WORKDIR /app
-EXPOSE 3000
 
 # COPY ./package.json .
 # COPY ./package-lock.json .
+COPY requirements.txt ./
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
 RUN npm install --omit=dev
 RUN npm install -g serve
@@ -13,4 +13,4 @@ COPY 'MiniTwit.Web/.' .
 RUN npm run build
 
 # start app
-CMD [ "serve", "-s", "build"]
+CMD [ "serve", "-l", "3001", "-s", "build"]
