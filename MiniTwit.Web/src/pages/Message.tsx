@@ -7,7 +7,7 @@ interface IMessageProps {
 }
 
 // Generation of MD5 hash to use as Gravatar image
-function generateHash(name: any): string {
+function generateHash(name: string): string {
     var hash:string = Md5.hashStr(name);
     console.log('https://www.gravatar.com/avatar/' + hash);
     return 'https://www.gravatar.com/avatar/' + hash + '?s=50&d=identicon';
