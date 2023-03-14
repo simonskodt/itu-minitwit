@@ -1,4 +1,3 @@
-
 div.page {
     background: white;
     border: 1px solid #6ECCC4;
@@ -138,4 +137,23 @@ div.error {
     -webkit-border-radius: 2px;
     padding: 4px;
     font-size: 13px;
+}
+
+/* Extra implementations */
+div.page .text-field {
+    margin-left: 36px;
+}
+
+button {
+    background: #105751;
+    border: 1px solid #073B36;
+    padding: 1px 3px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+    /* make space around the object */
+    margin: 8px 0px;
+    font-weight: bold;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    color: white;
 }

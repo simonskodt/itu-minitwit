@@ -1,62 +1,57 @@
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Layout.css";
-import { useContext } from "react";
-import { getMessageArray } from "../builders/functions";
 import { FetchPublicTimeline } from "./fetch";
 import { useState } from "react";
-import { MessageObject } from "../builders/interface";
+import {MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
 
 
 function PublicTimeline() {
-  //const {messages} = useContext(MessagesContext)
-  //const { setMessages } = useContext(MessagesContext);
-
-  const [messages, setMessages] = useState<MessageObject[]>();
-
-  const fetchAllUsers = () => {
-    FetchPublicTimeline().then((messages) => {
-      console.log(messages);
-      let buildingMessage = getMessageArray(messages);
-      setMessages(buildingMessage);
-    });
-  };
+  const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
 
   useEffect(() => {
     FetchPublicTimeline().then((messages) => {
-      console.log(messages);
       setMessages(messages);
     });
   }, []);
 
-  if (messages != undefined) {
+
+  var slicedArray = AllMessages?.slice(0, 50)
+  if (slicedArray !=undefined ){
     return (
       <div className="page">
         <Header isLoggedIn={false} />
         <div className="body">
           <h2>Public TimeLine</h2>
-          {messages.map((mes) => (
-            <view key={mes.messageId}>
-              <view>
-                <Message
-                  username = {mes.authorId}
-                  text = {mes.text}
-                  date = {mes.pubDate}
-                />
+          {slicedArray.map((mes) => (
+              <view key={mes.messageId}>
+                <view>
+                  <Message
+                    username={mes.userName}
+                    text={mes.text}
+                    date={mes.pubDate}
+                  />
+                </view>
               </view>
-            </view>
-          ))}
+            ))}
         </div>
         <Footer />
       </div>
     );
-  } else {
+    } else {
     return (
       <div className="page">
         <Header isLoggedIn={false} />
-        <button onClick={() => console.log(messages)}> TEST </button>
+        <div className="body">
+          <h2>Public TimeLine</h2>
+          <ul className="messages">
+            <li>
+              <p>There's no messages so far.</p>
+            </li>
+          </ul>
+        </div>
         <Footer />
       </div>
     );

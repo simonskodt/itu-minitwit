@@ -1,4 +1,4 @@
-import { MessageObject } from "./interface";
+import { MessageObject, MessageObjectWithName, User } from "./interface";
 
 
 export function getMessageArray(json: any) : MessageObject[]{
@@ -21,4 +21,39 @@ export function getMessageArray(json: any) : MessageObject[]{
         returnArrayOfObject[i] = messageObj;
     }
     return returnArrayOfObject;
+}
+
+
+
+export function makeMessageObjectWithName(message:any, name: string) : MessageObjectWithName{
+    let messageId: string;
+    let authorId: string;
+    let text: string;
+    let pubDate: string;
+    let flagged: number;
+    let userName:string;
+
+    let messageObjwithName = {
+        messageId: message.id,
+        authorId: message.authorId,
+        text: message.text,
+        pubDate: message.pubDate,
+        flagged: message.flagged,
+        userName: name
+    }
+    return messageObjwithName;
+}
+
+export function buildUser(json:any) : User{
+    let id;
+    let username;
+    let email;
+
+    let user = {
+        id: json.id,
+        username: json.username,
+        email: json.email
+    }
+
+    return user
 }

@@ -46,7 +46,6 @@ builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
 builder.Services.AddScoped<MetricReporter>();
 
-
 var app = builder.Build();
 
 // Seed DB
@@ -79,11 +78,6 @@ app.UseAuthorization();
 app.UseMetricServer();
 app.UseMiddleware<ResponseMetricMiddleware>();
 
-Metrics.CreateCounter("sampleapp_ticks_total", "tik tok tik tok");
-Metrics.CreateGauge("minitwit_cpu_load_percent", "Current load of the CPU in percent.");
-Metrics.CreateCounter("minitwit_http_responses_total", "The count of HTTP responses sent.");
-
-app.MapMetrics();
 app.MapControllers();
 
 app.Run();
