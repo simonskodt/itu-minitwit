@@ -44,7 +44,7 @@ builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<ILatestRepository, LatestRepository>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
-builder.Services.AddScoped<MetricReporter>();
+builder.Services.AddSingleton<MetricReporter>();
 
 var app = builder.Build();
 
@@ -72,13 +72,14 @@ app.UseCors(x => x
 
 // app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseMetricServer();
 app.UseMiddleware<ResponseMetricMiddleware>();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
+app.MapMetrics();
 
 app.Run();
 

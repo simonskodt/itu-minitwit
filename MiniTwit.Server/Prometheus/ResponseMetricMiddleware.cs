@@ -13,6 +13,7 @@ public class ResponseMetricMiddleware
 
     public async Task Invoke(HttpContext context, MetricReporter reporter)
     {
+        // Ignore metrics endpoint
         var path = context.Request.Path.Value;
         if (path == "/metrics")
         {

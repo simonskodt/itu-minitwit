@@ -12,8 +12,11 @@ public class MetricReporter
     {
         _logger = logger;
 
-        _requestCounter = Metrics.CreateCounter("total_requests", "The total number of requests serviced by this API.");
-        _responseTimeHistogram = Metrics.CreateHistogram("request_duration_seconds", "The duration in seconds between the response to a request.", new HistogramConfiguration
+        _requestCounter = Metrics.CreateCounter("minitwit_total_requests", "The total number of requests serviced by the MiniTwit API.", new CounterConfiguration
+        {
+            ExemplarBehavior = ExemplarBehavior.NoExemplars()
+        });
+        _responseTimeHistogram = Metrics.CreateHistogram("minitwit_request_duration_seconds", "The duration in seconds between the response to a request to the Minitwit API.", new HistogramConfiguration
         {
             Buckets = Histogram.ExponentialBuckets(0.01, 2, 10),
             LabelNames = new[] { "status_code", "method" }
