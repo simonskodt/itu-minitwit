@@ -137,7 +137,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
         var loginDTO = new LoginDTO { Username = "Gustav", Password = "password" };
         var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
 
-        Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
     }
 
     [Fact]
