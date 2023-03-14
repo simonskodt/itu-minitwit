@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -189,7 +189,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
@@ -205,6 +205,6 @@
   "timezone": "",
   "title": "MiniTwit",
   "uid": "a94Zmaa4k",
-  "version": 5,
+  "version": 2,
   "weekStart": ""
 }
