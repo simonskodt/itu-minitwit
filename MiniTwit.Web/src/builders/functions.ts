@@ -1,10 +1,10 @@
 import { MessageObject, MessageObjectWithName, User } from "./interface";
 
 
-export function getMessageArray(json: any) : MessageObject[]{
+export function getMessageArray(json: any): MessageObject[] {
     let returnArrayOfObject = new Array(json.length);
 
-    for (let i = 0; i< json.length; i++){
+    for (let i = 0; i < json.length; i++) {
         let messageId = json[i].messageId;
         let authorId = json[i].authorId;
         let text = json[i].text;
@@ -25,13 +25,13 @@ export function getMessageArray(json: any) : MessageObject[]{
 
 
 
-export function makeMessageObjectWithName(message:any, name: string) : MessageObjectWithName{
+export function makeMessageObjectWithName(message: any, name: string): MessageObjectWithName {
     let messageId: string;
     let authorId: string;
     let text: string;
     let pubDate: string;
     let flagged: number;
-    let userName:string;
+    let userName: string;
 
     let messageObjwithName = {
         messageId: message.id,
@@ -44,7 +44,7 @@ export function makeMessageObjectWithName(message:any, name: string) : MessageOb
     return messageObjwithName;
 }
 
-export function buildUser(json:any) : User{
+export function buildUser(json: any): User {
     let id;
     let username;
     let email;
@@ -58,17 +58,16 @@ export function buildUser(json:any) : User{
     return user
 }
 
-export function checkLogIn() : boolean{
+export function checkLogIn(): boolean {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn')
-    if (isLoggedIn == 'true'){
-      return true
-    }else{
-      return false
+    if (isLoggedIn == 'true') {
+        return true
+    } else {
+        return false
     }
-  }
+}
 
-
-export function getCurrentUsername() : any {
-    const username =  sessionStorage.getItem('username')
+export function getCurrentUsername(): any {
+    const username = sessionStorage.getItem('username')
     return username
 }

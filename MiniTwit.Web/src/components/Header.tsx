@@ -3,6 +3,8 @@ import { isPropertySignature } from 'typescript';
 import { getCurrentUsername } from '../builders/functions';
 import '../pages/Layout.css';
 
+const userName = sessionStorage.getItem('username')
+
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
         return (
@@ -15,9 +17,9 @@ function getMenu(isLoggedIn: boolean) {
     } else {
         return (
             <>
-                <a href={getCurrentUsername()}>My Timeline</a>&nbsp;|&nbsp;
+                <a href={getCurrentUsername()}>my timeline</a>&nbsp;|&nbsp;
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
-                <a href="./" onClick={ () => sessionStorage.clear()}>sign out</a>
+                <a href="./" onClick={ () => sessionStorage.clear()}>sign out [{userName}]</a>
             </>
         );
     }
