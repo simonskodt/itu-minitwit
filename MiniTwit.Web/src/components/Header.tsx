@@ -3,6 +3,8 @@ import { isPropertySignature } from 'typescript';
 import { getCurrentUsername } from '../builders/functions';
 import '../pages/Layout.css';
 
+const userName = sessionStorage.getItem('username')
+
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
         return (
