@@ -108,7 +108,7 @@ public class TwitterControllerTests
         var controller = new TwitterController(_manager.Object, _logger.Object);
 
         // Act
-        var actual = (await controller.PublicTimeline()).Result as OkObjectResult;
+        var actual = (await controller.PublicTimeline(1)).Result as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
