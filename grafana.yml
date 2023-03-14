@@ -1,0 +1,6 @@
+datasources:
+- name: "Prometheus MiniTwit"
+  access: proxy
+  type: prometheus
+  url: http://promethues:9090
+  isDefault: true
