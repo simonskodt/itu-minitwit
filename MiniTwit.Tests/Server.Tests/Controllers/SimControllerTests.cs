@@ -104,7 +104,7 @@ public class SimControllerTests
     //     Assert.Equal(expectedAPIError, actual.Value);
     // }
 
-    public async Task PostMsgUsername_when_authorized_returns_NoContent()
+    public async Task PostMsgUsername_returns_NoContent()
     {
         // Arrange
         var expected = new Response(NoContent, null);
