@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AppService } from '../services/app.service';
 import { useNavigate } from 'react-router-dom';
-import Header from './Header';
+import Header from '../components/Header';
 import Footer from './Footer';
 
 const Login = () => {
@@ -18,8 +18,16 @@ const Login = () => {
 
   const submit = (e: React.FormEvent) => {
     let promise = appService.Login(username, password);
-    promise.catch(() => alert("Wrong credentials"))
-    promise.then(goToHome)
+    promise.catch(() => {
+      alert("Wrong credentials")
+      sessionStorage.setItem('isLoggedIn', 'false')}
+    )
+    sessionStorage.setItem('isLoggedIn', 'true')
+    promise.then((result) => {
+      console.log(result)
+      sessionStorage.setItem('username',result.data.username)
+      goToHome()
+    })
   };
 
   return (

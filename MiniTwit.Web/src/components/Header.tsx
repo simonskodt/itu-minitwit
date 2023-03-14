@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { isPropertySignature } from 'typescript';
-import './Layout.css';
+import { getCurrentUsername } from '../builders/functions';
+import '../pages/Layout.css';
 
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
@@ -14,9 +15,9 @@ function getMenu(isLoggedIn: boolean) {
     } else {
         return (
             <>
-                <a href="./">my timeline</a>&nbsp;|&nbsp;
+                <a href={getCurrentUsername()}>My Timeline</a>&nbsp;|&nbsp;
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
-                <a href="./logout">sign out</a>
+                <a href="./" onClick={ () => sessionStorage.clear()}>sign out</a>
             </>
         );
     }
