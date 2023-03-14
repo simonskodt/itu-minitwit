@@ -42,14 +42,15 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Get all non-flagged messages from all users sorted in descending order after publish date.
     /// </summary>
+    /// <param name="pageNumber"></param>
     /// <param name="ct"></param>
     /// <returns>A list of all non-flagged Messages sorted in descending order after publish date.</returns>
     /// <response code="200">Every time, return all non-flagged messages sorted in descending order after publish date.</response>
-    [HttpGet("/public")]
+    [HttpGet("/public/{pageNumber}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(int pageNumber, CancellationToken ct = default)
     {
-        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedPageNumberLimitAsync(pageNumber, ct);
         return response.ToActionResult();
     }
 

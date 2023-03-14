@@ -44,7 +44,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Public_returns_all_non_flagged_messages_and_OK()
     {
-        var actual = await _factory.CreateClient().GetAsync("/public");
+        var actual = await _factory.CreateClient().GetAsync("/public/1");
         var content = await actual.Content.ReadFromJsonAsync<IEnumerable<Message>>();
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);

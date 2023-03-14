@@ -3,60 +3,41 @@ import Header from "../components/Header";
 import "./Layout.css";
 import { FetchPublicTimeline } from "./fetch";
 import { useState } from "react";
-import {MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
 import { checkLogIn } from "../builders/functions";
+import MessageSliceComponent from "../components/MessageSliceComponent";
+
 
 
 function PublicTimeline() {
-  const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
+  const [pageNumber, setPageNumber] = useState(1);
 
-  useEffect(() => {
-    FetchPublicTimeline().then((messages) => {
-      setMessages(messages);
-    });
-  }, []);
+  const handlePageChangeHigher = () => {
+    setPageNumber(pageNumber + 1);
+  };
 
+  const handlePageChangeLower = () => {
+    if (pageNumber <= 1){
+      alert("Press next page to see more messages")
+    }else{
+      setPageNumber(pageNumber + -1);
+    }
+  };
 
-  var slicedArray = AllMessages?.slice(0, 50)
-  if (slicedArray !=undefined ){
-    return (
-      <div className="page">
-        <Header isLoggedIn={checkLogIn()} />
-        <div className="body">
-          <h2>Public TimeLine</h2>
-          {slicedArray.map((mes) => (
-              <view key={mes.messageId}>
-                <view>
-                  <Message
-                    username={mes.userName}
-                    text={mes.text}
-                    date={mes.pubDate}
-                  />
-                </view>
-              </view>
-            ))}
-        </div>
-        <Footer />
+  return (
+    <div className="page">
+      <Header isLoggedIn={checkLogIn()} />
+      <div className="body">
+        <h2>Public TimeLine</h2>
+        <button onClick={handlePageChangeLower}>Prev. Page</button>
+        <div>Pagenumber: {pageNumber} </div>
+        <button onClick={handlePageChangeHigher}>Next Page</button>
+        <MessageSliceComponent key={pageNumber} pageNumber={pageNumber} />
       </div>
-    );
-    } else {
-    return (
-      <div className="page">
-        <Header isLoggedIn={checkLogIn()} />
-        <div className="body">
-          <h2>Public TimeLine</h2>
-          <ul className="messages">
-            <li>
-              <p></p>
-            </li>
-          </ul>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+      <Footer />
+    </div>
+  );
 }
 
 export default PublicTimeline;
