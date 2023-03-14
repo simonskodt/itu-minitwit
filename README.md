@@ -76,7 +76,14 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
 ### Week 6
 
 - [ ] Add Monitoring to Your Systems.
-- [ ] Software Maintenance II: Check the user interface of another group.
+- [x] Software Maintenance II: Check the user interface of another group.
+  - [ ] Do you see a public timeline?
+  - [ ] Does the public timeline show messages that the application received from the simulator?
+  - [ ] Can you create a new user?
+  - [ ] Can you login as a new user?
+  - [ ] Can you write a message?
+  - [ ] After publishing a message, does it appear on your private timeline?
+  - [ ] Can you follow another user?
 
 ### Week 7
 
