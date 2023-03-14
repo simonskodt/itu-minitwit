@@ -59,6 +59,7 @@ services:
     image: prom/prometheus:latest
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_storage:/prometheus
     ports:
       - "9090:9090"
     depends_on:
@@ -86,6 +87,7 @@ services:
 volumes:
   mongodb_data_container:
   grafana_storage:
+  prometheus_storage:
 
 secrets:
   db_password:
@@ -94,7 +96,3 @@ secrets:
     file: './.local/connection_string.txt'
   grafana_password:
     file: './.local/grafana_password.txt'
-
-
-
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
