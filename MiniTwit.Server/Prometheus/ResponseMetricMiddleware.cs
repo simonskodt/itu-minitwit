@@ -13,6 +13,7 @@ public class ResponseMetricMiddleware
 
     public async Task Invoke(HttpContext context, MetricReporter reporter)
     {
+        // Ignore metrics endpoint
         var path = context.Request.Path.Value;
         if (path == "/metrics")
         {
@@ -30,7 +31,7 @@ public class ResponseMetricMiddleware
         {
             sw.Stop();
             reporter.RegisterRequest();
-            reporter.RegisterResponseTime(context.Response.StatusCode, context.Request.Method, sw.Elapsed);
+            reporter.RegisterResponseTime(context.Response.StatusCode, context.Request.Method, context.Request.Path.Value!, sw.Elapsed);
         }
     }
 }
