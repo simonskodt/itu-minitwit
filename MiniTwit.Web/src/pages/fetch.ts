@@ -5,14 +5,14 @@ import { MessageObjectWithName } from "../builders/interface";
 import { API_URL } from "../App";
 
 
-export async function FetchPublicTimeline(): Promise<MessageObjectWithName[]> {
+export async function FetchPublicTimeline(pageNumber : number): Promise<MessageObjectWithName[]> {
     const config: AxiosRequestConfig = {
       method: 'GET',
       headers: {},
     };
     const MesWithUsername: MessageObjectWithName[] = [];
     try {
-      const response = await axios.get(API_URL + 'public', config);
+      const response = await axios.get(API_URL + 'public/' + pageNumber, config);
       for (const element of response.data) {
         const u = await FetchUserByid(element.authorId);
         const user = buildUser(u);

@@ -1,0 +1,92 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+networks:
+  main:
+    name: itu-minitwit-network
+
+services:
+  mongodb:
+    image: mongo:latest
+    command: [--auth]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: radiator
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27018:27017'
+    networks:
+      - main
+    secrets:
+      - db_password
+
+  itu-minitwit-server:
+    image: vict2976/itu-minitwit-server
+    container_name: minitwit
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__MiniTwit:
+    ports:
+      - '80:80'
+    networks:
+      - main
+    depends_on:
+      - mongodb
+    secrets:
+      - source: connection_string
+        target: ConnectionStrings__MiniTwit
+
+  itu-minitwit-web:
+    image: vict2976/itu-minitwit-web
+    ports:
+      - '3000:3001'
+    networks:
+      - main
+    depends_on:
+      - itu-minitwit-server
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_storage:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - itu-minitwit-server
+    networks:
+      - main
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_USER: radiator
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_password
+    volumes:
+      - ./Monitoring/grafana.yml:/etc/grafana/provisioning/datasources/grafana.yml
+      - grafana_storage:/var/lib/grafana
+    ports:
+      - "9091:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - main
+    secrets:
+     - grafana_password
+      
+volumes:
+  mongodb_data_container:
+  grafana_storage:
+  prometheus_storage:
+
+secrets:
+  db_password:
+    file: './.local/db_password.txt'
+  connection_string:
+    file: './.local/connection_string.txt'
+  grafana_password:
+    file: './.local/grafana_password.txt'
