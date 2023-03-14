@@ -1,7 +1,7 @@
 import Header from '../components/Header';
 import Footer from './Footer';
 import './Layout.css';
-import { checkLogIn } from '../builders/functions';
+import { checkLogIn, getCurrentUsername } from '../builders/functions';
 
 interface Request {
   endpoint: string;
@@ -9,15 +9,18 @@ interface Request {
 
 function TimeLine() {
 
-  return (
-    <div className="page">
-      <Header isLoggedIn={checkLogIn()} />
-        <div className="body">
-          <h2>Timeline</h2>
-        </div>
-      <Footer />
-    </div>
-  );
+  if(checkLogIn()){
+    console.log(checkLogIn())
+    return(
+      <div>{window.location.href = '/' + getCurrentUsername()}</div>
+    )
+  }else{
+    return(
+      <div>{window.location.href = '/public'}</div>
+
+    )
+  }
 }
 
 export default TimeLine
+
