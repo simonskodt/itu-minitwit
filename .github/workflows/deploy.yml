@@ -54,6 +54,6 @@ jobs:
             git pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server
-            docker-compose down
-            docker-compose up -d
+            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml up -d
 
