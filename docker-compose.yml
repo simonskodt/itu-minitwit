@@ -38,7 +38,6 @@ services:
       - main
     depends_on:
       - mongodb
-      - prometheus
     secrets:
       - source: connection_string
         target: ConnectionStrings__MiniTwit
@@ -57,12 +56,14 @@ services:
       - prometheus
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    depends_on:
+      - itu-minitwit-server
     networks:
       - main
       
