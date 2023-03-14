@@ -78,6 +78,9 @@ app.UseMiddleware<ResponseMetricMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMetricServer();
+app.UseMiddleware<ResponseMetricMiddleware>();
+
 app.MapControllers();
 app.MapMetrics();
 

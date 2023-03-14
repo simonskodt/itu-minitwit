@@ -53,7 +53,44 @@ export class AppService {
       return Promise.reject();
     }
   }
+
+  public async sendMessage(text: string, userId : string): Promise<any> {
+    const request: AxiosRequestConfig = {
+      method: 'post',
+      maxBodyLength: Infinity,
+        url: API_URL + 'add_message?userId=' + userId + '&text=' + text,
+        headers: { }
+      };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+  }
+
+  public async getUserId(username: string): Promise<any> {
+    const request: AxiosRequestConfig = {
+      method: 'get',
+      maxBodyLength: Infinity,
+        url: API_URL + 'username/' + username,
+        headers: { }
+      };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+  }
 }
+
 
 export interface APIError {
   statis: number

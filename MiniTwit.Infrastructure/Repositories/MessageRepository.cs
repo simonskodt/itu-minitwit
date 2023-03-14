@@ -91,7 +91,7 @@ public class MessageRepository : IMessageRepository
 
     public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedAsync(CancellationToken ct = default)
     {
-        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToListAsync(ct); 
+        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct); 
         
         return new DBResult<IEnumerable<Message>>
         {

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { checkLogIn } from "../builders/functions";
 import { MessageObject } from "../builders/interface";
 import { FetchPrivateTimeLine } from "./fetch";
 import Footer from "./Footer";
-import Header from "./Header";
+import Header from "../components/Header";
 import { Message } from "./Message";
+import MessageComponent from "../components/MessageComponent";
 
 function PrivateTimeline()
 {
@@ -22,7 +24,8 @@ function PrivateTimeline()
     if (messages!= undefined){
     return(
     <div className="page">
-        <Header isLoggedIn={false} />
+        <Header isLoggedIn={checkLogIn()} />
+        <MessageComponent isLoggedIn={checkLogIn()} />
         <div className="body">
         <h2>{userName}'s TimeLine</h2>
         {messages.map((mes) => (
@@ -44,7 +47,7 @@ function PrivateTimeline()
 }
 else {
     return (
-        <view>This user does not have any messages</view>
+        <view></view>
     );
     }
 }

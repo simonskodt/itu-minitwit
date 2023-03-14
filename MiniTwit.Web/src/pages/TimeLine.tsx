@@ -1,21 +1,26 @@
-import Header from './Header';
+import Header from '../components/Header';
 import Footer from './Footer';
 import './Layout.css';
+import { checkLogIn, getCurrentUsername } from '../builders/functions';
 
 interface Request {
   endpoint: string;
 }
 
 function TimeLine() {
-  return (
-    <div className="page">
-      <Header isLoggedIn={false} />
-        <div className="body">
-          <h2>Timeline</h2>
-        </div>
-      <Footer />
-    </div>
-  );
+
+  if(checkLogIn()){
+    console.log(checkLogIn())
+    return(
+      <input type="hidden">{window.location.href = '/' + getCurrentUsername()}</input>
+    )
+  }else{
+    return(
+      <input type="hidden">{window.location.href = '/public'}</input>
+
+    )
+  }
 }
 
 export default TimeLine
+
