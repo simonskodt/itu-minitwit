@@ -23,16 +23,16 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
     if(isLoggedIn){
         return (
             <div className='twitbox'>
-                <h3>What's on your mind {userName}</h3>
+                <h3>What's on your mind, {userName}?</h3>
                 <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Write here"
                     name="username"
-                    size={60}
+                    size={70}
                     required
                     onChange={e => setMessage(e.target.value)}
-                />
-                <button onClick={ () => PostMessage(message, userName)}> Share </button>
+                />&nbsp;&nbsp;
+                <button onClick={ () => PostMessage(message, userName)}>Share</button>
             </div>
         );
     }else{
