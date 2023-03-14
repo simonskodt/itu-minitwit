@@ -9,6 +9,7 @@ public interface IMessageRepository
     Task<DBResult<Message>> CreateAsync(string userId, string text);
     DBResult<IEnumerable<Message>> GetAllNonFlagged(CancellationToken ct = default);
     Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedAsync(CancellationToken ct = default);
+    Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default);
     DBResult<IEnumerable<Message>> GetAllByUserId(string userId, CancellationToken ct = default);
     Task<DBResult<IEnumerable<Message>>> GetAllByUserIdAsync(string userId, CancellationToken ct = default);
     DBResult<IEnumerable<Message>> GetAllByUsername(string username, CancellationToken ct = default);
