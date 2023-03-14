@@ -1,11 +1,10 @@
 # DevOps&mdash;Twitter Project
 
-
-
 | :love_letter: Group k&mdash;Radiator | Link |
 | ------------- | ------------- |
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
+| Monitoring | []() |
 
 ## Contents
 
@@ -24,8 +23,14 @@
 
 We currently **lack the following features**:
 
+- Deploy to DigitalOcean with Vagrant. 
 - Completing our front-end design.
 - Refactor the tests to work with new design.
+- Implement UI and end-to-end tests.
+- Continue working on monitoring.
+- Make UML-diagram of system.
+- Use static analysis tools.
+- Add Maintainability and Technical Debt estimation tools.
 
 It would be **nice to have the following features**:
 
@@ -70,24 +75,36 @@ Continue refactoring, Setup CI & CD for reproducible builds, tests, delivery, an
 Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction layer, and entering maintenance (Simulator starts).
 
 - Complete and polish your ITU-MiniTwit implementation
-  - [ ] Add missing features.
+  - [x] Add missing features.
   - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
   
 ### Week 6
 
-- [ ] Add Monitoring to Your Systems.
-- [x] Software Maintenance II: Check the user interface of another group.
-  - [ ] Do you see a public timeline?
-  - [ ] Does the public timeline show messages that the application received from the simulator?
-  - [ ] Can you create a new user?
-  - [ ] Can you login as a new user?
-  - [ ] Can you write a message?
-  - [ ] After publishing a message, does it appear on your private timeline?
-  - [ ] Can you follow another user?
+Add monitoring to your ITU-MiniTwit and peer-review.
+
+- [x] Add Monitoring to Your Systems.
+- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*)
+  - [x] Do you see a public timeline?
+  - [x] Does the public timeline show messages that the application received from the simulator?
+  - [x] Can you create a new user?
+  - [x] Can you login as a new user?
+  - [x] Can you write a message?
+  - [x] After publishing a message, does it appear on your private timeline?
+  - [x] Can you follow another user?
 
 ### Week 7
 
-TBA
+Enhancing CI/CD setup with test suite and static code analysis.
+
+- [ ] 1) Add tests to your CI chain (Selenium)
+- [ ] 2) Enhance your CI Pipelines with at least three static analysis tools
+  - [ ] .NET Analyzers
+  - [ ] tslint-clean-code
+  - [ ] Snyk
+- [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
+  - [ ] Sonarqube
+  - [ ] Code Climate
+- [ ] 4) Software Maintenance
   
 ## Course description
 
