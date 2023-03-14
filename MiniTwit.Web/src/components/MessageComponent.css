@@ -1,0 +1,8 @@
+.twitbox {
+    margin: 10px 0;
+    padding: 5px;
+    background: #F0FAF9;
+    border: 1px solid #94E2DA;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}

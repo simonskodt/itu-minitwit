@@ -175,5 +175,14 @@ public class TwitterController : ControllerBase
         return response.ToActionResult();
     }
 
+    [HttpGet("/username/{username}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<UserDTO> GetIDByUsername(string username)
+    {
+        var response = _serviceManager.UserService.GetByUsername(username);
+        return response.ToActionResult();
+    }
+
 
 }

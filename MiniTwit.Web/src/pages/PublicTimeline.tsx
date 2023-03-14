@@ -1,11 +1,12 @@
 import Footer from "./Footer";
-import Header from "./Header";
+import Header from "../components/Header";
 import "./Layout.css";
 import { FetchPublicTimeline } from "./fetch";
 import { useState } from "react";
 import {MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "./Message";
+import { checkLogIn } from "../builders/functions";
 
 
 function PublicTimeline() {
@@ -22,7 +23,7 @@ function PublicTimeline() {
   if (slicedArray !=undefined ){
     return (
       <div className="page">
-        <Header isLoggedIn={false} />
+        <Header isLoggedIn={checkLogIn()} />
         <div className="body">
           <h2>Public TimeLine</h2>
           {slicedArray.map((mes) => (
@@ -43,7 +44,7 @@ function PublicTimeline() {
     } else {
     return (
       <div className="page">
-        <Header isLoggedIn={false} />
+        <Header isLoggedIn={checkLogIn()} />
         <div className="body">
           <h2>Public TimeLine</h2>
           <ul className="messages">

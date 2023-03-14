@@ -57,3 +57,18 @@ export function buildUser(json:any) : User{
 
     return user
 }
+
+export function checkLogIn() : boolean{
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn')
+    if (isLoggedIn == 'true'){
+      return true
+    }else{
+      return false
+    }
+  }
+
+
+export function getCurrentUsername() : any {
+    const username =  sessionStorage.getItem('username')
+    return username
+}
