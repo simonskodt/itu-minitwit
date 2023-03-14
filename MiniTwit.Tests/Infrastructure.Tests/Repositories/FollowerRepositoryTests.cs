@@ -55,7 +55,7 @@ public class FollowerRepositoryTests : RepoTests
 
         var actual = _repository.Delete("000000000000000000000001", "Simon");
 
-        Assert.Equal(null, actual.ErrorType);
+        Assert.Null(actual.ErrorType);
         
         existing = _context.Followers.Find(f => f.WhoId == "000000000000000000000001" && f.WhomId == "000000000000000000000002").FirstOrDefault();
 
