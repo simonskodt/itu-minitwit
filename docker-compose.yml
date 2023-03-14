@@ -58,7 +58,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     depends_on:
@@ -72,8 +72,8 @@ services:
       GF_SECURITY_ADMIN_USER: radiator
       GF_SECURITY_ADMIN_PASSWORD: vuQ8pgQ#WxY6-\
     volumes:
-      - ./grafana.yml:/etc/grafana/provisioning/datasources/grafana.yml
-      - grafana_storage:/var/lib/grafana grafana/grafana-enterprise
+      - ./monitoring/grafana.yml:/etc/grafana/provisioning/datasources/grafana.yml
+      - grafana_storage:/var/lib/grafana
     ports:
       - "9091:3000"
     depends_on:

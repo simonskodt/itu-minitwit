@@ -14,7 +14,7 @@ scrape_configs:
     static_configs:
       - targets: ['prometheus:9090']
 
-  - job_name: 'itu-minittwit-app'
+  - job_name: 'itu-minitwit-app'
     scrape_interval: 5s
     static_configs:
       - targets: ['minitwit:80']

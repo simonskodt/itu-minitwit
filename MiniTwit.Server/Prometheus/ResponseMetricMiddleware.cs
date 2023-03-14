@@ -31,7 +31,7 @@ public class ResponseMetricMiddleware
         {
             sw.Stop();
             reporter.RegisterRequest();
-            reporter.RegisterResponseTime(context.Response.StatusCode, context.Request.Method, sw.Elapsed);
+            reporter.RegisterResponseTime(context.Response.StatusCode, context.Request.Method, context.GetEndpoint()!.DisplayName!, sw.Elapsed);
         }
     }
 }
