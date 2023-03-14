@@ -12,11 +12,11 @@ function TimeLine() {
   if(checkLogIn()){
     console.log(checkLogIn())
     return(
-      <div>{window.location.href = '/' + getCurrentUsername()}</div>
+      <input type="hidden">{window.location.href = '/' + getCurrentUsername()}</input>
     )
   }else{
     return(
-      <div>{window.location.href = '/public'}</div>
+      <input type="hidden">{window.location.href = '/public'}</input>
 
     )
   }

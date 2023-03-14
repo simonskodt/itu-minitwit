@@ -49,7 +49,7 @@ function PublicTimeline() {
           <h2>Public TimeLine</h2>
           <ul className="messages">
             <li>
-              <p>There's no messages so far.</p>
+              <p></p>
             </li>
           </ul>
         </div>

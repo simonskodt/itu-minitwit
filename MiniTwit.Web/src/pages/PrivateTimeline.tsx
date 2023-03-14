@@ -47,7 +47,7 @@ function PrivateTimeline()
 }
 else {
     return (
-        <view>This user does not have any messages</view>
+        <view></view>
     );
     }
 }
