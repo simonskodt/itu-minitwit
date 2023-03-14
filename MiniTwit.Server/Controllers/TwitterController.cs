@@ -71,7 +71,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new follower, making the specified userId follow {username}.
+    /// Create a new follower, making the specified userId follow username.
     /// </summary>
     /// <param name="username">The username of the user to follow.</param>
     /// <param name="userId">The id of the user wanting to follow username.</param>
@@ -88,7 +88,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Delete an existing follower, making the specified userId unfollow {username}.
+    /// Delete an existing follower, making the specified userId unfollow username.
     /// </summary>
     /// <param name="username">The username of the user to unfollow.</param>
     /// <param name="userId">The id of the user wanting to unfollow username.</param>

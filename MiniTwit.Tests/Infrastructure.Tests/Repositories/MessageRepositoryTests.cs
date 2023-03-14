@@ -54,7 +54,7 @@ public class MessageRepositoryTests : RepoTests
     {
         var actual = _repository.GetAllNonFlagged();
 
-        Assert.Equal(null, actual.ErrorType);
+        Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000008", AuthorId = "000000000000000000000003", Text = "Nikolaj2", PubDate = DateTime.Parse("01/01/2023 12:00:06"), Flagged = 0 }),              // 1
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000007", AuthorId = "000000000000000000000003", Text = "Nikolaj1", PubDate = DateTime.Parse("01/01/2023 12:00:05"), Flagged = 0 }),              // 2
@@ -73,7 +73,7 @@ public class MessageRepositoryTests : RepoTests
     {
         var actual = _repository.GetAllByUserId("000000000000000000000001");
 
-        Assert.Equal(null, actual.ErrorType);
+        Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
@@ -95,7 +95,7 @@ public class MessageRepositoryTests : RepoTests
     {
         var actual = _repository.GetAllByUsername("Gustav");
 
-        Assert.Equal(null, actual.ErrorType);
+        Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
@@ -117,7 +117,7 @@ public class MessageRepositoryTests : RepoTests
     {
         var actual = _repository.GetAllFollowedByUserId("000000000000000000000001");
 
-        Assert.Equal(null, actual.ErrorType);
+        Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),
             m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),
