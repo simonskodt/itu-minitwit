@@ -90,7 +90,7 @@ export class AppService {
     }
   }
 
-  public async follow(UserToFollow: string, id: string){
+  public async Follow(UserToFollow: string, id: string){
     //https://localhost:7111/Eriksen/follow?userId=6410920135626df320346d7a
 
     const request: AxiosRequestConfig = {
@@ -110,7 +110,31 @@ export class AppService {
     }
 
   }
+  public async UnFollow(UserToUnFollow: string, id: string){
+    //https://localhost:7111/Eriksen/follow?userId=6410920135626df320346d7a
+
+    const request: AxiosRequestConfig = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+        url: API_URL + UserToUnFollow +"/unfollow?userId=" + id,
+        headers: { }
+      };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+
+  }
+
+
 }
+
+
 
 
 export interface APIError {

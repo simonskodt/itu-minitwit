@@ -17,19 +17,26 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
     function Follow(username: any){
         appService.getUserId(username).then((result)=>{
             const id = result.data.id
-            appService.follow(userToFollow, id).then((fol) =>{
+            appService.Follow(userToFollow, id).then((fol) =>{
                 console.log(fol)
             })
         })
-
     }
 
+    function UnFollow(username: any){
+        appService.getUserId(username).then((result)=>{
+            const id = result.data.id
+            appService.UnFollow(userToFollow, id).then((fol) =>{
+                console.log(fol)
+            })
+        })
+    }
 
     if(isLoggedIn){
         return (
             <div>
             <button onClick={()=> Follow(userName)}>FOLLOW</button>
-            <button>UNFOLLOW</button>
+            <button onClick={()=>UnFollow(userName)}>UNFOLLOW</button>
             </div>
         );
     }else{

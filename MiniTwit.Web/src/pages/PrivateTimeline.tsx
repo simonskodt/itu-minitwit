@@ -17,7 +17,7 @@ function PrivateTimeline()
 
     useEffect(() => {
         FetchPrivateTimeLine(userName).then((messages) => {
-            
+  
           setMessages(messages);
         });
       }, []);
