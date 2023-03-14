@@ -1,6 +1,11 @@
 # DevOps&mdash;Twitter Project
 
-### :love_letter: **Live at:** [http://164.92.167.188:3000/](http://164.92.167.188:3000/)
+
+
+| :love_letter: Group k&mdash;Radiator | Link |
+| ------------- | ------------- |
+| Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
+| Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
 
 ## Contents
 
@@ -12,6 +17,7 @@
   * [Week 4](#week-4)
   * [Week 5](#week-5)
   * [Week 6](#week-6)
+  * [Week 7](#week-7)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -68,6 +74,11 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
   - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
   
 ### Week 6
+
+- [ ] Add Monitoring to Your Systems.
+- [ ] Software Maintenance II: Check the user interface of another group.
+
+### Week 7
 
 TBA
   
