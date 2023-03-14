@@ -4,6 +4,7 @@ EXPOSE 3000
 
 # COPY ./package.json .
 # COPY ./package-lock.json .
+COPY requirements.txt ./
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
 RUN npm install
 RUN npm install "axios"
