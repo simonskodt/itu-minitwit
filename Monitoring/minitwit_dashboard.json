@@ -160,7 +160,7 @@
             "uid": "P207FEC5A3BD20FE9"
           },
           "editorMode": "code",
-          "expr": "up{instance=\"minitwit:80\"}",
+          "expr": "up{job=\"itu-minitwit-app\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -238,7 +238,7 @@
             "uid": "P207FEC5A3BD20FE9"
           },
           "editorMode": "code",
-          "expr": "up{instance=\"prometheus:9090\"}",
+          "expr": "up{job=\"prometheus\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1383,6 +1383,6 @@
   "timezone": "",
   "title": "MiniTwit",
   "uid": "a94Zmaa4k",
-  "version": 38,
+  "version": 39,
   "weekStart": ""
 }
