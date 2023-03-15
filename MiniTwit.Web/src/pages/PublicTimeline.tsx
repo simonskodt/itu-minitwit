@@ -29,11 +29,13 @@ function PublicTimeline() {
     <div className="page">
       <Header isLoggedIn={checkLogIn()} />
       <div className="body">
-        <h2>Public TimeLine</h2>
-        <button onClick={handlePageChangeLower}>Prev. Page</button>
-        <div>Pagenumber: {pageNumber} </div>
-        <button onClick={handlePageChangeHigher}>Next Page</button>
+        <h2>Public Timeline</h2>
         <MessageSliceComponent key={pageNumber} pageNumber={pageNumber} />
+        <div className="page-number">Page: {pageNumber}</div>
+        <div className="page-number">
+          <button onClick={handlePageChangeLower}>Prev. Page</button>
+          <button onClick={handlePageChangeHigher}>Next Page</button>
+        </div>
       </div>
       <Footer />
     </div>
