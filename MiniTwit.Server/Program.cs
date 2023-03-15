@@ -70,13 +70,13 @@ app.UseCors(x => x
 
 // app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseMetricServer();
 app.UseHttpMetrics(options => {
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapMetrics();
