@@ -42,14 +42,15 @@ public class TwitterController : ControllerBase
     /// <summary>
     /// Get all non-flagged messages from all users sorted in descending order after publish date.
     /// </summary>
+    /// <param name="pageNumber"></param>
     /// <param name="ct"></param>
     /// <returns>A list of all non-flagged Messages sorted in descending order after publish date.</returns>
     /// <response code="200">Every time, return all non-flagged messages sorted in descending order after publish date.</response>
-    [HttpGet("/public")]
+    [HttpGet("/public/{pageNumber}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(int pageNumber, CancellationToken ct = default)
     {
-        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedPageNumberLimitAsync(pageNumber, ct);
         return response.ToActionResult();
     }
 
@@ -71,7 +72,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new follower, making the specified userId follow {username}.
+    /// Create a new follower, making the specified userId follow username.
     /// </summary>
     /// <param name="username">The username of the user to follow.</param>
     /// <param name="userId">The id of the user wanting to follow username.</param>
@@ -88,7 +89,7 @@ public class TwitterController : ControllerBase
     }
 
     /// <summary>
-    /// Delete an existing follower, making the specified userId unfollow {username}.
+    /// Delete an existing follower, making the specified userId unfollow username.
     /// </summary>
     /// <param name="username">The username of the user to unfollow.</param>
     /// <param name="userId">The id of the user wanting to unfollow username.</param>

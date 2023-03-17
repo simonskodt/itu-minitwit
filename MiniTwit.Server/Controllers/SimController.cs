@@ -150,7 +150,7 @@ public class SimController : ControllerBase
     [HttpPost("msgs/{username}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult> MsgUsernamePost(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
+    public async Task<ActionResult> PostMsgUsername(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
 

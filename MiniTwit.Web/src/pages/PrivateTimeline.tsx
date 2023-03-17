@@ -21,10 +21,10 @@ function PrivateTimeline()
           setMessages(messages);
         });
       }, []);
-
-    if (messages!= undefined){
-    return(
-    <div className="page">
+    
+  if (messages != undefined) {
+    return (
+      <div className="page">
         <Header isLoggedIn={checkLogIn()} />
         <MessageComponent isLoggedIn={checkLogIn()} />
         <FollowComponent isLoggedIn={checkLogIn()} userToFollow ={userName}/>
@@ -40,18 +40,18 @@ function PrivateTimeline()
                   />
                 </view>
               </view>
-            ))}
+          ))}
         </div>
         <Footer />
-    </div>
+      </div>
 
     );
-}
-else {
+  }
+  else {
     return (
-        <view></view>
+      <view></view>
     );
-    }
+  }
 }
 
 export default PrivateTimeline
