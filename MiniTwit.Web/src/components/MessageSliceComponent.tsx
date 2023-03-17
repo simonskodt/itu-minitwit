@@ -1,12 +1,9 @@
-import Footer from "../pages/Footer";
-import Header from "./Header";
 import "../pages/Layout.css";
-import { FetchPublicTimeline } from "../pages/fetch";
+import { fetchPublicTimeline } from "../pages/fetch";
 import { useState } from "react";
 import { MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "../pages/Message";
-import { checkLogIn } from "../builders/functions";
 
 interface Props {
   pageNumber: number;
@@ -17,7 +14,7 @@ const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
   const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
 
   useEffect(() => {
-    FetchPublicTimeline(pageNumber).then((messages) => {
+    fetchPublicTimeline(pageNumber).then((messages) => {
       setMessages(messages);
     });
   }, []);
@@ -41,7 +38,6 @@ const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
   } else {
     return (
       <div>
-        <h2>Public TimeLine</h2>
         <ul className="messages">
           <li>
             <p></p>
