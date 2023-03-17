@@ -9,17 +9,17 @@ The project’s components will be divided into subdirectories from the root dir
 
 **Which branching model will we use?**
 
-We will be using Trunk based Development, where we work with three types of branches.
+We will be using Trunk based Development, where we work with ~~three~~ two types of branches.
 
 1. The main branch (long-lived)
-2. The dev branch (long-lived)
+2. ~~The dev branch (long-lived)~~
 3. Several feature branches (short-lived)
 
 The main branch will contain the newest working instance of MiniTwit. Furthermore, it will be push protected, thereby enforcing pull request in order to update it.
 
-The dev branch will serve as the newest working version of MiniTwit containing new features that haven’t been published yet. The group will branch out from this branch to create short-lived feature branches.
+~~The dev branch will serve as the newest working version of MiniTwit containing new features that haven’t been published yet. The group will branch out from this branch to create short-lived feature branches.~~ **Note:** *Removed, workflow works better with only main.*
 
-The feature branches are short-lived branches containing new features for MiniTwit. As soon as a feature is completed, the branch will be merged with the dev branch via pull requests. Once merged, the branch will be deleted. 
+The feature branches are short-lived branches containing new features for MiniTwit. As soon as a feature is completed, the branch will be merged with the dev branch via pull requests. Once merged, the branch will be deleted.
 
 **Which distributed development workflow will we use?**
 
@@ -40,7 +40,8 @@ We expect commitments to be easy to understand through the use of conventions in
 - **merge**: When branches are merged.
 - **docs**: Documentation has been created or changes in documentation has been made.
 - **test**: A test has been implemented.
-- **setup:** When a project has been setup up or important files required for a project has been setup.
+- **setup**: When a project has been setup up or important files required for a project has been setup.
+- **refactor**: When already existing code has been refactored to a new format.
 
 A commit message will have the following format:
 

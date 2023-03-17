@@ -10,20 +10,20 @@
 
 - [Missing Implementations](#missing-implementations)
 - [Weeks](#weeks)
-  * [Week 1](#week-1)
-  * [Week 2](#week-2)
-  * [Week 3](#week-3)
-  * [Week 4](#week-4)
-  * [Week 5](#week-5)
-  * [Week 6](#week-6)
-  * [Week 7](#week-7)
+  - [Week 1](#week-1)
+  - [Week 2](#week-2)
+  - [Week 3](#week-3)
+  - [Week 4](#week-4)
+  - [Week 5](#week-5)
+  - [Week 6](#week-6)
+  - [Week 7](#week-7)
 - [Course description](#course-description)
 
 ## Missing Implementations
 
 We currently **lack the following features**:
 
-- Deploy to DigitalOcean with Vagrant. 
+- Deploy to DigitalOcean with Vagrant.
 - Completing our front-end design.
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
