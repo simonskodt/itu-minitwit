@@ -4,6 +4,7 @@ using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Core.Responses;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace MiniTwit.Infrastructure.Repositories;
 
@@ -182,17 +183,19 @@ public class MessageRepository : IMessageRepository
         //All the followers where userName is whoId
         var allFollows = GetAllWhoUserFollows(user);
         
-        var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToListAsync(ct);
+        var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
 
         foreach (var x in allFollows)
         {
-            var mes = await _context.Messages.Find(m => m.AuthorId == x.WhomId).SortByDescending(m => m.PubDate).ToListAsync(ct);
+            var mes = await _context.Messages.Find(m => m.AuthorId == x.WhomId).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
             messages.AddRange(mes);
         }
 
+        var limitedMessages = messages.OrderByDescending(m => m.PubDate).ToList().Take(20);
+
         return new DBResult<IEnumerable<Message>>
         {
-            Model = messages,
+            Model = limitedMessages,
             ErrorType = null
         };
     }

@@ -104,8 +104,7 @@ export class AppService {
       const response = await axios(request).then((response: AxiosResponse) => response);
       return response;
     } catch (error) {
-      const err = error as AxiosError
-      console.log(err.response?.data);
+      alert("You are already following this user");
       return Promise.reject();
     }
 
