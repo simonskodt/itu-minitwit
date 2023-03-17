@@ -43,20 +43,23 @@ export async function FetchUserByid(userId: string) {
     }
 }
 
-export async function FetchPrivateTimeLine(username: string){
-    const config: AxiosRequestConfig = {
-      method: 'GET',
-      headers: {
-      },
+export async function FetchPrivateTimeLine(username: string): Promise<MessageObjectWithName[]> {
+  const config: AxiosRequestConfig = {
+    method: 'GET',
+    headers: {},
   };
+  const MesWithUsername: MessageObjectWithName[] = [];
   try {
-    const a = await axios.get(API_URL + username, config).then((response) => response.data);
-    return a;
-} catch (error) {
+    const response = await axios.get(API_URL + username, config);
+    for (const element of response.data) {
+      const u = await FetchUserByid(element.authorId);
+      const user = buildUser(u);
+      const userWithName = makeMessageObjectWithName(element, user.username);
+      MesWithUsername.push(userWithName);
+    }
+    return MesWithUsername;
+  } catch (error) {
     console.log(error);
-    alert("User doesn't exist");
     return Promise.reject('fetch order history failed');
-}
-
-
+  }
 }

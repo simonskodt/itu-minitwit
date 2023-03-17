@@ -178,14 +178,29 @@ public class MessageRepository : IMessageRepository
                 ErrorType = ErrorType.INVALID_USERNAME
             };
         }
-
+        
+        //All the followers where userName is whoId
+        var allFollows = GetAllWhoUserFollows(user);
+        
         var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToListAsync(ct);
+
+        foreach (var x in allFollows)
+        {
+            var mes = await _context.Messages.Find(m => m.AuthorId == x.WhomId).SortByDescending(m => m.PubDate).ToListAsync(ct);
+            messages.AddRange(mes);
+        }
 
         return new DBResult<IEnumerable<Message>>
         {
             Model = messages,
             ErrorType = null
         };
+    }
+    //To be able to display the followers tweets on my timeline
+    private IEnumerable<Follower> GetAllWhoUserFollows(User user)
+    {
+        var followers = _context.Followers.Find(f => f.WhoId == user.Id).ToList();
+        return followers;
     }
 
     public DBResult<IEnumerable<Message>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default)
