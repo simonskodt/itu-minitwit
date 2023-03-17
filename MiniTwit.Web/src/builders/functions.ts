@@ -1,6 +1,5 @@
 import { MessageObject, MessageObjectWithName, User } from "./interface";
 
-
 export function getMessageArray(json: any): MessageObject[] {
     let returnArrayOfObject = new Array(json.length);
 
@@ -23,8 +22,6 @@ export function getMessageArray(json: any): MessageObject[] {
     return returnArrayOfObject;
 }
 
-
-
 export function makeMessageObjectWithName(message: any, name: string): MessageObjectWithName {
     let messageId: string;
     let authorId: string;
@@ -45,9 +42,9 @@ export function makeMessageObjectWithName(message: any, name: string): MessageOb
 }
 
 export function buildUser(json: any): User {
-    let id;
-    let username;
-    let email;
+    let id: any;
+    let username: any;
+    let email: any;
 
     let user = {
         id: json.id,
