@@ -61,6 +61,15 @@ public class FollowerRepository : IFollowerRepository
     {
         var user = await GetUserByUserIdAsync(userId);
 
+        if (user!.Username.Equals(username))
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_TO_FOLLOW_YOURSELF
+            };
+        }
+
         // See if user exists
         if (user == null)
         {
