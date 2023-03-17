@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { checkLogIn } from "../builders/functions";
 import { MessageObject } from "../builders/interface";
-import { FetchPrivateTimeLine } from "./fetch";
+import { fetchPrivateTimeLine } from "./fetch";
 import Footer from "./Footer";
 import Header from "../components/Header";
 import { Message } from "./Message";
@@ -14,7 +14,7 @@ function PrivateTimeline() {
   const [messages, setMessages] = useState<MessageObject[]>();
 
   useEffect(() => {
-    FetchPrivateTimeLine(userName).then((messages) => {
+    fetchPrivateTimeLine(userName).then((messages) => {
 
       setMessages(messages);
     });
