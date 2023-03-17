@@ -29,9 +29,9 @@ elif [ "$1" = "secrets" ]; then
     dotnet user-secrets init --project $project
     dotnet user-secrets set "ConnectionStrings:MiniTwit" "$connectionString" --project $project
 elif [ "$1" = "inspectdb" ]; then
-    ./FlagTool -i | less
+    ./flag_tool -i | less
 elif [ "$1" = "flag" ]; then
-    ./FlagTool "$@"
+    ./flag_tool "${@:2}"
 else
     printf "${red}Error: Unknown command\n${clear}"
 fi
