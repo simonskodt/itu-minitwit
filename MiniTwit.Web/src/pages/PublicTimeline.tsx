@@ -1,14 +1,12 @@
 import Footer from "./Footer";
 import Header from "../components/Header";
 import "./Layout.css";
-import { FetchPublicTimeline } from "./fetch";
+import { fetchPublicTimeline } from "./fetch";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Message } from "./Message";
 import { checkLogIn } from "../builders/functions";
 import MessageSliceComponent from "../components/MessageSliceComponent";
-
-
 
 function PublicTimeline() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -18,9 +16,9 @@ function PublicTimeline() {
   };
 
   const handlePageChangeLower = () => {
-    if (pageNumber <= 1){
+    if (pageNumber <= 1) {
       alert("Press next page to see more messages")
-    }else{
+    } else {
       setPageNumber(pageNumber + -1);
     }
   };
