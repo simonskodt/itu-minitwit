@@ -5,14 +5,16 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <DebugType>embedded</DebugType>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <AssemblyName>flag_tool</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MiniTwit.Core\MiniTwit.Core.csproj" />
   </ItemGroup>
 
 </Project>

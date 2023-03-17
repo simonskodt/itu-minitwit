@@ -1,4 +1,4 @@
-using MiniTwit.Core.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace FlagTool;
@@ -14,7 +14,7 @@ class FlagTool
                            "-h            Show this screen.\n" +
                            "-i            Dump all tweets and authors to STDOUT.\n";
 
-    static void DumpMessages(IMongoCollection<Message> messages)
+    static void DumpMessages(IMongoCollection<BsonDocument> messages)
     {
         var msgs = messages.Find(_ => true).ToList();
         foreach (var message in msgs)
@@ -23,10 +23,10 @@ class FlagTool
         }
     }
 
-    static void FlagMessage(IMongoCollection<Message> messages, string id)
+    static void FlagMessage(IMongoCollection<BsonDocument> messages, string id)
     {
-        var update = Builders<Message>.Update.Set("Flagged", 1);
-        var message = messages.FindOneAndUpdate(m => m.Id == id, update);
+        var update = Builders<BsonDocument>.Update.Set("Flagged", 1);
+        var message = messages.FindOneAndUpdate(m => m["_id"].ToString() == id, update);
 
         if (message == null)
         {
@@ -36,9 +36,9 @@ class FlagTool
         PrintMessage(message);
     }
 
-    static void PrintMessage(Message message)
+    static void PrintMessage(BsonDocument message)
     {
-        Console.WriteLine($"{message.Id}, {message.AuthorId}, {message.Text}, {message.PubDate}, {message.Flagged}");
+        Console.WriteLine($"{message["_id"]}, {message["AuthorId"]}, {message["Text"]}, {message["PubDate"]}, {message["Flagged"]}");
     }
 
     static void PrintHelp()
@@ -57,9 +57,10 @@ class FlagTool
         try
         {
             var password = File.ReadAllText(".local/db_password.txt");
-            var mongoClient = new MongoClient($"mongodb://radiator:{password}@164.92.167.188:27018");
+            // var mongoClient = new MongoClient($"mongodb://radiator:{password}@164.92.167.188:27018");
+            var mongoClient = new MongoClient($"mongodb://radiator:{password}@localhost:27018");
             var mongoDatabase = mongoClient.GetDatabase("MiniTwit");
-            var messages = mongoDatabase.GetCollection<Message>("Tweets");
+            var messages = mongoDatabase.GetCollection<BsonDocument>("Tweets");
 
             if (args[0] == "-i")
             {
