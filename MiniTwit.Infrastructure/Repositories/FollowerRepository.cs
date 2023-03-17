@@ -83,19 +83,35 @@ public class FollowerRepository : IFollowerRepository
             };
         }
 
-        var follower = new Follower
-        {
-            WhoId = userId,
-            WhomId = toFollow.Id
-        };
+        //See if follow already exists
 
-        await _context.Followers.InsertOneAsync(follower);
+        var possibleFollow = await _context.Followers.FindAsync(f => f.WhoId == user.Id && f.WhomId==toFollow.Id);
+        var isAlreadyFollowing = possibleFollow.Any();
+
+        if(!isAlreadyFollowing)
+        {
+            var follower = new Follower
+            {
+                WhoId = userId,
+                WhomId = toFollow.Id
+            };
+
+            await _context.Followers.InsertOneAsync(follower);
+
+            return new DBResult<Follower>
+            {
+                Model = follower,
+                ErrorType = null
+            };
+
+        }
 
         return new DBResult<Follower>
         {
-            Model = follower,
-            ErrorType = null
+            Model = null,
+            ErrorType = ErrorType.FOLLOWALREADYEXISTS
         };
+
     }
 
     public DBResult Delete(string userId, string username)
