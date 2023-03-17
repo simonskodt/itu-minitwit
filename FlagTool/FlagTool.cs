@@ -57,8 +57,7 @@ class FlagTool
         try
         {
             var password = File.ReadAllText(".local/db_password.txt");
-            // var mongoClient = new MongoClient($"mongodb://radiator:{password}@164.92.167.188:27018");
-            var mongoClient = new MongoClient($"mongodb://radiator:{password}@localhost:27018");
+            var mongoClient = new MongoClient($"mongodb://radiator:{password}@164.92.167.188:27018");
             var mongoDatabase = mongoClient.GetDatabase("MiniTwit");
             var messages = mongoDatabase.GetCollection<BsonDocument>("Tweets");
 
