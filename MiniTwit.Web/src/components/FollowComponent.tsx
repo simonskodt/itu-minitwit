@@ -41,7 +41,7 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
         );
     }else{
         return(
-        <div> NOT LOGGED IN</div>
+        <div></div>
         )
     }
 }
