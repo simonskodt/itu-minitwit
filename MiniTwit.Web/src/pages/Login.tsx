@@ -20,12 +20,13 @@ const Login = () => {
     let promise = appService.Login(username, password);
     promise.catch(() => {
       alert("Wrong credentials")
-      sessionStorage.setItem('isLoggedIn', 'false')}
+      sessionStorage.setItem('isLoggedIn', 'false')
+    }
     )
     sessionStorage.setItem('isLoggedIn', 'true')
     promise.then((result) => {
       console.log(result)
-      sessionStorage.setItem('username',result.data.username)
+      sessionStorage.setItem('username', result.data.username)
       goToHome()
     })
   };

@@ -3,7 +3,6 @@ import './MessageComponent.css'
 import { API_URL } from '../App';
 import { AppService } from '../services/app.service'
 
-
 interface Props {
     isLoggedIn: boolean;
 }
@@ -14,13 +13,14 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
     const appService = new AppService();
     const userName = sessionStorage.getItem('username')
 
-    function PostMessage(text: string, username : any){
+    function postMessage(text: string, username: any): void {
         appService.getUserId(username).then((result) => {
             const id = result.data.id
             appService.sendMessage(text, id)
         })
     }
-    if(isLoggedIn){
+
+    if (isLoggedIn) {
         return (
             <div className='twitbox'>
                 <h3>What's on your mind, {userName}?</h3>
@@ -32,12 +32,12 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
                     required
                     onChange={e => setMessage(e.target.value)}
                 />&nbsp;&nbsp;
-                <button onClick={ () => PostMessage(message, userName)}>Share</button>
+                <button onClick={() => postMessage(message, userName)}>Share</button>
             </div>
         );
-    }else{
-        return(
-        <div></div>
+    } else {
+        return (
+            <div></div>
         )
     }
 }
