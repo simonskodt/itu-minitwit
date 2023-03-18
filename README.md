@@ -27,7 +27,6 @@ We currently **lack the following features**:
 - Completing our front-end design.
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
-- Continue working on monitoring.
 - Make UML-diagram of system.
 - Use static analysis tools.
 - Add Maintainability and Technical Debt estimation tools.
