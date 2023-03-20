@@ -103,12 +103,12 @@ public class TwitterControllerTests
         // Arrange
         var expected = new Response<IEnumerable<MessageDTO>>(Ok, Array.Empty<MessageDTO>(), null);
 
-        _manager.Setup(m => m.MessageService.GetAllNonFlaggedAsync(_ct)).ReturnsAsync(expected);
+        _manager.Setup(m => m.MessageService.GetAllNonFlaggedPageNumberLimitAsync(1, _ct)).ReturnsAsync(expected);
 
         var controller = new TwitterController(_manager.Object, _logger.Object);
 
         // Act
-        var actual = (await controller.PublicTimeline(1)).Result as OkObjectResult;
+        var actual = (await controller.PublicTimeline(1, _ct)).Result as OkObjectResult;
 
         // Assert
         Assert.Equal(200, actual!.StatusCode);
