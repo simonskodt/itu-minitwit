@@ -8,7 +8,6 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:latest AS build
 WORKDIR /src
-COPY requirements.txt ./
 COPY ["MiniTwit.Server/MiniTwit.Server.csproj", "MiniTwit.Server/"]
 RUN dotnet restore "MiniTwit.Server/MiniTwit.Server.csproj"
 COPY . .
