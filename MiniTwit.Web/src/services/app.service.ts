@@ -1,5 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { url } from 'inspector';
 import { API_URL } from '../App';
+import { LoginDTO } from '../models/Login';
+import { UserDTO } from '../models/User';
 
 export class AppService {
 
@@ -28,11 +31,11 @@ export class AppService {
     }
   }
 
-  public async Login(username: string, pw: string): Promise<any> {
-    var data = JSON.stringify({
+  public async Login(username: string, pw: string): Promise<AxiosResponse<UserDTO>> {
+    var loginDTO: LoginDTO = {
       "username": username,
       "password": pw
-    });
+    };
 
     const request: AxiosRequestConfig = {
       method: 'post',
@@ -41,12 +44,11 @@ export class AppService {
       headers: {
         'Content-Type': 'application/json'
       },
-      data: data
+      data: loginDTO
     };
 
     try {
-      const response = await axios(request).then((response: AxiosResponse) => response);
-      return response;
+      return await axios(request).then((response: AxiosResponse) => response);
     } catch (error) {
       const err = error as AxiosError
       console.log(err.response?.data);
