@@ -4,7 +4,7 @@ import { API_URL } from '../App';
 export class AppService {
 
   public async registerUser(username: string, email: string, pw: string): Promise<any> {
-    var data = JSON.stringify({
+    const data = JSON.stringify({
       "username": username,
       "email": email,
       "pwd": pw
@@ -29,7 +29,7 @@ export class AppService {
   }
 
   public async Login(username: string, pw: string): Promise<any> {
-    var data = JSON.stringify({
+    const data = JSON.stringify({
       "username": username,
       "password": pw
     });

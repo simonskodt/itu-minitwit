@@ -30,7 +30,7 @@ function SignUp() {
       return
     }
 
-    let promise = appService.registerUser(username, email, password);
+    const promise = appService.registerUser(username, email, password);
     promise.catch(() => alert("An error occured, all input fields must be filled"))
     promise.then(goToHome)
   };
