@@ -51,7 +51,7 @@ jobs:
           # This is where you will need to introduce the Snyk API token created with your Snyk account
           SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
       - name: Auth
-        run: snyk auth
+        run: snyk auth ${SNYK_TOKEN}
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
