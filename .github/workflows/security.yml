@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@master
      
       - name: Setup Dependencies
-      - uses: snyk/actions/setup@master
+      #- uses: snyk/actions/setup@master
      # - uses: actions/setup-dotnet@master
      #   with:
      #     dotnet-version: 7.0.x
