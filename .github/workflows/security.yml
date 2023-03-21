@@ -41,9 +41,9 @@ jobs:
       - uses: actions/setup-dotnet@master
         with:
            dotnet-version: 7.0.x
-      #- uses: actions/setup-node@master
-      #  with:
-      #    node-version: 18
+      - uses: actions/setup-node@master
+        with:
+          node-version: 18
         
       - name: Run Snyk on Backend (.NET)
         uses: snyk/actions/dotnet@master
@@ -63,5 +63,8 @@ jobs:
         with:
           sarif_file: snyk.dotnet.sarif
           category: snyk backend
+          
+      - name: Snyk IaC test and report
+        run: snyk iac test --report
           
         
