@@ -1,5 +1,3 @@
-name: "ESLint analysis"
-
 on:
   push:
     branches: [ "main" ]
@@ -8,28 +6,35 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
     manual: true
+  schedule:
+    - cron: '37 9 * * 2'
 
 jobs:
-  build:
+  eslint:
+    name: Run eslint scanning
     runs-on: ubuntu-latest
     permissions:
-      # required for all workflows
-      security-events: write
-      # only required for workflows in private repositories
-      actions: read
       contents: read
+      security-events: write
+      actions: read
     steps:
-      - uses: actions/checkout@v3
-      - name: Run npm install
-        run: | 
-          cd MiniTwit.Web
-          npm install
-      # Runs the ESlint code analysis
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install ESLint
+        run: |
+          npm install eslint@8.10.0
+          npm install @microsoft/eslint-formatter-sarif@2.1.7
       - name: Run ESLint
-        # eslint exits 1 if it finds anything to report
-        run: node_modules/.bin/eslint build docs lib script spec-main -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o results.sarif || true
-      # Uploads results.sarif to GitHub repository using the upload-sarif action
-      - uses: github/codeql-action/upload-sarif@v2
+        run: npx eslint .
+          --config .eslintrc.js
+          --ext .js,.jsx,.ts,.tsx
+          --format @microsoft/eslint-formatter-sarif
+          --output-file eslint-results.sarif
+        continue-on-error: true
+
+      - name: Upload analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: MiniTwit.Web/eslint-results.sarif
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true
