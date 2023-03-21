@@ -43,7 +43,7 @@ jobs:
         with:
           dotnet-version: 7.0.x
       - name: Snyk test
-        run: | 
+        run:
           cd MiniTwit.Core
-          snyk test
+          snyk test --file=itu-minitwit.sln
       
