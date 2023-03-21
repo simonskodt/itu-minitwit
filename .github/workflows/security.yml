@@ -38,11 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: snyk/actions/dotnet@master
       - uses: actions/setup-dotnet@master
         with:
            dotnet-version: 7.0.x
       - name: .NET Restore
         run: dotnet restore
         
-      - name: Run Snyk on Backend (.NET)
-        uses: snyk/actions/dotnet@master
