@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -22,3 +23,23 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: | 
+          cd MiniTwit.Web/tests  
+          npm ci
+      - name: Install Playwright
+        run: | 
+          cd MiniTwit.Web/tests  
+          npx playwright install --with-deps
+      - name: Run your tests
+        run: | 
+          cd MiniTwit.Web/tests  
+          npx playwright test
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report
