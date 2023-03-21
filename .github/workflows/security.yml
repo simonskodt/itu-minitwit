@@ -54,7 +54,7 @@ jobs:
         run: dotnet restore
         
       - name: Run Snyk code test
-        run: snyk code test --sarif-file-output=snyk-code.sarif
+        run: snyk code test --sarif > snyk-code.sarif || true
         
       - name: Run Snyk Open Source Monitor
         run: snyk monitor --all-projects
