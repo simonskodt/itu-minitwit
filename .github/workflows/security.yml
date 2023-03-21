@@ -27,6 +27,9 @@ on:
 permissions:
   contents: read
 
+env: 
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
 jobs:
   snyk:
     permissions:
@@ -40,8 +43,6 @@ jobs:
       
       - name: Set up Snyk CLI and dependencies
         uses: snyk/actions/setup@master
-        env: 
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - uses: actions/setup-dotnet@master
         with:
           dotnet-version: 7.0.x
@@ -49,16 +50,16 @@ jobs:
         with:
           node-version: 18
           
-      - name: Snyk test
+      - name: Run Snyk test
         run: snyk code test --sarif > snyk-code.sarif || true
         
-      - name: Snyk Open Source Monitor
+      - name: Run Snyk Open Source Monitor
         run: snyk monitor
         
-      - name: Snyk IaC test and report
+      - name: Run Snyk IaC test and report
         run: snyk iac test --report || true
         
-      - name: Upload result to GitHub Code Scanning
+      - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: snyk-code.sarif
