@@ -52,10 +52,12 @@ jobs:
         uses: snyk/actions/dotnet@master
         continue-on-error: true
         with:
-          command: |
-            test
-            monitor
           args: --all-projects --sarif-file-output=snyk.dotnet.sarif
+          
+      - name: Upload to Snyk
+        uses: snyk/actions/dotnet@master
+        with:
+          args: --all-projects
       
       - name: Upload Backend result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
