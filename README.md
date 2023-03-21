@@ -17,6 +17,7 @@
   - [Week 5](#week-5)
   - [Week 6](#week-6)
   - [Week 7](#week-7)
+  - [Week 8](#week-8)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -95,15 +96,19 @@ Add monitoring to your ITU-MiniTwit and peer-review.
 
 Enhancing CI/CD setup with test suite and static code analysis.
 
-- [ ] 1) Add tests to your CI chain (Selenium)
+- [x] 1) Add tests to your CI chain (Selenium)
 - [ ] 2) Enhance your CI Pipelines with at least three static analysis tools
-  - [ ] .NET Analyzers
-  - [ ] tslint-clean-code
+  - [x] .NET Analyzers
+  - [x] tslint-clean-code
   - [ ] Snyk
 - [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [ ] Sonarqube
   - [ ] Code Climate
-- [ ] 4) Software Maintenance
+- [x] 4) Software Maintenance
+  
+### Week 8
+
+TDA.
   
 ## Course description
 
