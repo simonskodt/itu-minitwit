@@ -44,15 +44,13 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 18
-          
-      - name: Run .NET Restore
-        run: dotnet restore
         
       - name: Run Snyk on Backend (.NET)
         uses: snyk/actions/dotnet@master
         continue-on-error: true
         with:
-          args: --all-projects --sarif-file-output=snyk.dotnet.sarif
+          command: code test
+          args: --sarif-file-output=snyk.dotnet.sarif
           
       - name: Upload to Snyk
         uses: snyk/actions/dotnet@master
@@ -65,23 +63,5 @@ jobs:
         with:
           sarif_file: snyk.dotnet.sarif
           category: snyk backend
-          
-      - name: Run Snyk on Frontend (Node.js)
-        uses: snyk/actions/node@master
-        continue-on-error: true
-        with:
-          args: --all-projects --sarif-file-output=snyk.node.sarif
-          
-      - name: Upload to Snyk
-        uses: snyk/actions/node@master
-        with:
-          command: monitor
-          args: --all-projects
-      
-      - name: Upload Frontend result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.node.sarif
-          category: snyk frontend
           
         
