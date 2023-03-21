@@ -42,8 +42,8 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
-      - name: Where are we?
-        run: ls -a
       - name: Snyk test
-        run: snyk test
+        run: | 
+          cd MiniTwit.Core
+          snyk test
       
