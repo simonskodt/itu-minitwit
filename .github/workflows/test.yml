@@ -34,8 +34,13 @@ jobs:
           cd MiniTwit.Web/tests  
           npx playwright install --with-deps
       - name: Run your tests
-        run: | 
-          cd MiniTwit.Web/tests  
+        run: |
+          ./run.sh
+          cd MiniTwit.Server
+          dotnet run
+          cd ../MiniTwit.Web
+          npm start
+          cd tests
           npx playwright test
       - name: Upload test results
         if: always()

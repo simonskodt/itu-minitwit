@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('MiniTwit title', async ({ page }) => {
-  await page.goto('http://164.92.167.188:3000/public');
+  await page.goto('http://localhost:3000/public');
 
   await expect(page).toHaveTitle('MiniTwit');
 });
 
 
 test('Register user via GUI', async ({ page }) => {
-  await page.goto('http://164.92.167.188:3000/register');
+  await page.goto('http://localhost:3000/register');
 
   //create randomUsername, because databse fails if not a unique username
   const randomName = Math.random().toString(36).slice(2, 7);
@@ -28,5 +28,5 @@ test('Register user via GUI', async ({ page }) => {
 
   await page.click('button:text("Sign Up")');
 
-  await expect(page).toHaveURL("http://164.92.167.188:3000/public");
+  await expect(page).toHaveURL("http://localhost:3000/public");
 });
