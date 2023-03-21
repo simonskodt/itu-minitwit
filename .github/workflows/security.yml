@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+      - uses: actions/checkout@master
         
       - name: Setup Dependencies
       - uses: actions/setup-dotnet@master
