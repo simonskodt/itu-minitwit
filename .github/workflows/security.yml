@@ -41,6 +41,7 @@ jobs:
         uses: actions/checkout@master
      
       - name: Setup Dependencies
+        run: echo Hello
       #- uses: snyk/actions/setup@master
      # - uses: actions/setup-dotnet@master
      #   with:
