@@ -1,9 +1,9 @@
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/simonskodt/itu-minitwit/blob/main/LICENSE)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit) 
 ![GitHub Release Date](https://img.shields.io/github/release-date/simonskodt/itu-minitwit)
 ![GitHub last commit](https://img.shields.io/github/last-commit/simonskodt/itu-minitwit)
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit) 
 
 # DevOps&mdash;Twitter Project
 
@@ -25,6 +25,7 @@
   - [Week 6](#week-6)
   - [Week 7](#week-7)
   - [Week 8](#week-8)
+  - [Week 9](#week-9)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -114,11 +115,15 @@ Enhancing CI/CD setup with test suite and static code analysis.
   
 ### Week 8
 
-Add logging to your ITU-MiniTwit and create a set of SLAs for it
+Add logging to your ITU-MiniTwit and create a set of SLAs for it.
 
 - [ ] 1) Add Logging to Your Systems
 - [ ] 2) Test that Your Logging Works
-- [ ] 3) Write an SLA for Your Own API
+  - The Devs introduce a bug; the Ops resolve the bug by using the logs.
+
+### Week 9
+
+To be announced.
   
 ## Course description
 
