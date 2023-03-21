@@ -57,6 +57,7 @@ jobs:
       - name: Upload to Snyk
         uses: snyk/actions/dotnet@master
         with:
+          command: monitor
           args: --all-projects
       
       - name: Upload Backend result to GitHub Code Scanning
