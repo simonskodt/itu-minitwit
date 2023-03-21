@@ -1,7 +1,7 @@
 name: "CodeQL"
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
   schedule:
     - cron: '25 16 * * 2'
@@ -31,7 +31,7 @@ jobs:
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
-      
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
