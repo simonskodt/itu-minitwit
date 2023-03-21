@@ -37,7 +37,8 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add Maintainability and Technical Debt estimation tools.
+- Add Maintainability and Technical Debt estimation tools (Code Climate).
+- Add logging.
 
 It would be **nice to have the following features**:
 
@@ -104,10 +105,10 @@ Add monitoring to your ITU-MiniTwit and peer-review.
 Enhancing CI/CD setup with test suite and static code analysis.
 
 - [x] 1) Add tests to your CI chain (Selenium)
-- [ ] 2) Enhance your CI Pipelines with at least three static analysis tools
+- [x] 2) Enhance your CI Pipelines with at least three static analysis tools
   - [x] .NET Analyzers
   - [x] tslint-clean-code
-  - [ ] Snyk
+  - [x] Snyk
 - [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [x] Sonarqube
   - [ ] Code Climate
