@@ -1,5 +1,4 @@
-import Header from '../components/Header';
-import Footer from './Footer';
+import React, { Component }  from 'react';
 import './Layout.css';
 import { checkLogIn, getCurrentUsername } from '../builders/functions';
 
