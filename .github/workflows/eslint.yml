@@ -26,11 +26,7 @@ jobs:
       - name: Run ESLint
         run: |
           cd MiniTwit.Web
-          npx eslint .
-          --config .eslintrc.yml
-          --ext .js,.jsx,.ts,.tsx
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+          npx eslint . --config .eslintrc.yml --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
         continue-on-error: true
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
