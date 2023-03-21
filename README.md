@@ -31,7 +31,6 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Use static analysis tools.
 - Add Maintainability and Technical Debt estimation tools.
 
 It would be **nice to have the following features**:
@@ -104,13 +103,17 @@ Enhancing CI/CD setup with test suite and static code analysis.
   - [x] tslint-clean-code
   - [ ] Snyk
 - [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
-  - [ ] Sonarqube
+  - [x] Sonarqube
   - [ ] Code Climate
 - [x] 4) Software Maintenance
   
 ### Week 8
 
-TDA.
+Add logging to your ITU-MiniTwit and create a set of SLAs for it
+
+- [ ] 1) Add Logging to Your Systems
+- [ ] 2) Test that Your Logging Works
+- [ ] 3) Write an SLA for Your Own API
   
 ## Course description
 
