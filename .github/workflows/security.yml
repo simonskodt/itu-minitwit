@@ -20,14 +20,14 @@ name: Snyk Security
 
 on:
   push:
-    branches: ["main" ]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
 permissions:
   contents: read
 env: 
-  SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   
 jobs:
   snyk:
@@ -43,7 +43,8 @@ jobs:
         # In this case we want to upload the SAST issues to GitHub Code Scanning
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
           
-
+      - uses: snyk/actions/dotnet@master
+      - uses: snyk/actions/node@master
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
       - name: Snyk Code test
