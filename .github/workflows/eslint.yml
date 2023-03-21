@@ -1,13 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# ESLint is a tool for identifying and reporting on patterns
-# found in ECMAScript/JavaScript code.
-# More details at https://github.com/eslint/eslint
-# and https://eslint.org
-
-name: ESLint
+name: "ESLint analysis"
 
 on:
   push:
@@ -17,36 +8,26 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
     manual: true
-  schedule:
-    - cron: '37 9 * * 2'
 
 jobs:
-  eslint:
-    name: Run eslint scanning
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      # required for all workflows
       security-events: write
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install ESLint
-        run: |
-          npm install eslint@8.10.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
-
+      - uses: actions/checkout@v3
+      - name: Run npm install
+        run: npm install
+      # Runs the ESlint code analysis
       - name: Run ESLint
-        run: npx eslint .
-          --config .eslintrc.js
-          --ext .js,.jsx,.ts,.tsx
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
-        continue-on-error: true
-
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        # eslint exits 1 if it finds anything to report
+        run: node_modules/.bin/eslint build docs lib script spec-main -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o results.sarif || true
+      # Uploads results.sarif to GitHub repository using the upload-sarif action
+      - uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: eslint-results.sarif
-          wait-for-processing: true
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: results.sarif
