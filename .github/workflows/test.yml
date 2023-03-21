@@ -35,7 +35,7 @@ jobs:
           npx playwright install --with-deps
       - name: Run your tests
         run: |
-          connectionString = ${{DB.CONNECTIONSTRING}}
+          connectionString = ${{secrets.DB_CONNECTIONSTRING}}
           dotnet user-secrets set "ConnectionStrings:MiniTwit" "$connectionString" --project MiniTwit.Server
           password=${{secrets.DB_PASSWORD}} # Load db password from file
           docker volume create mongodb_data_container_local
