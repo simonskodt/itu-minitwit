@@ -53,7 +53,7 @@ jobs:
       - name: Test
         run: echo ${{SNYK_TOKEN:0:4}}
       - name: Test2  
-        run: echo ${{SNYK_KEY:0:4}}
+        run: echo ${{SNYK_KEY:0:4}} END
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
