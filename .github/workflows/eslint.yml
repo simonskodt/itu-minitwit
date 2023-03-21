@@ -21,7 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run npm install
-        run: npm install
+        run: | 
+          cd MiniTwit.Web
+          npm install
       # Runs the ESlint code analysis
       - name: Run ESLint
         # eslint exits 1 if it finds anything to report
