@@ -140,10 +140,6 @@ div.error {
 }
 
 /* Extra implementations */
-div.page .text-field {
-    margin-left: 36px;
-}
-
 button {
     background: #105751;
     border: 1px solid #073B36;

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { url } from 'inspector';
 import { API_URL } from '../App';
 import { LoginDTO } from '../models/Login';
@@ -31,38 +31,37 @@ export class AppService {
     }
   }
 
-  public async Login(username: string, pw: string): Promise<AxiosResponse<UserDTO>> {
+  public async Login(username: string, pw: string): Promise<UserDTO> {
     var loginDTO: LoginDTO = {
-      "username": username,
-      "password": pw
+      username: username,
+      password: pw
     };
 
-    const request: AxiosRequestConfig = {
-      method: 'post',
+    const config: AxiosRequestConfig = {
       maxBodyLength: Infinity,
-      url: API_URL + 'login',
       headers: {
         'Content-Type': 'application/json'
-      },
-      data: loginDTO
+      }
     };
 
-    try {
-      return await axios(request).then((response: AxiosResponse) => response);
-    } catch (error) {
-      const err = error as AxiosError
-      console.log(err.response?.data);
-      return Promise.reject();
-    }
+    return await axios.post<UserDTO>(API_URL + 'login', loginDTO, config)
+      .then(response => response.data)
+      .catch((error: Error | AxiosError) => {
+        if (axios.isAxiosError(error)) {
+          return Promise.reject(error.response?.data.error_msg)
+        }
+
+        return Promise.reject(error)
+      })
   }
 
-  public async sendMessage(text: string, userId : string): Promise<any> {
+  public async sendMessage(text: string, userId: string): Promise<any> {
     const request: AxiosRequestConfig = {
       method: 'post',
       maxBodyLength: Infinity,
-        url: API_URL + 'add_message?userId=' + userId + '&text=' + text,
-        headers: { }
-      };
+      url: API_URL + 'add_message?userId=' + userId + '&text=' + text,
+      headers: {}
+    };
 
     try {
       const response = await axios(request).then((response: AxiosResponse) => response);
@@ -78,9 +77,9 @@ export class AppService {
     const request: AxiosRequestConfig = {
       method: 'get',
       maxBodyLength: Infinity,
-        url: API_URL + 'username/' + username,
-        headers: { }
-      };
+      url: API_URL + 'username/' + username,
+      headers: {}
+    };
 
     try {
       const response = await axios(request).then((response: AxiosResponse) => response);
@@ -91,10 +90,4 @@ export class AppService {
       return Promise.reject();
     }
   }
-}
-
-
-export interface APIError {
-  statis: number
-  err_msg: string
 }

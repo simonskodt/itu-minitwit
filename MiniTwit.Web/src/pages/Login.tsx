@@ -7,28 +7,25 @@ import Footer from './Footer';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const appService = new AppService();
 
   const navigate = useNavigate();
 
-  const goToHome = () => {
-    navigate('/');
-  };
-
   const submit = (e: React.FormEvent) => {
-    let promise = appService.Login(username, password);
-    promise.catch(() => {
-      alert("Wrong credentials")
-      sessionStorage.setItem('isLoggedIn', 'false')
-    }
-    )
-    sessionStorage.setItem('isLoggedIn', 'true')
-    promise.then((result) => {
-      console.log(result)
-      sessionStorage.setItem('username', result.data.username)
-      goToHome()
-    })
+    e.preventDefault()
+    appService.Login(username, password)
+      .then(user => {
+        setError(null)
+        sessionStorage.setItem('username', user.username)
+        sessionStorage.setItem('isLoggedIn', 'true')
+        navigate('/')
+      })
+      .catch(err => {
+        setError(err)
+        sessionStorage.setItem('isLoggedIn', 'false')
+      });
   };
 
   return (
@@ -37,28 +34,22 @@ const Login = () => {
       <div className="body">
         <div className='login-form'>
           <h2>Sign In</h2>
-          <label htmlFor="username">Username </label><br />
-          <input
-            className="text-field"
-            type="text"
-            placeholder="Username"
-            name="username"
-            required
-            onChange={e => setUsername(e.target.value)}
-          /><br />
-          <label htmlFor="password">Password </label><br />
-          <input
-            className="text-field"
-            type="password"
-            placeholder="Password"
-            name="password"
-            required
-            onChange={e => setPassword(e.target.value)}
-          /><br />
-          <button
-            onClick={submit}
-            type="submit"
-          >Login</button>
+          {error != null &&
+            <div className="error"><strong>Error:</strong> {error}</div>
+          }
+          <form onSubmit={submit}>
+            <dl>
+              <dt>Username:</dt>
+              <dd>
+                <input type={"text"} name={"username"} size={30} placeholder={"Username"} required onChange={e => setUsername(e.target.value)} />
+              </dd>
+              <dt>Password:</dt>
+              <dd>
+                <input type={"password"} name={"password"} size={30} placeholder={"Password"} required onChange={e => setPassword(e.target.value)} />
+              </dd>
+            </dl>
+            <div className='actions'><input type={"submit"} value={"Sign In"}/></div>
+          </form>
         </div>
       </div>
       <Footer />
