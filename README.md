@@ -106,9 +106,9 @@ Enhancing CI/CD setup with test suite and static code analysis.
 
 - [x] 1) Add tests to your CI chain (Selenium)
 - [x] 2) Enhance your CI Pipelines with at least three static analysis tools
-  - [x] .NET Analyzers
-  - [x] tslint-clean-code
-  - [x] Snyk
+  - [x] eslint (typescript)
+  - [x] codeql (csharp)
+  - [x] Snyk (containers)
 - [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [x] Sonarqube
   - [ ] Code Climate
