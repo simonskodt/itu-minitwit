@@ -54,7 +54,7 @@ jobs:
         run: snyk code test --sarif > snyk-code.sarif || true
         
       - name: Run Snyk Open Source Monitor
-        run: snyk monitor
+        run: snyk monitor --all-projects
         
       - name: Run Snyk IaC test and report
         run: snyk iac test --report || true
