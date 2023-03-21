@@ -26,7 +26,9 @@ on:
 
 permissions:
   contents: read
-
+env: 
+  SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
+  
 jobs:
   snyk:
     permissions:
@@ -40,8 +42,7 @@ jobs:
         # Snyk can be used to break the build when it detects security issues.
         # In this case we want to upload the SAST issues to GitHub Code Scanning
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        env:
-          SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
+          
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
@@ -51,15 +52,11 @@ jobs:
         # Runs Snyk Open Source (SCA) analysis and uploads result to Snyk.
       - name: Snyk Open Source monitor
         run: snyk monitor --all-projects
-        env:
-          SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
 
         # Runs Snyk Infrastructure as Code (IaC) analysis and uploads result to Snyk.
         # Use || true to not fail the pipeline.
       - name: Snyk IaC test and report
         run: snyk iac test --report || true
-        env:
-          SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
 
         # Build the docker image for testing
       # - name: Build a Docker image
