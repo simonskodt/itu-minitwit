@@ -51,7 +51,9 @@ jobs:
           SNYK_TOKEN: 92089931-14fc-4190-90bf-1128196e957a
         
       - name: Test
-        run: echo ${SNYK_TOKEN:0:4}
+        run: echo ${{SNYK_TOKEN:0:4}}
+      - name: Test2  
+        run: echo ${{SNYK_KEY:0:4}}
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
