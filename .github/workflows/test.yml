@@ -35,7 +35,9 @@ jobs:
           npx playwright install --with-deps
       - name: Run your tests
         run: |
-          ./run.sh
+          password=${{secrets.DB_PASSWORD}} # Load db password from file
+          docker volume create mongodb_data_container_local
+          docker run --rm --name mongodb -d -p 27018:27017 -v mongodb_data_container_local:/data/db -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongo:latest
           cd MiniTwit.Server
           dotnet run
           cd ../MiniTwit.Web
