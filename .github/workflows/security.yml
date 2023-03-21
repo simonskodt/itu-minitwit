@@ -26,8 +26,6 @@ on:
 
 permissions:
   contents: read
-env: 
-  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 jobs:
   snyk:
@@ -37,8 +35,13 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
+      - name: Checkout repository
+        uses: actions/checkout@master
+      
+      - name: Set up Snyk CLI and dependencies
+        uses: snyk/actions/setup@master
+        env: 
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - uses: actions/setup-dotnet@master
         with:
           dotnet-version: 7.0.x
@@ -50,7 +53,7 @@ jobs:
         run: snyk code test --sarif > snyk-code.sarif || true
         
       - name: Snyk Open Source Monitor
-        run: snyk monitor --all-projects
+        run: snyk monitor
         
       - name: Snyk IaC test and report
         run: snyk iac test --report || true
