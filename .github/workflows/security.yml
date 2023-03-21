@@ -50,7 +50,7 @@ jobs:
         continue-on-error: true
         with:
           command: code test
-          args: --sarif-file-output=snyk.dotnet.sarif
+          args: --all-projects --sarif-file-output=snyk.dotnet.sarif
           
       - name: Upload to Snyk
         uses: snyk/actions/dotnet@master
