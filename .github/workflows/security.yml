@@ -48,9 +48,6 @@ jobs:
         uses: snyk/actions/dotnet@master
         continue-on-error: true
         with:
-          command: |
-            test
-            monitor
           args: --all-projects --sarif-file-output=snyk.dotnet.sarif
           
  #     - name: Run Snyk on Frontend (Node.js)
