@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react';
 import './MessageComponent.css'
-import { API_URL } from '../App';
 import { AppService } from '../services/app.service'
+import React, { Component, useState }  from 'react';
+
 
 interface Props {
     isLoggedIn: boolean;
@@ -23,7 +23,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
     if (isLoggedIn) {
         return (
             <div className='twitbox'>
-                <h3>What's on your mind, {userName}?</h3>
+                <h3>What`&apo;`s on your mind, &{userName}?</h3>
                 <input
                     type="text"
                     placeholder="Write here"

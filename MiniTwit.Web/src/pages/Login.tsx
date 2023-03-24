@@ -17,7 +17,7 @@ const Login = () => {
   };
 
   const submit = (e: React.FormEvent) => {
-    let promise = appService.Login(username, password);
+    const promise = appService.Login(username, password);
     promise.catch(() => {
       alert("Wrong credentials")
       sessionStorage.setItem('isLoggedIn', 'false')

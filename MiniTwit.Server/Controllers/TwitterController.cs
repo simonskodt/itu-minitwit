@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Service;
+using MiniTwit.Core.Responses;
 
 namespace MiniTwit.Server.Controllers;
 
@@ -34,8 +35,11 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult<IEnumerable<MessageDTO>>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
         _logger.LogInformation("We got a visitor from: " + Request.HttpContext.Connection.RemoteIpAddress);
-
         var response = await _serviceManager.MessageService.GetAllFollowedByUserIdAsync(userId, ct);
+        if (response.HTTPResponse == HTTPResponse.NotFound)
+        {
+            _logger.LogError($"The userId: {userId} does not exist");
+        }
         return response.ToActionResult();
     }
 

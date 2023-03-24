@@ -1,16 +1,16 @@
 import { MessageObject, MessageObjectWithName, User } from "./interface";
 
 export function getMessageArray(json: any): MessageObject[] {
-    let returnArrayOfObject = new Array(json.length);
+    const returnArrayOfObject = new Array(json.length);
 
     for (let i = 0; i < json.length; i++) {
-        let messageId = json[i].messageId;
-        let authorId = json[i].authorId;
-        let text = json[i].text;
-        let pubDate = json[i].pubDate;
-        let flagged = json[i].flagged;
+        const messageId = json[i].messageId;
+        const authorId = json[i].authorId;
+        const text = json[i].text;
+        const pubDate = json[i].pubDate;
+        const flagged = json[i].flagged;
 
-        let messageObj = {
+        const messageObj = {
             messageId: messageId,
             authorId: authorId,
             text: text,
@@ -30,7 +30,7 @@ export function makeMessageObjectWithName(message: any, name: string): MessageOb
     let flagged: number;
     let userName: string;
 
-    let messageObjwithName = {
+    const messageObjwithName = {
         messageId: message.id,
         authorId: message.authorId,
         text: message.text,
@@ -46,7 +46,7 @@ export function buildUser(json: any): User {
     let username: any;
     let email: any;
 
-    let user = {
+    const user = {
         id: json.id,
         username: json.username,
         email: json.email

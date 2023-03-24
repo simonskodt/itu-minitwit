@@ -21,6 +21,11 @@
     "jsx": "react-jsx",
     "noImplicitAny": false 
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "include": [
     "src"
   ]

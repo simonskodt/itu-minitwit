@@ -7,12 +7,13 @@ import Header from "../components/Header";
 import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
+import React from 'react';
 
 
 function PrivateTimeline() {
-  let url = window.location.href;
-  var parts = url.split("/");
-  var userName = parts[parts.length - 1];
+  const url = window.location.href;
+  const parts = url.split("/");
+  const userName = parts[parts.length - 1];
   const [messages, setMessages] = useState<MessageObjectWithName[]>();
 
   useEffect(() => {
@@ -30,20 +31,20 @@ function PrivateTimeline() {
         <MessageComponent isLoggedIn={checkLogIn()} />
         <FollowComponent isLoggedIn={checkLogIn()} userToFollow ={userName}/>
         <div className="body">
-        <h2>{userName}'s TimeLine</h2>
-        {messages.map((mes) => (
-              <view key={mes.messageId}>
-                <view>
-                  <Message
-                    username={mes.userName}
-                    text={mes.text}
-                    date={mes.pubDate}
-                  />
-                </view>
+          <h2>{userName}&apos;s TimeLine</h2>
+          {messages.map((mes) => (
+            <view key={mes.messageId}>
+              <view>
+                <Message
+                  username={mes.userName}
+                  text={mes.text}
+                  date={mes.pubDate}
+                />
+              </view>
               </view>
           ))}
+          <Footer />
         </div>
-        <Footer />
       </div>
 
     );
