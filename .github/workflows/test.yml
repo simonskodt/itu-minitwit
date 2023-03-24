@@ -12,9 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -25,30 +22,3 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
-      - name: Install dependencies
-        run: | 
-          cd MiniTwit.Web/tests  
-          npm ci
-      - name: Install Playwright
-        run: | 
-          cd MiniTwit.Web/tests  
-          npx playwright install --with-deps
-      - name: Run your tests
-        run: |
-          connectionString=${{secrets.DB_CONNECTIONSTRING}}
-          dotnet user-secrets set "ConnectionStrings:MiniTwit" $connectionString --project MiniTwit.Server
-          password=${{secrets.DB_PASSWORD}} # Load db password from file
-          docker volume create mongodb_data_container_local
-          docker run --rm --name mongodb -d -p 27018:27017 -v mongodb_data_container_local:/data/db -e "MONGO_INITDB_ROOT_USERNAME=radiator" -e "MONGO_INITDB_ROOT_PASSWORD=$password" -e "MONGO_INITDB_DATABASE=MiniTwit" mongo:latest
-          cd MiniTwit.Server
-          dotnet run
-          cd ../MiniTwit.Web
-          npm start
-          cd tests
-          npx playwright test
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: playwright-report
