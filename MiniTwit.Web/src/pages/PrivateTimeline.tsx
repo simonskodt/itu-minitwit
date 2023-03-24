@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { checkLogIn } from "../builders/functions";
 import { MessageObject } from "../builders/interface";
 import { fetchPrivateTimeLine } from "./fetch";
@@ -8,9 +8,9 @@ import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 
 function PrivateTimeline() {
-  let url = window.location.href;
-  var parts = url.split("/");
-  var userName = parts[parts.length - 1];
+  const url = window.location.href;
+  const parts = url.split("/");
+  const userName = parts[parts.length - 1];
   const [messages, setMessages] = useState<MessageObject[]>();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function PrivateTimeline() {
         <Header isLoggedIn={checkLogIn()} />
         <div className="body">
           <MessageComponent isLoggedIn={checkLogIn()} />
-          <h2>{userName}'s TimeLine</h2>
+          <h2>{userName}s TimeLine</h2>
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>

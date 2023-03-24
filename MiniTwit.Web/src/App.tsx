@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React , { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 import Login from "./pages/Login";
 import PublicTimeline from "./pages/PublicTimeline";

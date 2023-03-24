@@ -1,4 +1,4 @@
-import { Md5 } from 'ts-md5';
+import React, { Md5 } from 'ts-md5';
 
 interface IMessageProps {
     username: string;
@@ -8,7 +8,7 @@ interface IMessageProps {
 
 // Generation of MD5 hash to use as Gravatar image
 function generateHash(name: string): string {
-    var hash: string = Md5.hashStr(name);
+    const hash: string = Md5.hashStr(name);
     return 'https://www.gravatar.com/avatar/' + hash + '?s=50&d=identicon';
 }
 

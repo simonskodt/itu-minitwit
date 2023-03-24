@@ -23,7 +23,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
     if (isLoggedIn) {
         return (
             <div className='twitbox'>
-                <h3>What's on your mind, {userName}?</h3>
+                <h3>Whats on your mind, {userName}?</h3>
                 <input
                     type="text"
                     placeholder="Write here"

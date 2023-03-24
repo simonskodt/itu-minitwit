@@ -2,7 +2,7 @@ import "../pages/Layout.css";
 import { fetchPublicTimeline } from "../pages/fetch";
 import { useState } from "react";
 import { MessageObjectWithName } from "../builders/interface";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Message } from "../pages/Message";
 
 interface Props {
