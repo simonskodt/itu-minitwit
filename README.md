@@ -118,7 +118,7 @@ Enhancing CI/CD setup with test suite and static code analysis.
 
 Add logging to your ITU-MiniTwit and create a set of SLAs for it.
 
-- [ ] 1) Add Logging to Your Systems
+- [x] 1) Add Logging to Your Systems
 - [ ] 2) Test that Your Logging Works
   - The Devs introduce a bug; the Ops resolve the bug by using the logs.
 
