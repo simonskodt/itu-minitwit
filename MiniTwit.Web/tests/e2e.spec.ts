@@ -1,58 +1,45 @@
-//import { test, expect  } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
+import * as fs from 'fs'
 
+async function findUserByUserName(username: string) { 
+  let connectionStringFromFile = fs.readFileSync('../../.local/connection_string.txt','utf8');
+  let str = connectionStringFromFile.substring(0, connectionStringFromFile.length-13); 
 
-//bot test
-/* test.describe('register user via GUI and check DB entry', () => {
-  const DB_URL = '<your-db-url-here>';
-  let dbClient: MongoClient;
-  let page: any;
+  const client = await MongoClient.connect(str +'localhost:27018');
+  const db = client.db('MiniTwit');
+  const collection = db.collection('Users');
 
-  test.beforeAll(async () => {
-    dbClient = await MongoClient.connect(DB_URL, { serverSelectionTimeoutMS: 5000 });
-    // Ensure test is idempotent by cleaning up any previous test entries
-    await dbClient.db('test').collection('user').deleteOne({ username: 'Me' });
-  });
+  const query = { Username: username };
+  const qu = await collection.findOne(query);
+  return qu
+}
 
-  test.afterAll(async () => {
-    await dbClient.close();
-  });
+test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
+  await page.goto('http://localhost:3000/register');
 
-  test('should register user and check DB entry', async () => {
-    // Ensure no such user exists in the database yet
-    const existingUser = await _get_user_by_name(dbClient, 'Me');
-    test.expect(existingUser).toBeNull();
+  // create randomUsername, because database fails if not a unique username
+  const randomName = Math.random().toString(36).slice(2, 7);
+  const inputElements = await page.$$('input');
 
-    const browser = await firefox.launch();
-    const context = await browser.newContext();
-    page = await context.newPage();
+  const userName = await inputElements[0].click();
+  await page.keyboard.type("UiTest"+randomName);
 
-    await page.goto('<your-app-url-here>');
+  const email = await inputElements[1].click();
+  await page.keyboard.type(randomName+'@itu.dk');
 
-    const nameInput = await page.$('#name');
-    const emailInput = await page.$('#email');
-    const passwordInput = await page.$('#password');
-    const confirmPasswordInput = await page.$('#confirm-password');
-    const submitButton = await page.$('#register-button');
+  const password = await inputElements[2].click();
+  await page.keyboard.type('123');
 
-    await nameInput.fill('Me');
-    await emailInput.fill('me@some.where');
-    await passwordInput.fill('secure123');
-    await confirmPasswordInput.fill('secure123');
+  const passwordRepeat = await inputElements[3].click();
+  await page.keyboard.type('123');
 
-    await submitButton.click();
+  await page.click('button:text("Sign Up")');
 
-    const successMessage = await page.waitForSelector('#success-message');
-    const generatedMsg = await successMessage.textContent();
-    const expectedMsg = 'You were successfully registered and can login now';
-    test.expect(generatedMsg).toBe(expectedMsg);
+  // wait for the user to be created before checking the database
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
-    const user = await _get_user_by_name(dbClient, 'Me');
-    test.expect(user).not.toBeNull();
-    test.expect(user!.username).toBe('Me');
-  });
+  const result = await findUserByUserName("UiTest"+randomName);
 
-  async function _get_user_by_name(client: MongoClient, username: string) {
-    const user = await client.db('test').collection('user').findOne({ username });
-    return user;
-  }
-}); */
+  expect(result?.Username).toBe("UiTest"+randomName);
+});
