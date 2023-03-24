@@ -1,4 +1,6 @@
-import React, { Md5 } from 'ts-md5';
+import { Md5 } from 'ts-md5';
+import React, { Component }  from 'react';
+
 
 interface IMessageProps {
     username: string;

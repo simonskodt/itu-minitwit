@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 
+
 function PrivateTimeline() {
   const url = window.location.href;
   const parts = url.split("/");
@@ -26,7 +27,7 @@ function PrivateTimeline() {
         <Header isLoggedIn={checkLogIn()} />
         <div className="body">
           <MessageComponent isLoggedIn={checkLogIn()} />
-          <h2>{userName}s TimeLine</h2>
+          <h2>{userName}&apos;s TimeLine</h2>
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>

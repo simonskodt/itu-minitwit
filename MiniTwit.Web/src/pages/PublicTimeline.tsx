@@ -1,7 +1,6 @@
 import Footer from "./Footer";
 import Header from "../components/Header";
 import "./Layout.css";
-import { fetchPublicTimeline } from "./fetch";
 import React, { useState } from "react";
 import { checkLogIn } from "../builders/functions";
 import MessageSliceComponent from "../components/MessageSliceComponent";
