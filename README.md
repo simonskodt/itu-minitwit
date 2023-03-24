@@ -117,7 +117,7 @@ Enhancing CI/CD setup with test suite and static code analysis.
   
 ### Week 8
 
-Add logging to your ITU-MiniTwit and create a set of SLAs for it.
+Add logging to your ITU-MiniTwit.
 
 - [x] 1) Add Logging to Your Systems
 - [ ] 2) Test that Your Logging Works
@@ -125,7 +125,7 @@ Add logging to your ITU-MiniTwit and create a set of SLAs for it.
 
 ### Week 9
 
-To be announced.
+To be announced (SLAs).
   
 ## Course description
 
