@@ -1,0 +1,57 @@
+version: '3.4'
+
+networks:
+  elk:
+    name: itu-minitwit-logging
+
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:latest
+    ports:
+      - 9200:9200
+    environment:
+        - "discovery.type=single-node"
+    volumes:
+      - elasticsearch-data:/data/elasticdata
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/beats/filebeat:latest
+    environment:
+        elasticsearch.hosts: '["http://elasticsearch:9200"]'
+    networks:
+      - elk
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:latest
+    environment:
+      ELK_USER: ${ELK_USER}
+    user: root
+    volumes:
+      - ${ELK_DIR}/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - elk
+
+  nginx:
+      image: nginx:latest
+      ports:
+        - 9200:9200
+        - 5601:5601
+        - 8881:8881
+        - 8882:8882
+      networks:
+        - elk
+      volumes:
+        - type: bind
+          source: ${ELK_DIR}/nginx.conf
+          target: /etc/nginx/nginx.conf
+        - type: bind
+          source: ${ELK_DIR}/.htpasswd
+          target: /etc/nginx/.htpasswd
+
+volumes:
+  elasticsearch-data:
