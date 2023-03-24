@@ -12,6 +12,7 @@
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
 | Monitoring (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
+| Logging (requires login) |  |
 
 ## Contents
 
