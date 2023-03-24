@@ -1,7 +1,7 @@
 version: '3.4'
 
 networks:
-  elk:
+  main:
     name: itu-minitwit-logging
 
 services:
@@ -15,7 +15,7 @@ services:
     volumes:
       - elasticsearch-data:/data/elasticdata
     networks:
-      - elk
+      - main
 
   kibana:
     image: docker.elastic.co/beats/filebeat:latest
@@ -34,7 +34,7 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - elk
+      - main
 
   nginx:
       image: nginx:latest
@@ -44,7 +44,7 @@ services:
         - 8881:8881
         - 8882:8882
       networks:
-        - elk
+        - main
       volumes:
         - type: bind
           source: ${ELK_DIR}/nginx.conf
