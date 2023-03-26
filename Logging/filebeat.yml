@@ -18,17 +18,17 @@ output.elasticsearch:
     - index: "filebeat-elastic-%{[agent.version]}-%{+yyyy.MM.dd}"
       when.or:
         - equals:
-            container.image.name: docker.elastic.co/beats/filebeat:latest
+            container.image.name: docker.elastic.co/beats/filebeat:7.2.0
         - equals:
-            container.image.name: docker.elastic.co/elasticsearch/elasticsearch:latest
+            container.image.name: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
         - equals:
-            container.image.name: docker.elastic.co/kibana/kibana:latest
+            container.image.name: docker.elastic.co/kibana/kibana:7.2.0
     - index: "filebeat-minitwit-%{[agent.version]}-%{+yyyy.MM.dd}"
       when.or:
           - equals:
-              container.image.name: ${ELK_USER}/minitwitserver
+              container.image.name: itu-minitwit-server
           - equals:
-              container.image.name: ${ELK_USER}/minitwitclient
+              container.image.name: itu-minitwit-web
     - index: "filebeat-ngix-%{[agent.version]}-%{+yyyy.MM.dd}"
       when.equals:
         container.image.name: nginx

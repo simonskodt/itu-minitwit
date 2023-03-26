@@ -52,7 +52,7 @@ function setup_elk {
 
     # Go to ELK stack folder
     (
-        cd "$ELK_DIR" || exit
+        cd "$ELK_DIR"/Logging || exit
         # Change permissions on filebat config
         sudo chown root filebeat.yml 
         sudo chmod go-w filebeat.yml
