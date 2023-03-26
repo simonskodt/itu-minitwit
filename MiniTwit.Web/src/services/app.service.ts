@@ -1,34 +1,33 @@
-import axios, { Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { url } from 'inspector';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { API_URL } from '../App';
-import { LoginDTO } from '../models/Login';
-import { UserDTO } from '../models/User';
+import { LoginDTO } from '../models/LoginDTO';
+import { UserCreateDTO, UserDTO } from '../models/UserDTO';
+
+const requestConfig: AxiosRequestConfig = {
+  maxBodyLength: Infinity,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
 
 export class AppService {
 
   public async registerUser(username: string, email: string, pw: string): Promise<any> {
-    var data = JSON.stringify({
-      "username": username,
-      "email": email,
-      "pwd": pw
-    });
-
-    const request: AxiosRequestConfig = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: API_URL + 'register',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: data
-    };
-    try {
-      const response = await axios(request).then((response) => response.data);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return Promise.reject();
+    var userCreateDTO: UserCreateDTO = {
+      username: username,
+      email: email,
+      pwd: pw
     }
+
+    return await axios.post<any>(API_URL + 'register', userCreateDTO, requestConfig)
+      .then(response => response)
+      .catch((error: Error | AxiosError) => {
+        if (axios.isAxiosError(error)) {
+          return Promise.reject(error.response?.data.error_msg)
+        }
+
+        return Promise.reject(error)
+      })
   }
 
   public async Login(username: string, pw: string): Promise<UserDTO> {
@@ -37,14 +36,7 @@ export class AppService {
       password: pw
     };
 
-    const config: AxiosRequestConfig = {
-      maxBodyLength: Infinity,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-    return await axios.post<UserDTO>(API_URL + 'login', loginDTO, config)
+    return await axios.post<UserDTO>(API_URL + 'login', loginDTO, requestConfig)
       .then(response => response.data)
       .catch((error: Error | AxiosError) => {
         if (axios.isAxiosError(error)) {
