@@ -12,6 +12,7 @@
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
 | Monitoring (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
+| Logging (requires login) |  |
 
 ## Contents
 
@@ -37,7 +38,8 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add Maintainability and Technical Debt estimation tools.
+- Add Maintainability and Technical Debt estimation tools (Code Climate).
+- Add logging.
 
 It would be **nice to have the following features**:
 
@@ -104,10 +106,10 @@ Add monitoring to your ITU-MiniTwit and peer-review.
 Enhancing CI/CD setup with test suite and static code analysis.
 
 - [x] 1) Add tests to your CI chain (Selenium)
-- [ ] 2) Enhance your CI Pipelines with at least three static analysis tools
-  - [x] .NET Analyzers
-  - [x] tslint-clean-code
-  - [ ] Snyk
+- [x] 2) Enhance your CI Pipelines with at least three static analysis tools
+  - [x] eslint (typescript)
+  - [x] codeql (csharp)
+  - [x] Snyk (containers)
 - [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [x] Sonarqube
   - [ ] Code Climate
@@ -115,15 +117,15 @@ Enhancing CI/CD setup with test suite and static code analysis.
   
 ### Week 8
 
-Add logging to your ITU-MiniTwit and create a set of SLAs for it.
+Add logging to your ITU-MiniTwit.
 
-- [ ] 1) Add Logging to Your Systems
+- [x] 1) Add Logging to Your Systems
 - [ ] 2) Test that Your Logging Works
   - The Devs introduce a bug; the Ops resolve the bug by using the logs.
 
 ### Week 9
 
-To be announced.
+To be announced (SLAs).
   
 ## Course description
 
