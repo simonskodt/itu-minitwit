@@ -1,40 +1,43 @@
 version: '3.4'
 
 networks:
-  main:
+  elk:
     name: itu-minitwit-logging
 
 services:
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:latest
-    ports:
-      - 9200:9200
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     environment:
+        - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
         - "discovery.type=single-node"
+        - "xpack.security.enabled=false"
     volumes:
-      - elasticsearch-data:/data/elasticdata
+      - elasticsearch-data:/usr/share/elasticsearch/data
     networks:
-      - main
+      - elk
 
   kibana:
-    image: docker.elastic.co/beats/filebeat:latest
+    image: docker.elastic.co/kibana/kibana:7.17.9
     environment:
-        elasticsearch.hosts: '["http://elasticsearch:9200"]'
+        - "elasticsearch.hosts='[\"http://elasticsearch:9200\"]'"
+        - "xpack.security.enabled=false"
+    volumes:
+        - kibana-data:/usr/share/kibana/data
     networks:
       - elk
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:latest
+    image: docker.elastic.co/beats/filebeat:7.17.9
     environment:
-      ELK_USER: ${ELK_USER}
+      - "ELK_USER=${ELK_USER}"
     user: root
     volumes:
-      - ${ELK_DIR}/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ${ELK_DIR}/Logging/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - main
+      - elk
 
   nginx:
       image: nginx:latest
@@ -44,14 +47,15 @@ services:
         - 8881:8881
         - 8882:8882
       networks:
-        - main
+        - elk
       volumes:
         - type: bind
-          source: ${ELK_DIR}/nginx.conf
+          source: ${ELK_DIR}/Logging/nginx.conf
           target: /etc/nginx/nginx.conf
         - type: bind
-          source: ${ELK_DIR}/.htpasswd
+          source: ${ELK_DIR}/Logging/.htpasswd
           target: /etc/nginx/.htpasswd
 
 volumes:
   elasticsearch-data:
+  kibana-data:
