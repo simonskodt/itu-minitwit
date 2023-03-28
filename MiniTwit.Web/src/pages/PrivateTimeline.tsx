@@ -22,14 +22,14 @@ function PrivateTimeline() {
   const sessionUser = sessionStorage.getItem('username')
 
   const displayName = () => {
-    if(userName == sessionUser){
+    if (userName == sessionUser) {
       return "My Timeline"
-    }else {
+    } else {
       return userName + "'s TimeLine"
     }
   }
 
-  
+
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -51,10 +51,10 @@ function PrivateTimeline() {
       <div className="page">
         <Header isLoggedIn={checkLogIn()} />
         <div className="body">
-        <MessageComponent isLoggedIn={checkLogIn()} clickedUser = {userName} />
+          <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
           <div className="timeline-follow">
             <div className="timeline-left">
-            <h2>{displayName()}</h2>
+              <h2>{displayName()}</h2>
             </div>
             <div className="follow-right">
               <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
