@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
@@ -10,6 +11,8 @@ using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
 using MiniTwit.Service;
 using Prometheus;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +48,29 @@ builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
 
 var app = builder.Build();
+
+// Setup logger
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .Enrich.WithEnvironmentName()
+    .WriteTo.Debug()
+    .WriteTo.Console()
+    .WriteTo.Elasticsearch(ConfigureElasticSink(builder.Configuration, app.Environment.EnvironmentName))
+    .Enrich.WithProperty("Environment", app.Environment.EnvironmentName)
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+    
+ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
+{
+    return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]!))
+    {
+        AutoRegisterTemplate = true,
+        IndexFormat = $"{Assembly.GetExecutingAssembly()
+            .GetName().Name?.ToLower()
+            .Replace(".", "-")}-{environment?
+            .ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+    };
+}
 
 // Seed DB
 app.SeedDatabase(app.Environment.IsDevelopment());

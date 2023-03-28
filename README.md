@@ -3,7 +3,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/simonskodt/itu-minitwit)
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
 
 # DevOps&mdash;Twitter Project
 
@@ -12,6 +12,7 @@
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
 | Monitoring (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
+| Logging (requires login) |  |
 
 ## Contents
 
@@ -116,15 +117,15 @@ Enhancing CI/CD setup with test suite and static code analysis.
   
 ### Week 8
 
-Add logging to your ITU-MiniTwit and create a set of SLAs for it.
+Add logging to your ITU-MiniTwit.
 
-- [ ] 1) Add Logging to Your Systems
+- [x] 1) Add Logging to Your Systems
 - [ ] 2) Test that Your Logging Works
   - The Devs introduce a bug; the Ops resolve the bug by using the logs.
 
 ### Week 9
 
-To be announced.
+To be announced (SLAs).
   
 ## Course description
 

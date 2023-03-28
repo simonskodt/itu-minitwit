@@ -33,6 +33,7 @@ public class SimController : ControllerBase
     public async Task<ActionResult<LatestDTO>> Latest(CancellationToken ct = default)
     {
         var response = await _serviceManager.LatestService.GetAsync(ct);
+        _logger.LogDebug($"The latest value: {response.Model!.LatestVal}");
         return response.ToActionResult();
     }
 
@@ -53,6 +54,20 @@ public class SimController : ControllerBase
         await UpdateLatestAsync(latest);
 
         var response = await _serviceManager.UserService.CreateAsync(userCreateDTO);
+
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"The following user: \"{userCreateDTO.Username!}\" is created");
+                break;
+            case HTTPResponse.BadRequest:
+                _logger.LogError($"The user name: \"{userCreateDTO.Username!}\" is already taken");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
+
         return response.ToActionResult();
     }
 
@@ -72,12 +87,27 @@ public class SimController : ControllerBase
     {
         await UpdateLatestAsync(latest);
 
-        var messages = (await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct)).Model!.ToList().Take(no);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
+        var messages = response.Model!.ToList().Take(no);
         var messageDTOList = new List<MessageDetailsDTO>();
 
         foreach (var message in messages)
         {
-            var user = (await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!)).Model;
+            var userResponse = await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!);
+            var user = userResponse.Model;
+
+            switch (userResponse.HTTPResponse)
+            {
+                case HTTPResponse.Ok:
+                    _logger.LogInformation($"Authorized user: {user!.Username}");
+                    break;
+                case HTTPResponse.Forbidden:
+                    _logger.LogError($"Unauthorized user: {user!.Username}");
+                    break;
+                default:
+                    _logger.LogWarning($"Unexpected status code: {userResponse.HTTPResponse}");
+                    break;
+            }
 
             var dto = new MessageDetailsDTO
             {
@@ -86,6 +116,19 @@ public class SimController : ControllerBase
                 PubDate = message.PubDate
             };
             messageDTOList.Add(dto);
+        }
+
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.Ok:
+                _logger.LogInformation($"Most recent messages: {response.Model}");
+                break;
+            case HTTPResponse.Forbidden:
+                _logger.LogError("Unauthorized");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
         }
 
         return Ok(messageDTOList.OrderByDescending(m => m.PubDate));
@@ -114,6 +157,7 @@ public class SimController : ControllerBase
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
+            _logger.LogError($"User \"{username}\" is not found");
             return NotFound();
         }
 
@@ -126,13 +170,40 @@ public class SimController : ControllerBase
             var userResponse = await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!, ct);
             var user = userResponse.Model;
 
+            switch (userResponse.HTTPResponse)
+            {
+                case HTTPResponse.Ok:
+                    _logger.LogInformation($"Authorized user: {user!.Username}");
+                    break;
+                case HTTPResponse.Forbidden:
+                    _logger.LogError($"Unauthorized user: {user!.Username}");
+                    break;
+                default:
+                    _logger.LogWarning($"Unexpected status code: {userResponse.HTTPResponse}");
+                    break;
+            }
+
             var dto = new MessageDetailsDTO()
             {
                 Content = message.Text,
                 Username = user!.Username,
                 PubDate = message.PubDate
             };
+
             messageDTOList.Add(dto);
+        }
+
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.Ok:
+                _logger.LogDebug($"Most recent messages: {response.Model}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError("No messages found");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
         }
 
         return Ok(messageDTOList.Take(no));
@@ -155,6 +226,20 @@ public class SimController : ControllerBase
         await UpdateLatestAsync(latest);
 
         var response = await _serviceManager.MessageService.CreateByUsernameAsync(username, messageCreateDTO.Content!);
+
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"User \"{username}\" created message: {messageCreateDTO.Content}");
+                break;
+            case HTTPResponse.Forbidden:
+                _logger.LogError($"Unauthorized user \"{username}\"");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
+
         return response.ToActionResult();
     }
 
@@ -181,6 +266,7 @@ public class SimController : ControllerBase
 
         if (followers.HTTPResponse == HTTPResponse.NotFound)
         {
+            _logger.LogError($"User \"{username}\" is not found");
             return NotFound();
         }
 
@@ -190,6 +276,19 @@ public class SimController : ControllerBase
         {
             var user = await _serviceManager.UserService.GetByUserIdAsync(follower.WhoId!, ct);
             followersDTOs.Follows.Add(user.Model!.Username!);
+        }
+
+        switch (followers.HTTPResponse)
+        {
+            case HTTPResponse.Ok:
+                _logger.LogDebug($"User \"{username}\" is followed by: {followers.Model}");
+                break;
+            case HTTPResponse.Forbidden:
+                _logger.LogError($"Unauthorized user \"{username}\"");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {followers.HTTPResponse}");
+                break;
         }
 
         return Ok(followersDTOs);
@@ -217,6 +316,7 @@ public class SimController : ControllerBase
 
         if (userResponse.HTTPResponse == HTTPResponse.BadRequest)
         {
+            _logger.LogError($"User \"{username}\" is not found");
             return NotFound();
         }
 
@@ -227,9 +327,11 @@ public class SimController : ControllerBase
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
+                _logger.LogError($"User id \"{userResponse.Model!.Id!}\" not found");
                 return NotFound();
             }
 
+            _logger.LogInformation($"User \"{userResponse.Model!.Id!}\" now follows \"{followerCreateDTO.Follow}\"");
             return NoContent();
         }
         else
@@ -238,9 +340,11 @@ public class SimController : ControllerBase
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
+                _logger.LogError($"Follower id \"{followerCreateDTO.Follow}\" not found");
                 return NotFound();
             }
 
+            _logger.LogInformation($"User \"{userResponse.Model!.Id!}\" now unfollows \"{followerCreateDTO.Follow}\"");
             return NoContent();
         }
     }
