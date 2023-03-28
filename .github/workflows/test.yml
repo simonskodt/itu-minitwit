@@ -38,7 +38,7 @@ jobs:
       - name: Run Tests
         run: | 
           mkdir .local
-          echo ${{secrets.DB_CONNECTIONSTRING}}
+          echo ${{secrets.DB_CONNECTIONSTRING}} > .local/connection_string.txt
           docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
