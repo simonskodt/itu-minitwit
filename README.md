@@ -4,6 +4,7 @@
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
+<a href="https://codeclimate.com/github/simonskodt/itu-minitwit/maintainability"><img src="https://api.codeclimate.com/v1/badges/6988da87fa2308716260/maintainability" /></a>
 
 # DevOps&mdash;Twitter Project
 
@@ -38,8 +39,8 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add Maintainability and Technical Debt estimation tools (Code Climate).
 - Add logging.
+- Check security.
 
 It would be **nice to have the following features**:
 
@@ -110,9 +111,9 @@ Enhancing CI/CD setup with test suite and static code analysis.
   - [x] eslint (typescript)
   - [x] codeql (csharp)
   - [x] Snyk (containers)
-- [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
+- [x] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [x] Sonarqube
-  - [ ] Code Climate
+  - [x] Code Climate (hosted from Code Climate, not in GitHub actions)
 - [x] 4) Software Maintenance
   
 ### Week 8

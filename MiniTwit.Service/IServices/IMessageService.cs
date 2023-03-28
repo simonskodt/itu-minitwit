@@ -12,12 +12,12 @@ public interface IMessageService
     Response<IEnumerable<MessageDTO>> GetAllByUserId(string userId, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllByUserIdAsync(string userId, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllByUsername(string username, CancellationToken ct = default);
-    Task<Response<IEnumerable<MessageDTO>>> GetAllByUsernameAsync(string username, CancellationToken ct = default);
+    Task<Response<IEnumerable<MessageWithAutherNameDTO>>> GetAllByUsernameAsync(string username, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllFollowedByUserId(string userId, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllFollowedByUserIdAsync(string userId, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlagged(CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedAsync(CancellationToken ct = default);
-    Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default);
+    Task<Response<IEnumerable<MessageWithAutherNameDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default);
 }

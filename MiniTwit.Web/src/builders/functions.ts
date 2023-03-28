@@ -1,3 +1,4 @@
+import { fetchUserByid } from "../pages/fetch";
 import { MessageObject, MessageObjectWithName, User } from "./interface";
 
 export function getMessageArray(json: any): MessageObject[] {
@@ -22,7 +23,18 @@ export function getMessageArray(json: any): MessageObject[] {
     return returnArrayOfObject;
 }
 
-export function makeMessageObjectWithName(message: any, name: string): MessageObjectWithName {
+export async function makeMessageObjectWithName(message: any): Promise<MessageObjectWithName> {
+    let messageId: string;
+    let authorId: string;
+    let text: string;
+    let pubDate: string;
+    let flagged: number;
+    let userName: string;
+
+    if (message.authorName === null){
+        const user = await fetchUserByid(message.authorId);
+        message.authorName = user.username
+    }
 
     const messageObjwithName = {
         messageId: message.id,
@@ -30,7 +42,7 @@ export function makeMessageObjectWithName(message: any, name: string): MessageOb
         text: message.text,
         pubDate: message.pubDate,
         flagged: message.flagged,
-        userName: name
+        userName: message.authorName
     }
     return messageObjwithName;
 }

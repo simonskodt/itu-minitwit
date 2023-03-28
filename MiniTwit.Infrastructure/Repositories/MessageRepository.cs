@@ -35,6 +35,7 @@ public class MessageRepository : IMessageRepository
         {
             AuthorId = userId,
             Text = text,
+            AuthorName = user.Username,
             PubDate = DateTime.Now,
             Flagged = 0,
         };
@@ -66,6 +67,7 @@ public class MessageRepository : IMessageRepository
         {
             AuthorId = userId,
             Text = text,
+            AuthorName = user.Username,
             PubDate = DateTime.Now,
             Flagged = 0,
         };
@@ -107,8 +109,8 @@ public class MessageRepository : IMessageRepository
         var messages = await _context.Messages
             .Find(m => m.Flagged == 0)
             .SortByDescending(m => m.PubDate)
-            .Skip((pageNumber -1) * 20)
-            .Limit(20)
+            .Skip((pageNumber -1) * 50)
+            .Limit(50)
             .ToListAsync();
         
         return new DBResult<IEnumerable<Message>>

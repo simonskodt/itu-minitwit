@@ -8,29 +8,49 @@ import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
 
+function replaceSpaces(str: string): string {
+  return str.replace(/%20/g, " ");
+}
+
 function PrivateTimeline() {
   const url = window.location.href;
   const parts = url.split("/");
-  const userName = parts[parts.length - 1];
+  const tempUserName = parts[parts.length - 1];
+  const userName = replaceSpaces(tempUserName)
   const [messages, setMessages] = useState<MessageObjectWithName[]>();
+  const sessionUser = sessionStorage.getItem('username')
+
+  const displayName = () => {
+    if (userName == sessionUser) {
+      return "My Timeline"
+    } else {
+      return userName + "'s TimeLine"
+    }
+  }
 
   useEffect(() => {
-    fetchPrivateTimeLine(userName).then((messages) => {
-
+    const fetchMessages = async () => {
+      const messages = await fetchPrivateTimeLine(userName);
       setMessages(messages);
-    });
-  }, []);
+    };
+    fetchMessages();
 
+    const intervalId = setInterval(() => {
+      fetchMessages();
+    }, 2000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   if (messages != undefined) {
     return (
       <div className="page">
         <Header isLoggedIn={checkLogIn()} />
         <div className="body">
-          <MessageComponent isLoggedIn={checkLogIn()} />
+          <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
           <div className="timeline-follow">
             <div className="timeline-left">
-              <h2>{userName}&apos;s TimeLine</h2>
+              <h2>{displayName()}</h2>
             </div>
             <div className="follow-right">
               <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
