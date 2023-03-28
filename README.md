@@ -4,6 +4,7 @@
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
+<a href="https://codeclimate.com/github/simonskodt/itu-minitwit/maintainability"><img src="https://api.codeclimate.com/v1/badges/6988da87fa2308716260/maintainability" /></a>
 
 # DevOps&mdash;Twitter Project
 
