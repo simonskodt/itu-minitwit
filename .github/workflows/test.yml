@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: 18
       - name: Run Tests
-        run: 
+        run: | 
           mkdir .local
           echo ${{DB_CONNECTIONSTRING}}
         #  docker-compose up 
