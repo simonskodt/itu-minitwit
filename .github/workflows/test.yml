@@ -38,7 +38,7 @@ jobs:
       - name: Run Tests
         run: 
           echo "Hello World"
-        #   docker-compose up 
+          docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
         #   cd tests/
