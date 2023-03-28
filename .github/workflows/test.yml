@@ -32,7 +32,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: setUp NodeJS
-      - uses: actions/setup-node@master
+        uses: actions/setup-node@master
         with:
           node-version: 18
       - name: Run Tests
