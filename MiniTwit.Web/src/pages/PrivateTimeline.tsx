@@ -23,15 +23,21 @@ function PrivateTimeline() {
     });
   }, []);
 
-    
+
   if (messages != undefined) {
     return (
       <div className="page">
         <Header isLoggedIn={checkLogIn()} />
-        <MessageComponent isLoggedIn={checkLogIn()} />
-        <FollowComponent isLoggedIn={checkLogIn()} userToFollow ={userName}/>
         <div className="body">
-          <h2>{userName}&apos;s TimeLine</h2>
+          <MessageComponent isLoggedIn={checkLogIn()} />
+          <div className="timeline-follow">
+            <div className="timeline-left">
+              <h2>{userName}&apos;s TimeLine</h2>
+            </div>
+            <div className="follow-right">
+              <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
+            </div>
+          </div>
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>
@@ -41,10 +47,10 @@ function PrivateTimeline() {
                   date={mes.pubDate}
                 />
               </view>
-              </view>
+            </view>
           ))}
-          <Footer />
         </div>
+        <Footer />
       </div>
 
     );

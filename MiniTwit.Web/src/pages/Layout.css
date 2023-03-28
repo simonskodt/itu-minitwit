@@ -150,7 +150,6 @@ button {
     padding: 2px 4px;
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 14px;
-    /* make space around the object */
     margin: 8px 0px;
     font-weight: bold;
     -moz-border-radius: 2px;
@@ -161,6 +160,21 @@ button {
 img {
     width: 50px;
     height: 50px;
+}
+
+.timeline-follow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -8px;
+}
+
+.timeline-left {
+    text-align: left;
+    margin-top: 5px;
+}
+
+.follow-right {
+    text-align: right;
 }
 
 .page-number {
