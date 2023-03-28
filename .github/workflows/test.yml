@@ -25,14 +25,15 @@ jobs:
   
   UITest:
     runs-on: ubuntu-22.04
+    env: 
+      NODE_ENV: development
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: test
         uses: actions/setup-node@v3
         run: |  
-          export NODE_ENV=development
-        #   docker-compose up 
+          docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
         #   cd tests/
