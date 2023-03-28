@@ -32,7 +32,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: test
-        uses: actions/setup-node@v3
+        #uses: actions/setup-node@v3
         run: 
           echo "Hello World"
         #   docker-compose up 
