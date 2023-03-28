@@ -21,6 +21,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
             appService.sendMessage(text, id)
             setMessage('');
             setPlaceholderText('Write here');
+            alert('Message posted!');
         })
     }
 
@@ -33,21 +34,23 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
     if (isLoggedIn && userName == clickedUser) {
         return (
             <div className='twitbox'>
-                <h3>What&apo;s on your mind, &{userName}?</h3>
-                <input
-                    type="text"
-                    placeholder={placeholderText}
-                    name="username"
-                    size={70}
-                    required
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    onFocus={() => setPlaceholderText('')}
-                    onBlur={() => setPlaceholderText('Write here')}
-                    onKeyDown = {handleKeyDown}
-                />
-                &nbsp;&nbsp;
-                <button onClick={() => postMessage(message, userName)}>Share</button>
+                <h3>What&apos;s on your mind, {userName}?</h3>
+                <div className="message-container">
+                    <input
+                        className='message-input'
+                        type="text"
+                        placeholder={placeholderText}
+                        name="username"
+                        size={70}
+                        required
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                        onFocus={() => setPlaceholderText('')}
+                        onBlur={() => setPlaceholderText('Write here')}
+                        onKeyDown = {handleKeyDown}
+                    />&nbsp;&nbsp;
+                    <button className='message-button' onClick={() => postMessage(message, userName)}>Share</button>
+                </div>
             </div>
         );
     } else {
