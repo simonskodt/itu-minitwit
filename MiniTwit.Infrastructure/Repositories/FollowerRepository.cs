@@ -92,12 +92,11 @@ public class FollowerRepository : IFollowerRepository
             };
         }
 
-        //See if follow already exists
-
-        var possibleFollow = await _context.Followers.FindAsync(f => f.WhoId == user.Id && f.WhomId==toFollow.Id);
+        // See if follow already exists
+        var possibleFollow = await _context.Followers.FindAsync(f => f.WhoId == user.Id && f.WhomId == toFollow.Id);
         var isAlreadyFollowing = possibleFollow.Any();
 
-        if(!isAlreadyFollowing)
+        if (!isAlreadyFollowing)
         {
             var follower = new Follower
             {
@@ -118,9 +117,8 @@ public class FollowerRepository : IFollowerRepository
         return new DBResult<Follower>
         {
             Model = null,
-            ErrorType = ErrorType.FOLLOWALREADYEXISTS
+            ErrorType = ErrorType.FOLLOW_ALREADY_EXISTS
         };
-
     }
 
     public DBResult Delete(string userId, string username)
@@ -227,6 +225,50 @@ public class FollowerRepository : IFollowerRepository
             Model = followers,
             ErrorType = null
         };
+    }
+
+    public async Task<DBResult<bool?>> GetIsFollowed(string userId, string username)
+    {
+        var user = await GetUserByUserIdAsync(userId);
+        var otherUser = await GetUserByUsernameAsync(username);
+
+        if (userId is null)
+        {
+            return new DBResult<bool?>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        if (otherUser is null)
+        {
+            return new DBResult<bool?>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
+            };
+        }
+
+        // See if user is following other user
+        var isFollowing = await _context.Followers.FindAsync(f => f.WhoId == user!.Id && f.WhomId == otherUser!.Id);
+
+        if (isFollowing.Any())
+        {
+            return new DBResult<bool?>
+            {
+                Model = true,
+                ErrorType = null
+            };
+        }
+        else
+        {
+            return new DBResult<bool?>
+            {
+                Model = false,
+                ErrorType = null
+            };
+        }
     }
 
     private User? GetUserByUserId(string userId, CancellationToken ct = default)
