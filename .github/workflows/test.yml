@@ -30,8 +30,8 @@ jobs:
         uses: actions/checkout@v2
       - name: test
         uses: actions/setup-node@v3
-        # run: |  
-        #   export NODE_ENV=development
+        run: |  
+          export NODE_ENV=development
         #   docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
