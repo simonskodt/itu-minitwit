@@ -4,6 +4,8 @@ import { useState } from "react";
 import { MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "../pages/Message";
+import React, { Component }  from 'react';
+
 
 interface Props {
   pageNumber: number;

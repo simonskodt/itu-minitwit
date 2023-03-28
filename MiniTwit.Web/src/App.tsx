@@ -5,6 +5,8 @@ import PublicTimeline from "./pages/PublicTimeline";
 import Register from "./pages/Register";
 import PrivateTimeline from "./pages/PrivateTimeline";
 import TimeLine from "./pages/TimeLine";
+import React, { Component }  from 'react';
+
 
 const DEVELOPMENT = "http://localhost:5151/";
 const PRODUCTION = "http://164.92.167.188:80/";
