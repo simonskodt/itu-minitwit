@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.10.5",
+    "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "@mui/material": "^5.11.12",
