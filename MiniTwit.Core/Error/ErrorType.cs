@@ -13,7 +13,7 @@ public enum ErrorType
     PASSWORD_MISSING,
     EMAIL_MISSING_OR_INVALID,
     UNAUTHORIZED_CREDENTIALS, 
-    FOLLOWALREADYEXISTS, 
+    FOLLOW_ALREADY_EXISTS, 
     INVALID_TO_FOLLOW_YOURSELF
 }
 
@@ -29,7 +29,7 @@ public static class ErrorTypeExtensions
         PASSWORD_MISSING => "You have to enter a password",
         EMAIL_MISSING_OR_INVALID => "You have to enter a valid email address",
         UNAUTHORIZED_CREDENTIALS => "You are not authorized to use this resource!",
-        FOLLOWALREADYEXISTS => "You are already following this user",
+        FOLLOW_ALREADY_EXISTS => "You are already following this user",
         INVALID_TO_FOLLOW_YOURSELF => "You can't follow yourself",
         _ => "Unknown error"
     };
