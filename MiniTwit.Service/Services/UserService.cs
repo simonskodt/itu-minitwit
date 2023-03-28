@@ -28,7 +28,7 @@ public class UserService : IUserService
             return new Response(BadRequest, USERNAME_TAKEN);
         }
 
-        if (userCreateDTO.Username! == "")
+        if (string.IsNullOrEmpty(userCreateDTO.Username))
         {
             return new Response(BadRequest, USERNAME_MISSING);
         }
@@ -38,7 +38,7 @@ public class UserService : IUserService
             return new Response(BadRequest, EMAIL_MISSING_OR_INVALID);
         }
 
-        if (userCreateDTO.Password! == "")
+        if (string.IsNullOrEmpty(userCreateDTO.Password))
         {
             return new Response(BadRequest, PASSWORD_MISSING);   
         }
@@ -59,7 +59,7 @@ public class UserService : IUserService
             return new Response(BadRequest, USERNAME_TAKEN);
         }
 
-        if (userCreateDTO.Username! == "")
+        if (string.IsNullOrEmpty(userCreateDTO.Username))
         {
             return new Response(BadRequest, USERNAME_MISSING);
         }
@@ -69,7 +69,7 @@ public class UserService : IUserService
             return new Response(BadRequest, EMAIL_MISSING_OR_INVALID);
         }
 
-        if (userCreateDTO.Password! == "")
+        if (string.IsNullOrEmpty(userCreateDTO.Password))
         {
             return new Response(BadRequest, PASSWORD_MISSING);   
         }

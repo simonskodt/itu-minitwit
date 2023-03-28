@@ -3,7 +3,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/simonskodt/itu-minitwit)
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
 
 # DevOps&mdash;Twitter Project
 
@@ -125,8 +125,15 @@ Add logging to your ITU-MiniTwit.
 
 ### Week 9
 
-To be announced (SLAs).
-  
+Security Assessment & Pen Testing.
+
+- [ ] 1) Perform a Security Assessment
+  - [ ] A. Risk Identification
+  - [ ] B. Risk Analysis
+  - [ ] C. Pen-Test Your System
+- [ ] 2) White Hat Attack The Next Team
+  - Group k Radiator -[checks]-> Group m Jason Derulo
+
 ## Course description
 
 As a participant of the DevOps course at the IT University of Copenhagen, we are in for a hands-on learning experience. Every week, we will make changes to a Twitter project to put into practice the concepts and tools that we learn in class. Here is what we will be covering during this course:

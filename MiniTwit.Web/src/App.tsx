@@ -2,7 +2,7 @@ import React , { BrowserRouter, Routes, Route } from "react-router-dom";
 import './index.css';
 import Login from "./pages/Login";
 import PublicTimeline from "./pages/PublicTimeline";
-import SignUp from "./pages/SignUp";
+import Register from "./pages/Register";
 import PrivateTimeline from "./pages/PrivateTimeline";
 import TimeLine from "./pages/TimeLine";
 
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/public" element={<PublicTimeline />} />
         <Route path="/" element={<TimeLine />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<SignUp />} /> 
+        <Route path="/register" element={<Register />} /> 
         <Route path="/:userName" element={<PrivateTimeline/>}></Route>
       </Routes>
     </>

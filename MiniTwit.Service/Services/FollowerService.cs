@@ -86,4 +86,16 @@ public class FollowerService : IFollowerService
 
         return new Response<IEnumerable<FollowerDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<FollowerDTO>>());
     }
+
+    public async Task<Response<bool?>> GetIsFollowed(string userId, string targetUsername)
+    {
+        var dbResult = await _repository.GetIsFollowed(userId, targetUsername);
+        
+        if (dbResult.Model == null)
+        {
+            return new Response<bool?>(NotFound, null, dbResult.ErrorType);
+        }
+
+        return new Response<bool?>(Ok, dbResult.Model);
+    }
 }
