@@ -4,8 +4,8 @@ name: Build / Test
 on: 
   pull_request:
     branches: [main]
-#env: 
- # NODE_ENV: development
+env: 
+  NODE_ENV: development
 
 jobs:
   build:
