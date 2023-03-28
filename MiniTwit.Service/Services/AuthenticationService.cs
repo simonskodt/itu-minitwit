@@ -29,6 +29,10 @@ public class AuthenticationService : IAuthenticationService
             return new Response<UserDTO>(Unauthorized, null, dbResult.ErrorType);
         }
 
+        if (string.IsNullOrEmpty(password)) {
+            return new Response<UserDTO>(Unauthorized, null, ErrorType.INVALID_PASSWORD);
+        }
+
         var validPassword = _hasher.VerifyHash(password, dbResult.Model!.Password);
 
         if (!validPassword)
@@ -46,6 +50,10 @@ public class AuthenticationService : IAuthenticationService
         if (dbResult.ErrorType == ErrorType.INVALID_USERNAME)
         {
             return new Response<UserDTO>(Unauthorized, null, dbResult.ErrorType);
+        }
+
+        if (string.IsNullOrEmpty(password)) {
+            return new Response<UserDTO>(Unauthorized, null, ErrorType.INVALID_PASSWORD);
         }
 
         var validPassword = await _hasher.VerifyHashAsync(password, dbResult.Model!.Password);

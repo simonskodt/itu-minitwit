@@ -125,8 +125,15 @@ Add logging to your ITU-MiniTwit.
 
 ### Week 9
 
-To be announced (SLAs).
-  
+Security Assessment & Pen Testing.
+
+- [ ] 1) Perform a Security Assessment
+  - [ ] A. Risk Identification
+  - [ ] B. Risk Analysis
+  - [ ] C. Pen-Test Your System
+- [ ] 2) White Hat Attack The Next Team
+  - Group k Radiator -[checks]-> Group m Jason Derulo
+
 ## Course description
 
 As a participant of the DevOps course at the IT University of Copenhagen, we are in for a hands-on learning experience. Every week, we will make changes to a Twitter project to put into practice the concepts and tools that we learn in class. Here is what we will be covering during this course:
