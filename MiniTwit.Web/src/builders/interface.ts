@@ -11,10 +11,10 @@ export interface MessageObject
 {
     messageId: string,
     authorId: string,
+    userName:string
     text: string,
     pubDate: string,
     flagged: number,
-    userName:string
   } 
 
   export interface User

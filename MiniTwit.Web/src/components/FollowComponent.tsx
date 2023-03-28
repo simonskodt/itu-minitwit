@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import './MessageComponent.css'
 import { API_URL } from '../App';
 import { AppService } from '../services/app.service'
@@ -14,7 +14,21 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
     const userName = sessionStorage.getItem('username');
 
     const [isFollowing, setIsFollowing] = useState(false);
-    const [followButtonText, setFollowButtonText] = useState('Follow');
+    const [followButtonText, setFollowButtonText] = useState('');
+
+    useEffect(() => {
+        const fetchMessages = async () => {
+            const res = await appService.getUserId(String(userName));
+            const isFollowing = await appService.getIsFollowing(res.data.id, userToFollow);
+            if (isFollowing.data == true) {
+                setFollowButtonText('Unfollow');
+            } else {
+                setFollowButtonText('Follow');
+            }
+            setIsFollowing(isFollowing.data)
+        };
+        fetchMessages();
+    }, []);
 
     function HandleFollow() {
         appService.getUserId(String(userName)).then((res) => {
@@ -51,7 +65,7 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
         })
     }
 
-    if (isLoggedIn) {
+    if (isLoggedIn && !(userName == userToFollow)) {
         return (
             <div>
                 <button onClick={() => HandleFollow()}>{followButtonText}</button>

@@ -101,7 +101,7 @@ public class TwitterControllerTests
     public async Task PublicTimeline_returns_OK()
     {
         // Arrange
-        var expected = new Response<IEnumerable<MessageDTO>>(Ok, Array.Empty<MessageDTO>(), null);
+        var expected = new Response<IEnumerable<MessageWithAutherNameDTO>>(Ok, Array.Empty<MessageWithAutherNameDTO>(), null);
 
         _manager.Setup(m => m.MessageService.GetAllNonFlaggedPageNumberLimitAsync(1, _ct)).ReturnsAsync(expected);
 
@@ -119,7 +119,7 @@ public class TwitterControllerTests
     public async Task UserTimeline_given_valid_username_returns_OK()
     {
         // Arrange
-        var expected = new Response<IEnumerable<MessageDTO>>(Ok, Array.Empty<MessageDTO>(), null);
+        var expected = new Response<IEnumerable<MessageWithAutherNameDTO>>(Ok, Array.Empty<MessageWithAutherNameDTO>(), null);
 
         _manager.Setup(m => m.MessageService.GetAllByUsernameAsync("test", _ct)).ReturnsAsync(expected);
 
@@ -137,7 +137,7 @@ public class TwitterControllerTests
     public async Task UserTimeline_given_invalid_username_returns_NotFound()
     {
         // Arrange
-        var expected = new Response<IEnumerable<MessageDTO>>(NotFound, null, ErrorType.INVALID_USERNAME);
+        var expected = new Response<IEnumerable<MessageWithAutherNameDTO>>(NotFound, null, ErrorType.INVALID_USERNAME);
         var expectedAPIError = new APIError
         {
             Status = 404,
