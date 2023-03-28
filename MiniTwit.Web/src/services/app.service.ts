@@ -13,7 +13,7 @@ const requestConfig: AxiosRequestConfig = {
 export class AppService {
 
   public async registerUser(username: string, email: string, pw: string): Promise<any> {
-    var userCreateDTO: UserCreateDTO = {
+    const userCreateDTO: UserCreateDTO = {
       username: username,
       email: email,
       pwd: pw
@@ -31,7 +31,7 @@ export class AppService {
   }
 
   public async Login(username: string, pw: string): Promise<UserDTO> {
-    var loginDTO: LoginDTO = {
+    const loginDTO: LoginDTO = {
       username: username,
       password: pw
     };
