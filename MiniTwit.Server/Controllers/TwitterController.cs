@@ -34,11 +34,19 @@ public class TwitterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<MessageDTO>>> Timeline([FromQuery] string userId, CancellationToken ct = default)
     {
-        _logger.LogInformation("We got a visitor from: " + Request.HttpContext.Connection.RemoteIpAddress);
+        _logger.LogInformation($"We got a visitor from: {Request.HttpContext.Connection.RemoteIpAddress}");
         var response = await _serviceManager.MessageService.GetAllFollowedByUserIdAsync(userId, ct);
-        if (response.HTTPResponse == HTTPResponse.NotFound)
+        switch (response.HTTPResponse)
         {
-            _logger.LogError($"The userId: {userId} does not exist");
+            case HTTPResponse.Ok:
+                _logger.LogDebug($"Messages for user id \"{userId}\": {response.Model}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user id: \"{userId}\" does not exist");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
         }
         return response.ToActionResult();
     }
@@ -55,6 +63,7 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(int pageNumber, CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllNonFlaggedPageNumberLimitAsync(pageNumber, ct);
+        _logger.LogDebug($"20 messages on page number {pageNumber}: {response.Model}");
         return response.ToActionResult();
     }
 
@@ -72,6 +81,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult<IEnumerable<MessageDTO>>> UserTimeline(string username, CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllByUsernameAsync(username, ct);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.Ok:
+                _logger.LogDebug($"Messages for user \"{username}\": {response.Model}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user name: \"{username}\" does not exist");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
@@ -89,6 +110,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult> FollowUser(string username, [FromQuery] string userId)
     {
         var response = await _serviceManager.FollowerService.CreateAsync(userId, username);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"User \"{username}\" now follows user {userId}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user name: \"{username}\" does not exist");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
@@ -106,6 +139,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult> UnfollowUser(string username, [FromQuery] string userId)
     {
         var response = await _serviceManager.FollowerService.DeleteAsync(userId, username);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"User \"{username}\" now unfollows user {userId}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user name: \"{username}\" does not exist");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
@@ -123,6 +168,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult> AddMessage([FromQuery] string userId, [FromQuery] string text)
     {
         var response = await _serviceManager.MessageService.CreateAsync(userId, text);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"User \"{userId}\" created message: {text}");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user id: \"{userId}\" does not exist");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
@@ -139,6 +196,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult<UserDTO>> Login([FromBody] LoginDTO loginDTO)
     {
         var response = await _serviceManager.AuthenticationService.AuthenticateAsync(loginDTO.Username!, loginDTO.Password!);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.Ok:
+                _logger.LogInformation($"The user: \"{loginDTO.Username!}\" is authorized");
+                break;
+            case HTTPResponse.Unauthorized:
+                _logger.LogError($"The user: \"{loginDTO.Username!}\" is UNauthorized");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
@@ -155,6 +224,18 @@ public class TwitterController : ControllerBase
     public async Task<ActionResult> Register([FromBody] UserCreateDTO userCreateDTO)
     {
         var response = await _serviceManager.UserService.CreateAsync(userCreateDTO);
+        switch (response.HTTPResponse)
+        {
+            case HTTPResponse.NoContent:
+                _logger.LogInformation($"The following user: \"{userCreateDTO.Username!}\" is created");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"The user name: \"{userCreateDTO.Username!}\" is already taken");
+                break;
+            default:
+                _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
+                break;
+        }
         return response.ToActionResult();
     }
 
