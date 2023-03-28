@@ -37,7 +37,9 @@ jobs:
           node-version: 18
       - name: Run Tests
         run: 
-          docker-compose up 
+          mkdir .local
+          echo ${{DB_CONNECTIONSTRING}}
+        #  docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
         #   cd tests/
