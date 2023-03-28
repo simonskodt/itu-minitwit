@@ -33,7 +33,7 @@ jobs:
       - name: test
         uses: actions/setup-node@v3
         run: |  
-          docker-compose up 
+        #docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
         #   cd tests/
