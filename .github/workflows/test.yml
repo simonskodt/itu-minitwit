@@ -37,7 +37,6 @@ jobs:
           node-version: 18
       - name: Run Tests
         run: 
-          echo "Hello World"
           docker-compose up 
         #   cd MiniTwit.Web/
         #   npm install
