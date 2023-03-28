@@ -24,7 +24,7 @@ const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
 
     const intervalId = setInterval(() => {
       fetchMessages();
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [pageNumber]);

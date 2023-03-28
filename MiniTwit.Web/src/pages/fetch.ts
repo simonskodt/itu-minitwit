@@ -39,7 +39,6 @@ export async function fetchUserByid(userId: string) {
   }
 }
 
-
 export async function fetchPrivateTimeLine(username: string) {
   const config: AxiosRequestConfig = {
     method: 'GET',
@@ -50,13 +49,10 @@ export async function fetchPrivateTimeLine(username: string) {
   try {
     const response = await axios.get(API_URL + username, config);
     for (const element of response.data) {
-      const u = await fetchUserByid(element.authorId);
-      const user = buildUser(u);
-      const userWithName = makeMessageObjectWithName(element, user.username);
+      const userWithName = await makeMessageObjectWithName(element);
       MesWithUsername.push(userWithName);
     }
     return MesWithUsername;
-
   } catch (error) {
     console.log(error);
     return Promise.reject('fetch order history failed');

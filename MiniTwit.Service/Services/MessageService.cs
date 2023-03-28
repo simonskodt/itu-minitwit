@@ -115,16 +115,16 @@ public class MessageService : IMessageService
         return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
 
-    public async Task<Response<IEnumerable<MessageDTO>>> GetAllByUsernameAsync(string username, CancellationToken ct = default)
+    public async Task<Response<IEnumerable<MessageWithAutherNameDTO>>> GetAllByUsernameAsync(string username, CancellationToken ct = default)
     {
         var dbResult = await _messageRepository.GetAllByUsernameAsync(username, ct);
 
         if (dbResult.ErrorType != null)
         {
-            return new Response<IEnumerable<MessageDTO>>(NotFound, null, dbResult.ErrorType);
+            return new Response<IEnumerable<MessageWithAutherNameDTO>>(NotFound, null, dbResult.ErrorType);
         }
 
-        return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
+        return new Response<IEnumerable<MessageWithAutherNameDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageWithAutherNameDTO>>());
     }
 
     public Response<IEnumerable<MessageDTO>> GetAllFollowedByUserId(string userId, CancellationToken ct = default)

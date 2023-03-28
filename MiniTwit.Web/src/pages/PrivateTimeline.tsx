@@ -29,8 +29,6 @@ function PrivateTimeline() {
     }
   }
 
-
-
   useEffect(() => {
     const fetchMessages = async () => {
       const messages = await fetchPrivateTimeLine(userName);
@@ -44,7 +42,6 @@ function PrivateTimeline() {
 
     return () => clearInterval(intervalId);
   }, []);
-
 
   if (messages != undefined) {
     return (

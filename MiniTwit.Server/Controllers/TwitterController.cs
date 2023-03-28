@@ -78,7 +78,7 @@ public class TwitterController : ControllerBase
     [HttpGet("/{username}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<MessageDTO>>> UserTimeline(string username, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageWithAutherNameDTO>>> UserTimeline(string username, CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllByUsernameAsync(username, ct);
         switch (response.HTTPResponse)
