@@ -166,12 +166,12 @@ public class MessageService : IMessageService
         <MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
 
-    public async Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default)
+    public async Task<Response<IEnumerable<MessageWithAutherNameDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default)
     {
         var dbResult = await _messageRepository.GetAllNonFlaggedPageNumberLimitAsync(pageNumber, ct);
 
         return new Response<IEnumerable
-        <MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
+        <MessageWithAutherNameDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageWithAutherNameDTO>>());
     }
 
     public Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default)

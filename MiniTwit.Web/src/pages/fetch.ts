@@ -13,9 +13,7 @@ export async function fetchPublicTimeline(pageNumber: number): Promise<MessageOb
   try {
     const response = await axios.get(API_URL + 'public/' + pageNumber, config);
     for (const element of response.data) {
-      const u = await fetchUserByid(element.authorId);
-      const user = buildUser(u);
-      const userWithName = makeMessageObjectWithName(element, user.username);
+      const userWithName = await makeMessageObjectWithName(element);
       MesWithUsername.push(userWithName);
     }
     return MesWithUsername;

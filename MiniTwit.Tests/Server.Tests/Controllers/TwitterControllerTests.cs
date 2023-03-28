@@ -101,7 +101,7 @@ public class TwitterControllerTests
     public async Task PublicTimeline_returns_OK()
     {
         // Arrange
-        var expected = new Response<IEnumerable<MessageDTO>>(Ok, Array.Empty<MessageDTO>(), null);
+        var expected = new Response<IEnumerable<MessageWithAutherNameDTO>>(Ok, Array.Empty<MessageWithAutherNameDTO>(), null);
 
         _manager.Setup(m => m.MessageService.GetAllNonFlaggedPageNumberLimitAsync(1, _ct)).ReturnsAsync(expected);
 

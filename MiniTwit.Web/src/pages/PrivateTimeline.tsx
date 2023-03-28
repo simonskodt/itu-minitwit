@@ -8,18 +8,40 @@ import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import React, { Component }  from 'react';
 
+function replaceSpaces(str: string): string {
+  return str.replace(/%20/g, " ");
+}
 
 function PrivateTimeline() {
   const url = window.location.href;
   const parts = url.split("/");
-  const userName = parts[parts.length - 1];
+  const tempUserName = parts[parts.length - 1];
+  const userName = replaceSpaces(tempUserName)
   const [messages, setMessages] = useState<MessageObject[]>();
+  const sessionUser = sessionStorage.getItem('username')
+
+  const displayName = () => {
+    if(userName == sessionUser){
+      return "My Timeline"
+    }else {
+      return userName + "'s TimeLine"
+    }
+  }
+
+  
 
   useEffect(() => {
-    fetchPrivateTimeLine(userName).then((messages) => {
-
+    const fetchMessages = async () => {
+      const messages = await fetchPrivateTimeLine(userName);
       setMessages(messages);
-    });
+    };
+    fetchMessages();
+
+    const intervalId = setInterval(() => {
+      fetchMessages();
+    }, 2000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   if (messages != undefined) {
@@ -27,8 +49,8 @@ function PrivateTimeline() {
       <div className="page">
         <Header isLoggedIn={checkLogIn()} />
         <div className="body">
-          <MessageComponent isLoggedIn={checkLogIn()} />
-          <h2>{userName}&apos;s TimeLine</h2>
+          <MessageComponent isLoggedIn={checkLogIn()} clickedUser = {userName} />
+          <h2>{displayName()}</h2>
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>

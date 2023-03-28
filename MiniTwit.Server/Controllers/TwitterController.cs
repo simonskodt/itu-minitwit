@@ -60,7 +60,7 @@ public class TwitterController : ControllerBase
     /// <response code="200">Every time, return all non-flagged messages sorted in descending order after publish date.</response>
     [HttpGet("/public/{pageNumber}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<MessageDTO>>> PublicTimeline(int pageNumber, CancellationToken ct = default)
+    public async Task<ActionResult<IEnumerable<MessageWithAutherNameDTO>>> PublicTimeline(int pageNumber, CancellationToken ct = default)
     {
         var response = await _serviceManager.MessageService.GetAllNonFlaggedPageNumberLimitAsync(pageNumber, ct);
         _logger.LogDebug($"20 messages on page number {pageNumber}: {response.Model}");
