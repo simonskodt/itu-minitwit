@@ -251,6 +251,24 @@ public class TwitterController : ControllerBase
         return await Task.FromResult(Ok());
     }
 
+    
+    /// <summary>
+    /// Find out if the given user is followed by the given username.
+    /// </summary>
+    /// <param name="userId">The id of the current user logged in.</param>
+    /// <param name="username">The username of the targeted user.</param>
+    /// <returns>Either true or false, depending on if the user follows the other user, NotFound othervise.</returns>
+    /// <response code="200">If the credentials match an existing or target user.</response>
+    /// <response code="401">If the credentials are invalid.</response>
+    [HttpGet("/user/{userId}/isfollowedby/{username}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<bool?>> IsFollowed(string userId, string username)
+    {
+        var response = await _serviceManager.FollowerService.GetIsFollowed(userId, username);
+        return response.ToActionResult();
+    }
+
     [HttpGet("/user/{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

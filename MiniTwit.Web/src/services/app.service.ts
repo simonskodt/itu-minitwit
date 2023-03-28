@@ -82,4 +82,67 @@ export class AppService {
       return Promise.reject();
     }
   }
+  
+  public async Follow(UserToFollow: string, id: string) {
+    //https://localhost:7111/Eriksen/follow?userId=6410920135626df320346d7a
+
+    const request: AxiosRequestConfig = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: API_URL + UserToFollow + "/follow?userId=" + id,
+      headers: {}
+    };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      alert("You are already following this user or trying to follow yourself");
+      return Promise.reject();
+    }
+
+  }
+
+  public async UnFollow(UserToUnFollow: string, id: string) {
+    //https://localhost:7111/Eriksen/follow?userId=6410920135626df320346d7a
+
+    const request: AxiosRequestConfig = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: API_URL + UserToUnFollow + "/unfollow?userId=" + id,
+      headers: {}
+    };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+  }
+
+  public async getIsFollowing(userid: string, username: string) {
+    const request: AxiosRequestConfig = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: API_URL + "user/" + userid + "/isfollowedby/" + username,
+      headers: {}
+    };
+
+    try {
+      const response = await axios(request).then((response: AxiosResponse) => response);
+      return response;
+    } catch (error) {
+      const err = error as AxiosError
+      console.log(err.response?.data);
+      return Promise.reject();
+    }
+  }
+}
+
+export interface APIError {
+  statis: number
+  err_msg: string
 }

@@ -15,24 +15,29 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
 
     function postMessage(text: string, username: any): void {
         appService.getUserId(username).then((result) => {
-            const id = result.data.id
-            appService.sendMessage(text, id)
+            alert('Message posted!');
+            const id = result.data.id;
+            appService.sendMessage(text, id);
+            setMessage('');
         })
     }
 
     if (isLoggedIn) {
         return (
             <div className='twitbox'>
-                <h3>What&apo;s on your mind, &{userName}?</h3>
-                <input
-                    type="text"
-                    placeholder="Write here"
-                    name="username"
-                    size={70}
-                    required
-                    onChange={e => setMessage(e.target.value)}
-                />&nbsp;&nbsp;
-                <button onClick={() => postMessage(message, userName)}>Share</button>
+                <h3>What&apos;s on your mind, {userName}?</h3>
+                <div className="message-container">
+                    <input
+                        className='message-input'
+                        type="text"
+                        placeholder="Write here"
+                        name="username"
+                        size={70}
+                        required
+                        onChange={e => setMessage(e.target.value)}
+                    />&nbsp;&nbsp;
+                    <button className='message-button' onClick={() => postMessage(message, userName)}>Share</button>
+                </div>
             </div>
         );
     } else {
