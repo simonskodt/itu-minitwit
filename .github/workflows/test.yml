@@ -22,3 +22,26 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+  
+  UITest:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: test
+        uses: actions/setup-node@v3
+        run: |  
+          export NODE_ENV=development
+          docker-compose up 
+          cd MiniTwit.Web/
+          npm install
+          cd tests/
+          npx playwright test
+          docker-compose down
+
+
+          
+       
+
+
+

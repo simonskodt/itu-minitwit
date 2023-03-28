@@ -7,7 +7,7 @@ import PrivateTimeline from "./pages/PrivateTimeline";
 import TimeLine from "./pages/TimeLine";
 
 
-const DEVELOPMENT = "http://localhost:7111/";
+const DEVELOPMENT = "http://localhost:80/";
 const PRODUCTION = "http://164.92.167.188:80/";
 
 export const API_URL = process.env.NODE_ENV === 'development' ? DEVELOPMENT : PRODUCTION;

@@ -1,5 +1,5 @@
 FROM node:17-alpine as builder
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 WORKDIR /app
 
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
@@ -17,4 +17,3 @@ RUN chmod 777 ./run.sh;
 CMD ./run.sh
 
 
-# start app

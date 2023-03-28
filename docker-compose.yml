@@ -48,7 +48,7 @@ services:
       context: .
       dockerfile: 'MiniTwit.Web/Dockerfile'
     environment : #Node_Env bestemmer om man bruger production database eller localhost. 
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
     ports:
       - '3000:3000'
     networks:
