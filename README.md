@@ -39,8 +39,8 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add Maintainability and Technical Debt estimation tools (Code Climate).
 - Add logging.
+- Check security.
 
 It would be **nice to have the following features**:
 
@@ -111,9 +111,9 @@ Enhancing CI/CD setup with test suite and static code analysis.
   - [x] eslint (typescript)
   - [x] codeql (csharp)
   - [x] Snyk (containers)
-- [ ] 3) Add Maintainability and Technical Debt estimation tools to your projects
+- [x] 3) Add Maintainability and Technical Debt estimation tools to your projects
   - [x] Sonarqube
-  - [ ] Code Climate
+  - [x] Code Climate (hosted from Code Climate, not in GitHub actions)
 - [x] 4) Software Maintenance
   
 ### Week 8
