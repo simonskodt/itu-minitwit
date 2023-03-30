@@ -1,4 +1,4 @@
-FROM node:17-alpine as builder
+FROM node:19.7-alpine as builder
 WORKDIR /app
 
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
@@ -10,4 +10,4 @@ COPY 'MiniTwit.Web/.' .
 RUN npm run build
 
 # start app
-CMD [ "serve", "-l", "3001", "-s", "build"]
+CMD [ "serve", "-s", "build"]
