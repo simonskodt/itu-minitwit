@@ -12,37 +12,32 @@ services:
     command: [--auth]
     environment:
       MONGO_INITDB_ROOT_USERNAME: radiator
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mongodb_data_container:/data/db
     ports:
       - '27018:27017'
     networks:
       - main
-    secrets:
-      - db_password
 
   itu-minitwit-server:
-    image: vict2976/itu-minitwit-server
+    image: ${DOCKER_USERNAME}/itu-minitwit-server
     container_name: minitwit
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
-      ConnectionStrings__MiniTwit:
+      ConnectionStrings__MiniTwit: ${DB_CONNECTION_STRING}
     ports:
       - '80:80'
     networks:
       - main
     depends_on:
       - mongodb
-    secrets:
-      - source: connection_string
-        target: ConnectionStrings__MiniTwit
 
   itu-minitwit-web:
-    image: vict2976/itu-minitwit-web
+    image: ${DOCKER_USERNAME}/itu-minitwit-web
     ports:
-      - '3000:3001'
+      - '3000:3000'
     networks:
       - main
     depends_on:
@@ -50,9 +45,3 @@ services:
       
 volumes:
   mongodb_data_container:
-
-secrets:
-  db_password:
-    file: './.local/db_password.txt'
-  connection_string:
-    file: './.local/connection_string.txt'
