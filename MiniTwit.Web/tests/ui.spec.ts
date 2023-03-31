@@ -14,16 +14,16 @@ test('Register user via GUI', async ({ page }) => {
   const randomName = Math.random().toString(36).slice(2, 7);
   const inputElements = await page.$$('input');
 
-  const userName = await inputElements[0].click();
+  await inputElements[0].click();
   await page.keyboard.type("UiTest"+randomName);
 
-  const email = await inputElements[1].click();
+  await inputElements[1].click();
   await page.keyboard.type(randomName+'@itu.dk');
 
-  const password = await inputElements[2].click();
+  await inputElements[2].click();
   await page.keyboard.type('123');
 
-  const passwordRepeat = await inputElements[3].click();
+  await inputElements[3].click();
   await page.keyboard.type('123');
 
   await page.click('button:text("Sign Up")');
