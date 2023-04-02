@@ -68,6 +68,16 @@ jobs:
           remote_user: ${{ SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Copy docker-compose.monitoring to live server
+        uses: burnett01/rsync-deployments@5.2.1
+        with:
+          switches: -avzr --delete
+          path: ./docker-compose.monitoring.yml
+          remote_path: ./minitwit/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       # - name: Deploy MiniTwit
       #   uses: fifsky/ssh-action@master
       #   with:
