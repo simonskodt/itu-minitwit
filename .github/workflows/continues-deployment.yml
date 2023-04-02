@@ -65,7 +65,9 @@ jobs:
           remote: minitwit/docker-compose.prod.yml
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          password: ${{ secrets.SSH_PASSPHRASE }}
+        run: |
+          echo ${{ secrets.SSH_USER }}
 
       # - name: Deploy MiniTwit
       #   uses: fifsky/ssh-action@master
@@ -84,14 +86,14 @@ jobs:
       #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       
-      - name: Copy docker-compose.monitoring to live server
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: docker-compose.monitoring.yml
-          remote: minitwit/docker-compose.monitoring.yml
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+      # - name: Copy docker-compose.monitoring to live server
+      #   uses: garygrossgarten/github-action-scp@release
+      #   with:
+      #     local: docker-compose.monitoring.yml
+      #     remote: minitwit/docker-compose.monitoring.yml
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
 
       # - name: Deploy monitoring
       #   uses: fifsky/ssh-action@master
@@ -103,14 +105,14 @@ jobs:
       #       command: |
       #         docker-compose -f minitwit/docker-compose.monitoring up -d
 
-      - name: Copy docker-compose.logging to live server
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: docker-compose.logging.yml
-          remote: minitwit/docker-compose.logging.yml
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+      # - name: Copy docker-compose.logging to live server
+      #   uses: garygrossgarten/github-action-scp@release
+      #   with:
+      #     local: docker-compose.logging.yml
+      #     remote: minitwit/docker-compose.logging.yml
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
 
       # - name: Deploy logging
       #   uses: fifsky/ssh-action@master
