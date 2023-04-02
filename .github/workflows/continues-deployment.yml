@@ -58,20 +58,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Copy docker-compose.prod to live server
-      #   uses: burnett01/rsync-deployments@5.2.1
-      #   with:
-      #     switches: -avzr --delete
-      #     path: ./docker-compose.prod.yml
-      #     remote_path: ./minitwit/
-      #     remote_host: ${{ secrets.SSH_HOST }}
-      #     remote_user: ${{ SSH_USER }}
-      #     remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Copy docker-compose files to live server
+      - name: Copy deployment files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avzr --delete --include="docker-compose.*.yml" --exclude="*"
+          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose (z)Compression
           path: .
           remote_path: ./minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
