@@ -5,54 +5,50 @@ on:
     # Run workflow every time something is pushed to the main branch
     branches:
       - main
-  pull_request:
-    branches:
-      - main
   # allow manual triggers for now too
   workflow_dispatch:
     manual: true
 
-
 jobs:
-  # build-images:
-  #   runs-on: ubuntu-latest
+  build-images:
+    runs-on: ubuntu-latest
   
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.DOCKER_USERNAME }}
-  #         password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-  #     - name: Build and push itu-minitwit-server
-  #       uses: docker/build-push-action@v4
-  #       with:
-  #         context: .
-  #         file: ./MiniTwit.Server/Dockerfile
-  #         push: true
-  #         tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
-  #         cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:serverbuildcache
-  #         cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:serverbuildcache,mode=max
+      - name: Build and push itu-minitwit-server
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./MiniTwit.Server/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:serverbuildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:serverbuildcache,mode=max
 
-  #     - name: Build and push itu-minitwit-web
-  #       uses: docker/build-push-action@v4
-  #       with:
-  #         context: .
-  #         file: ./MiniTwit.Web/Dockerfile
-  #         push: true
-  #         tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
-  #         cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache
-  #         cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache,mode=max
+      - name: Build and push itu-minitwit-web
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./MiniTwit.Web/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache,mode=max
 
   deploy:
     runs-on: ubuntu-latest
-    # needs: build-images # Image building must succeed
+    needs: build-images # Image building must succeed
 
     steps:
       - name: Checkout repository
@@ -61,7 +57,7 @@ jobs:
       - name: Copy docker-compose files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
+          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*"
           path: .
           remote_path: ./minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
@@ -71,7 +67,7 @@ jobs:
       - name: Copy monitoring files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete --include="*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
+          switches: -avz --delete --include="*.yml" --exclude="*"
           path: ./Monitoring/
           remote_path: ./minitwit/Monitoring/
           remote_host: ${{ secrets.SSH_HOST }}
@@ -81,51 +77,49 @@ jobs:
       - name: Copy logging files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete # Archive Verbose Verbose (z)Compress files to copy
+          switches: -avz --delete
           path: ./Logging/
           remote_path: ./minitwit/Logging/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # - name: Deploy MiniTwit
-      #   uses: fifsky/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     user: ${{ secrets.SSH_USER }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     args: "-vvv"
-      #     command: |
-      #       export DB_CONNECTION_STRING=${{ DB_CONNECTIONSTRING }}
-      #       export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-      #       export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
-            
-      #       cd ./minitwit
-      #       docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
-      #       docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
-      #       docker-compose -f docker-compose.prod.yml down
-      #       docker-compose -f docker-compose.prod.yml up -d
+      - name: Deploy MiniTwit
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          args: "-vvv"
+          command: |
+            export DB_CONNECTION_STRING=${{ DB_CONNECTIONSTRING }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            cd ./minitwit
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
+            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml up -d
           
-      # - name: Deploy monitoring
-      #   uses: fifsky/ssh-action@master
-      #     with:
-      #       host: ${{ secrets.SSH_HOST }}
-      #       user: root
-      #       key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #       args: "-vvv"
-      #       command: |
-      #         cd ./minitwit
-      #         export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
-      #         docker-compose -f docker-compose.monitoring up -d
+      - name: Deploy monitoring
+        uses: fifsky/ssh-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            user: root
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            args: "-vvv"
+            command: |
+              export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
+              cd ./minitwit
+              docker-compose -f docker-compose.monitoring up -d
 
-      # - name: Deploy logging
-      #   uses: fifsky/ssh-action@master
-      #     with:
-      #       host: ${{ secrets.SSH_HOST }}
-      #       user: root
-      #       key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #       args: "-vvv"
-      #       command: |
-      #         cd ./minitwit
-      #         docker-compose -f docker-compose.logging up -d
-
+      - name: Deploy logging
+        uses: fifsky/ssh-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            user: root
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            args: "-vvv"
+            command: |
+              cd ./minitwit
+              docker-compose -f docker-compose.logging up -d
