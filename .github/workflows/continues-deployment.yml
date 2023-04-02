@@ -61,12 +61,24 @@ jobs:
       - name: Copy deployment files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose (z)Compression
+          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
           path: .
           remote_path: ./minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Test secrets
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          args: "-vvv"
+          command: |
+            docker-compose -f ./minitwit/docker-compose.test.yml up -d
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       # - name: Deploy MiniTwit
       #   uses: fifsky/ssh-action@master
@@ -78,21 +90,12 @@ jobs:
       #     command: |
       #       docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
       #       docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
-      #       docker-compose -f minitwit/docker-compose.prod.yml down
-      #       docker-compose -f minitwit/docker-compose.prod.yml up -d
+      #       docker-compose -f ./minitwit/docker-compose.prod.yml down
+      #       docker-compose -f ./minitwit/docker-compose.prod.yml up -d
       #   env:
       #     DB_CONNECTION_STRING: ${{ DB_CONNECTIONSTRING }}
       #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      
-      # - name: Copy docker-compose.monitoring to live server
-      #   uses: garygrossgarten/github-action-scp@release
-      #   with:
-      #     local: docker-compose.monitoring.yml
-      #     remote: minitwit/docker-compose.monitoring.yml
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
 
       # - name: Deploy monitoring
       #   uses: fifsky/ssh-action@master
@@ -103,15 +106,6 @@ jobs:
       #       args: "-vvv"
       #       command: |
       #         docker-compose -f minitwit/docker-compose.monitoring up -d
-
-      # - name: Copy docker-compose.logging to live server
-      #   uses: garygrossgarten/github-action-scp@release
-      #   with:
-      #     local: docker-compose.logging.yml
-      #     remote: minitwit/docker-compose.logging.yml
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
 
       # - name: Deploy logging
       #   uses: fifsky/ssh-action@master
