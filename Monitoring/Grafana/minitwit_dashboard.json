@@ -87,7 +87,7 @@
       },
       "description": "",
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 23,
         "x": 0,
         "y": 2
@@ -125,7 +125,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 11
       },
       "id": 34,
       "title": "Overview",
@@ -175,7 +175,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 11
+        "y": 12
       },
       "id": 32,
       "options": {
@@ -290,7 +290,7 @@
         "h": 4,
         "w": 20,
         "x": 3,
-        "y": 11
+        "y": 12
       },
       "id": 43,
       "options": {
@@ -366,7 +366,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 15
+        "y": 16
       },
       "id": 35,
       "options": {
@@ -481,7 +481,7 @@
         "h": 4,
         "w": 20,
         "x": 3,
-        "y": 15
+        "y": 16
       },
       "id": 44,
       "options": {
@@ -529,8 +529,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-purple",
-                "value": null
+                "color": "super-light-purple"
               },
               {
                 "color": "red",
@@ -538,7 +537,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "s"
         },
         "overrides": []
       },
@@ -546,7 +545,7 @@
         "h": 7,
         "w": 11,
         "x": 0,
-        "y": 19
+        "y": 20
       },
       "id": 37,
       "options": {
@@ -596,8 +595,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -608,7 +606,7 @@
         "h": 7,
         "w": 12,
         "x": 11,
-        "y": 19
+        "y": 20
       },
       "id": 41,
       "options": {
@@ -648,7 +646,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
       "id": 14,
       "panels": [],
@@ -675,8 +673,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "green",
@@ -728,7 +725,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 27
+        "y": 28
       },
       "id": 10,
       "options": {
@@ -812,8 +809,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -833,7 +829,7 @@
         "h": 8,
         "w": 17,
         "x": 6,
-        "y": 27
+        "y": 28
       },
       "id": 4,
       "options": {
@@ -915,8 +911,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -928,7 +923,7 @@
         "h": 7,
         "w": 23,
         "x": 0,
-        "y": 35
+        "y": 36
       },
       "id": 6,
       "options": {
@@ -965,7 +960,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 43
       },
       "id": 12,
       "panels": [],
@@ -1020,8 +1015,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1032,7 +1026,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 43
+        "y": 44
       },
       "id": 18,
       "options": {
@@ -1080,8 +1074,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1092,7 +1085,7 @@
         "h": 8,
         "w": 5,
         "x": 18,
-        "y": 43
+        "y": 44
       },
       "id": 28,
       "options": {
@@ -1156,8 +1149,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1168,7 +1160,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 51
+        "y": 52
       },
       "id": 20,
       "options": {
@@ -1220,8 +1212,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1232,7 +1223,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 51
+        "y": 52
       },
       "id": 23,
       "options": {
@@ -1315,8 +1306,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1327,7 +1317,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 59
+        "y": 60
       },
       "id": 25,
       "options": {
@@ -1405,8 +1395,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1417,7 +1406,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 59
+        "y": 60
       },
       "id": 38,
       "options": {
@@ -1495,8 +1484,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1507,7 +1495,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 67
+        "y": 68
       },
       "id": 26,
       "options": {
@@ -1585,8 +1573,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1597,7 +1584,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 67
+        "y": 68
       },
       "id": 39,
       "options": {
@@ -1660,6 +1647,6 @@
   "timezone": "",
   "title": "MiniTwit",
   "uid": "a94Zmaa4k",
-  "version": 52,
+  "version": 54,
   "weekStart": ""
 }

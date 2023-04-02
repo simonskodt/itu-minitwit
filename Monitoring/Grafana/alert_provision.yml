@@ -1,0 +1,179 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: API Down
+      folder: Rules
+      interval: 1m
+      rules:
+        - uid: 8TNOLU-4k
+          title: MiniTwit Down
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: P207FEC5A3BD20FE9
+              model:
+                editorMode: code
+                expr: up{job="itu-minitwit-app"}
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: a94Zmaa4k
+          panelId: 43
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: a94Zmaa4k
+            __panelId__: "43"
+            summary: MiniTwit is down
+          isPaused: false
+        - uid: QyJQYUa4z
+          title: Prometheus Down
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: P207FEC5A3BD20FE9
+              model:
+                editorMode: code
+                expr: up{job="prometheus"}
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: a94Zmaa4k
+          panelId: 44
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: a94Zmaa4k
+            __panelId__: "44"
+            summary: Prometheis is down
+          isPaused: false

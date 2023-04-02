@@ -67,7 +67,7 @@ jobs:
       - name: Copy monitoring files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete --include="*.yml" --exclude="*"
+          switches: -avzr --delete
           path: ./Monitoring/
           remote_path: ./minitwit/Monitoring/
           remote_host: ${{ secrets.SSH_HOST }}
