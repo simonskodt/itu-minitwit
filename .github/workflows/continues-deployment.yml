@@ -72,7 +72,7 @@ jobs:
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete --include="docker-compose.*.yml" --exclude="*"
-          path: ./
+          path: .
           remote_path: ./minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ SSH_USER }}
