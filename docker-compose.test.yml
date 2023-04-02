@@ -9,3 +9,4 @@ services:
         POSTGRES_USER: 'postgres'
         POSTGRES_PASSWORD: ${DB_PASSWORD}
         POSTGRES_DB: 'test'
+        # Test
