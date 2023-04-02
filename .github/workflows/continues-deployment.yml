@@ -56,7 +56,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copy deployment files to live server
-        uses: burnett01/rsync-deployments@5.2.1
+      - uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
           path: .
