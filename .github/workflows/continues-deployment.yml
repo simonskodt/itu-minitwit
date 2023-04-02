@@ -58,7 +58,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Copy deployment files to live server
+      - name: Copy dokcer-compose files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avz --delete --include="docker-compose.*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
@@ -72,7 +72,7 @@ jobs:
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avz --delete --include="*.yml" --exclude="*" # Archive Verbose Verbose (z)Compress files to copy
-          path: ./Monitoring
+          path: ./Monitoring/
           remote_path: ./minitwit/Monitoring/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
