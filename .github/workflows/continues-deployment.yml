@@ -66,8 +66,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSPHRASE }}
-        run: |
-          echo ${{ secrets.SSH_USER }}
 
       # - name: Deploy MiniTwit
       #   uses: fifsky/ssh-action@master
