@@ -16,10 +16,18 @@ const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
   const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
 
   useEffect(() => {
-    fetchPublicTimeline(pageNumber).then((messages) => {
+    const fetchMessages = async () => {
+      const messages = await fetchPublicTimeline(pageNumber);
       setMessages(messages);
-    });
-  }, []);
+    };
+    fetchMessages();
+
+    const intervalId = setInterval(() => {
+      fetchMessages();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [pageNumber]);
 
   if (AllMessages != undefined) {
     return (

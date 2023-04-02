@@ -4,6 +4,7 @@ using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Core.Responses;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace MiniTwit.Infrastructure.Repositories;
 
@@ -34,6 +35,7 @@ public class MessageRepository : IMessageRepository
         {
             AuthorId = userId,
             Text = text,
+            AuthorName = user.Username,
             PubDate = DateTime.Now,
             Flagged = 0,
         };
@@ -65,6 +67,7 @@ public class MessageRepository : IMessageRepository
         {
             AuthorId = userId,
             Text = text,
+            AuthorName = user.Username,
             PubDate = DateTime.Now,
             Flagged = 0,
         };
@@ -106,8 +109,8 @@ public class MessageRepository : IMessageRepository
         var messages = await _context.Messages
             .Find(m => m.Flagged == 0)
             .SortByDescending(m => m.PubDate)
-            .Skip((pageNumber -1) * 20)
-            .Limit(20)
+            .Skip((pageNumber -1) * 50)
+            .Limit(50)
             .ToListAsync();
         
         return new DBResult<IEnumerable<Message>>
@@ -195,14 +198,31 @@ public class MessageRepository : IMessageRepository
                 ErrorType = ErrorType.INVALID_USERNAME
             };
         }
+        
+        //All the followers where userName is whoId
+        var allFollows = GetAllWhoUserFollows(user);
+        
+        var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
 
-        var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).ToListAsync(ct);
+        foreach (var x in allFollows)
+        {
+            var mes = await _context.Messages.Find(m => m.AuthorId == x.WhomId).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
+            messages.AddRange(mes);
+        }
+
+        var limitedMessages = messages.OrderByDescending(m => m.PubDate).ToList().Take(20);
 
         return new DBResult<IEnumerable<Message>>
         {
-            Model = messages,
+            Model = limitedMessages,
             ErrorType = null
         };
+    }
+    //To be able to display the followers tweets on my timeline
+    private IEnumerable<Follower> GetAllWhoUserFollows(User user)
+    {
+        var followers = _context.Followers.Find(f => f.WhoId == user.Id).ToList();
+        return followers;
     }
 
     public DBResult<IEnumerable<Message>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default)

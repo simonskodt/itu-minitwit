@@ -5,10 +5,12 @@ import React, { Component, useState }  from 'react';
 
 interface Props {
     isLoggedIn: boolean;
+    clickedUser : string
 }
 
-const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
+const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
     const [message, setMessage] = useState('');
+    const [placeholderText, setPlaceholderText] = useState('Write here');
 
     const appService = new AppService();
     const userName = sessionStorage.getItem('username')
@@ -17,22 +19,38 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn }) => {
         appService.getUserId(username).then((result) => {
             const id = result.data.id
             appService.sendMessage(text, id)
+            setMessage('');
+            setPlaceholderText('Write here');
+            alert('Message posted!');
         })
     }
 
-    if (isLoggedIn) {
+    function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === 'Enter') {
+            postMessage(message, userName);
+        }
+    }
+
+    if (isLoggedIn && userName == clickedUser) {
         return (
             <div className='twitbox'>
-                <h3>What&apo;s on your mind, &{userName}?</h3>
-                <input
-                    type="text"
-                    placeholder="Write here"
-                    name="username"
-                    size={70}
-                    required
-                    onChange={e => setMessage(e.target.value)}
-                />&nbsp;&nbsp;
-                <button onClick={() => postMessage(message, userName)}>Share</button>
+                <h3>What&apos;s on your mind, {userName}?</h3>
+                <div className="message-container">
+                    <input
+                        className='message-input'
+                        type="text"
+                        placeholder={placeholderText}
+                        name="username"
+                        size={70}
+                        required
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                        onFocus={() => setPlaceholderText('')}
+                        onBlur={() => setPlaceholderText('Write here')}
+                        onKeyDown = {handleKeyDown}
+                    />&nbsp;&nbsp;
+                    <button className='message-button' onClick={() => postMessage(message, userName)}>Share</button>
+                </div>
             </div>
         );
     } else {

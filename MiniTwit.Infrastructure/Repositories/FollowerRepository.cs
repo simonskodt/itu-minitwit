@@ -61,6 +61,15 @@ public class FollowerRepository : IFollowerRepository
     {
         var user = await GetUserByUserIdAsync(userId);
 
+        if (user!.Username.Equals(username))
+        {
+            return new DBResult<Follower>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_TO_FOLLOW_YOURSELF
+            };
+        }
+
         // See if user exists
         if (user == null)
         {
@@ -83,18 +92,32 @@ public class FollowerRepository : IFollowerRepository
             };
         }
 
-        var follower = new Follower
-        {
-            WhoId = userId,
-            WhomId = toFollow.Id
-        };
+        // See if follow already exists
+        var possibleFollow = await _context.Followers.FindAsync(f => f.WhoId == user.Id && f.WhomId == toFollow.Id);
+        var isAlreadyFollowing = possibleFollow.Any();
 
-        await _context.Followers.InsertOneAsync(follower);
+        if (!isAlreadyFollowing)
+        {
+            var follower = new Follower
+            {
+                WhoId = userId,
+                WhomId = toFollow.Id
+            };
+
+            await _context.Followers.InsertOneAsync(follower);
+
+            return new DBResult<Follower>
+            {
+                Model = follower,
+                ErrorType = null
+            };
+
+        }
 
         return new DBResult<Follower>
         {
-            Model = follower,
-            ErrorType = null
+            Model = null,
+            ErrorType = ErrorType.FOLLOW_ALREADY_EXISTS
         };
     }
 
@@ -202,6 +225,50 @@ public class FollowerRepository : IFollowerRepository
             Model = followers,
             ErrorType = null
         };
+    }
+
+    public async Task<DBResult<bool?>> GetIsFollowed(string userId, string username)
+    {
+        var user = await GetUserByUserIdAsync(userId);
+        var otherUser = await GetUserByUsernameAsync(username);
+
+        if (userId is null)
+        {
+            return new DBResult<bool?>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USER_ID
+            };
+        }
+
+        if (otherUser is null)
+        {
+            return new DBResult<bool?>
+            {
+                Model = null,
+                ErrorType = ErrorType.INVALID_USERNAME
+            };
+        }
+
+        // See if user is following other user
+        var isFollowing = await _context.Followers.FindAsync(f => f.WhoId == user!.Id && f.WhomId == otherUser!.Id);
+
+        if (isFollowing.Any())
+        {
+            return new DBResult<bool?>
+            {
+                Model = true,
+                ErrorType = null
+            };
+        }
+        else
+        {
+            return new DBResult<bool?>
+            {
+                Model = false,
+                ErrorType = null
+            };
+        }
     }
 
     private User? GetUserByUserId(string userId, CancellationToken ct = default)
