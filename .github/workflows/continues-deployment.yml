@@ -63,7 +63,7 @@ jobs:
         with:
           src: ./docker-compose.prod.yml
           host: ${{ secrets.SSH_HOST }}
-          remote: ./minitwit/docker-compose.prod.yml
+          remote: ./docker-compose.prod.yml
           user: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
