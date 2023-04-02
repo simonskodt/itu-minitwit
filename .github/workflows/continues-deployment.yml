@@ -75,7 +75,7 @@ jobs:
           path: .
           remote_path: ./minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ SSH_USER }}
+          remote_user: root
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # - name: Deploy MiniTwit
