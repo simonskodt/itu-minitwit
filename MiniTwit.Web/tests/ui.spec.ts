@@ -7,28 +7,29 @@ test('MiniTwit title', async ({ page }) => {
   await expect(page).toHaveTitle('MiniTwit');
 });
 
+
 test('Register user via GUI', async ({ page }) => {
-  await page.goto('http://localhost:3000/register');
+  page.goto('http://localhost:3000/register');
 
   //create randomUsername, because databse fails if not a unique username
   const randomName = Math.random().toString(36).slice(2, 7);
-  const inputElements = await page.$$('input');
+  const inputElements =  page.$$('input');
 
-  await inputElements[0].click();
-  await page.keyboard.type("UiTest"+randomName);
+  inputElements[0].click();
+  page.keyboard.type("UiTest"+randomName);
 
-  await inputElements[1].click();
-  await page.keyboard.type(randomName+'@itu.dk');
+  inputElements[1].click();
+  page.keyboard.type(randomName+'@itu.dk');
 
-  await inputElements[2].click();
-  await page.keyboard.type('123');
+  inputElements[2].click();
+  page.keyboard.type('123');
 
-  await inputElements[3].click();
-  await page.keyboard.type('123');
+  inputElements[3].click();
+  page.keyboard.type('123');
 
-  await page.click('button:text("Sign Up")');
+  page.click('button:text("Sign Up")');
 
-  await expect(page).toHaveURL("http://localhost:3000/public");
+  expect(page).toHaveURL("http://localhost:3000/public");
 });
 
 
