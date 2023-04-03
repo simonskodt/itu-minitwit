@@ -110,6 +110,7 @@ jobs:
             args: "-vvv"
             command: |
               export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
+              export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
               cd ./minitwit
               docker-compose -f docker-compose.monitoring up -d
 
