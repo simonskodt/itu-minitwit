@@ -43,6 +43,7 @@ jobs:
           npm install
           cd tests/
           npx playwright test
+          docker-compose down
 
 
           
