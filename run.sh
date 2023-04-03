@@ -40,23 +40,27 @@ function setup_dotnet_secrets {
 }
 
 function setup_elk {
-    # Export env variables (set ELK_DIR to directory where this script is located)
-    ELK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-    ELK_USER="radiator"
+    if [ -z "${ELK_DIR}" ]; then 
+        # Export env variables (set ELK_DIR to directory where this script is located)
+        ELK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+        ELK_USER="radiator"
 
-    export ELK_DIR 
-    export ELK_USER
+        export ELK_DIR 
+        export ELK_USER
 
-    echo "export ELK_DIR=$ELK_DIR" >> ~/.profile
-    echo "export ELK_USER=$ELK_USER" >> ~/.profile
+        echo "export ELK_DIR=$ELK_DIR" >> ~/.profile
+        echo "export ELK_USER=$ELK_USER" >> ~/.profile
 
-    # Go to ELK stack folder
-    (
-        cd "$ELK_DIR"/Logging || exit
-        # Change permissions on filebat config
-        sudo chown root filebeat.yml 
-        sudo chmod go-w filebeat.yml
-    )
+        # Go to ELK stack folder
+        (
+            cd "$ELK_DIR"/Logging || exit
+            # Change permissions on filebat config
+            sudo chown root filebeat.yml 
+            sudo chmod go-w filebeat.yml
+        )
+    else 
+        println "ELK_DIR already set; skipping..." "$red"
+    fi
 }
 
 function print_help {
