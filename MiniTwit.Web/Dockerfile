@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
 RUN npm install --omit=dev
-RUN npm install -g serve
+RUN npm install --location=global serve
 
 # add app
 COPY 'MiniTwit.Web/.' .
