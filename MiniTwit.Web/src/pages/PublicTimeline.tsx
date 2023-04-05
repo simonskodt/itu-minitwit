@@ -27,7 +27,7 @@ function PublicTimeline() {
       <div className="body">
         <h2>Public Timeline</h2>
         <MessageSliceComponent key={pageNumber} pageNumber={pageNumber} />
-        <div className="page-number">Page: {pageNumber}</div>
+        <div className="page-number"><b>Page: {pageNumber}</b></div>
         <div className="page-number">
           <button onClick={handlePageChangeLower}>Prev. Page</button>
           <button onClick={handlePageChangeHigher}>Next Page</button>
