@@ -16,8 +16,8 @@ export const API_URL = process.env.NODE_ENV === 'development' ? DEVELOPMENT : PR
 export default function App() {
   useEffect(() => {
     // Remove leading '/' character from pathname
-    const pathname = window.location.pathname.substring(1);
-    document.title = `${pathname} | MiniTwit`;
+    const pathname = window.location.pathname.replace('/', '');
+    document.title = `${pathname.charAt(0).toUpperCase()}${pathname.slice(1)} | MiniTwit`;
   }, [window.location.pathname]);
 
   return (
