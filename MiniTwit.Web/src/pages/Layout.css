@@ -184,8 +184,14 @@ img {
     margin: 0px 5px;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 900px) {
     div.page {
-      width: 80%;
+        width: 80%;
     }
-  }
+}
+
+@media screen and (max-width: 700px) {
+    div.page {
+        width: 95%;
+    }
+}
