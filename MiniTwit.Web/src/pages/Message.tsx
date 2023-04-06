@@ -29,12 +29,16 @@ export function Message(props: IMessageProps) {
     return (
         <ul className="messages">
             <li>
-                <img src={generateHash2(props.username)} />
-                <p>
-                    <b><a href={props.username}>{props.username}</a></b>&nbsp;
-                    {props.text}&nbsp;
-                    <small>&mdash; {formatDatetime(props.date)}</small>
-                </p>
+                <div className="message-container">
+                    <img className="profile-picture" src={generateHash2(props.username)} />
+                    <div className="message-content">
+                        <p>
+                            <b><a href={props.username}>{props.username}</a></b>&nbsp;
+                            {props.text}&nbsp;
+                            <small>&mdash; {formatDatetime(props.date)}</small>
+                        </p>
+                    </div>
+                </div>
             </li>
         </ul>
     )
