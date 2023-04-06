@@ -30,11 +30,11 @@ function PublicTimeline() {
             <h2>Public Timeline</h2>
           </div>
           <div className="right page-number">
-          page: {pageNumber}
+          Page: {pageNumber}
           </div>
         </div>
         <MessageSliceComponent key={pageNumber} pageNumber={pageNumber} />
-        <div className="page-number">page: {pageNumber}</div>
+        <div className="page-number">Page: {pageNumber}</div>
         <div className="page-number">
           <button onClick={handlePageChangeLower}>Prev. Page</button>
           <button onClick={handlePageChangeHigher}>Next Page</button>
