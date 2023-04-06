@@ -79,11 +79,11 @@ function PrivateTimeline() {
       <Header isLoggedIn={checkLogIn()} />
       <div className="body">
         <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
-        <div className="timeline-follow">
-          <div className="timeline-left">
+        <div className="headers">
+          <div className="left">
             <h2>{displayName()}</h2>
           </div>
-          <div className="follow-right">
+          <div className="right">
             <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
           </div>
         </div>

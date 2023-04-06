@@ -1,5 +1,5 @@
-import './MessageComponent.css'
-import { AppService } from '../services/app.service'
+import './MessageComponent.css';
+import { AppService } from '../services/app.service';
 import React, { Component, useState }  from 'react';
 
 
@@ -48,7 +48,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
                         onFocus={() => setPlaceholderText('')}
                         onBlur={() => setPlaceholderText('Write here')}
                         onKeyDown = {handleKeyDown}
-                    />&nbsp;&nbsp;
+                    />
                     <button className='message-button' onClick={() => postMessage(message, userName)}>Share</button>
                 </div>
             </div>
