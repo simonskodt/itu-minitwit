@@ -64,22 +64,12 @@ jobs:
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Copy monitoring files to live server
+      - name: Copy monitoring/logging configuration files to live server
         uses: burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete
           path: ./Monitoring/
           remote_path: ./minitwit/Monitoring/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Copy logging files to live server
-        uses: burnett01/rsync-deployments@5.2.1
-        with:
-          switches: -avz --delete
-          path: ./Logging/
-          remote_path: ./minitwit/Logging/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -92,6 +82,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           args: "-vvv"
           command: |
+            docker image prune -a -f
+            
             export DB_CONNECTION_STRING=${{ DB_CONNECTIONSTRING }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
@@ -101,7 +93,7 @@ jobs:
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml up -d
           
-      - name: Deploy monitoring
+      - name: Deploy monitoring and logging
         uses: fifsky/ssh-action@master
           with:
             host: ${{ secrets.SSH_HOST }}
@@ -113,14 +105,3 @@ jobs:
               export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
               cd ./minitwit
               docker-compose -f docker-compose.monitoring up -d
-
-      - name: Deploy logging
-        uses: fifsky/ssh-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            user: root
-            key: ${{ secrets.SSH_PRIVATE_KEY }}
-            args: "-vvv"
-            command: |
-              cd ./minitwit
-              docker-compose -f docker-compose.logging up -d
