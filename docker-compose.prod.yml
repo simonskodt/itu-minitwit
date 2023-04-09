@@ -24,7 +24,7 @@ services:
     image: ${DOCKER_USERNAME}/itu-minitwit-server
     container_name: minitwit
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__MiniTwit: ${DB_CONNECTION_STRING}
     ports:

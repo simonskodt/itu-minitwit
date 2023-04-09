@@ -15,6 +15,17 @@ services:
         - "9090:9090"
       networks:
         - main
+  
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    volumes:
+      - loki_storage:/loki
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - main
 
   grafana:
     image: grafana/grafana:latest
@@ -29,16 +40,14 @@ services:
       GF_SMTP_PASSWORD: ${SMTP_PASSWORD}
       GF_SMTP_FROM_ADDRESS: radiator.k.devops@gmail.com
     volumes:
-      - ./Monitoring/Grafana/dashboard_provision.yml:/etc/grafana/provisioning/dashboards/main.yml
-      - ./Monitoring/Grafana/alert_provision.yml:/etc/grafana/provisioning/alerting/main.yml
-      - ./Monitoring/Grafana/notifications.yml:/etc/grafana/provisioning/alerting/notifications.yml
-      - ./Monitoring/Grafana/data_sources.yml:/etc/grafana/provisioning/datasources/grafana.yml
-      - ./Monitoring/Grafana/minitwit_dashboard.json:/var/lib/grafana/dashboards/minitwit_dashboard.json
+      - ./Monitoring/Grafana/provisioning/:/etc/grafana/provisioning/
+      - ./Monitoring/Grafana/dashboards/:/var/lib/grafana/dashboards/
       - grafana_storage:/var/lib/grafana
     ports:
       - "9091:3001"
     depends_on:
       - prometheus
+      - loki
     networks:
       - main
 
