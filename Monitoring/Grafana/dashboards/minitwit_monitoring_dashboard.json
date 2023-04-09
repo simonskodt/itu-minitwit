@@ -21,11 +21,11 @@
       }
     ]
   },
-  "description": "A dashboard for monitoring the MiniTwit API.",
+  "description": "A dashboard for monitoring the MiniTwit application.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [
     {
       "asDropdown": false,
@@ -76,9 +76,20 @@
         "content": "# Welcome to the MiniTwit Monitoring Dashboard",
         "mode": "markdown"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "transparent": true,
       "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 34,
+      "title": "Overview",
+      "type": "row"
     },
     {
       "datasource": {
@@ -87,10 +98,10 @@
       },
       "description": "",
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 23,
         "x": 0,
-        "y": 2
+        "y": 3
       },
       "id": 46,
       "options": {
@@ -116,20 +127,8 @@
         },
         "viewMode": "list"
       },
-      "title": "Alerts Status",
       "transparent": true,
       "type": "alertlist"
-    },
-    {
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 11
-      },
-      "id": 34,
-      "title": "Overview",
-      "type": "row"
     },
     {
       "datasource": {
@@ -175,7 +174,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 12
+        "y": 11
       },
       "id": 32,
       "options": {
@@ -192,7 +191,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -288,9 +287,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 20,
+        "w": 16,
         "x": 3,
-        "y": 12
+        "y": 11
       },
       "id": 43,
       "options": {
@@ -321,6 +320,33 @@
       ],
       "title": "MiniTwit Uptime",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 19,
+        "y": 11
+      },
+      "id": 56,
+      "options": {
+        "folderId": 0,
+        "maxItems": 10,
+        "query": "",
+        "showHeadings": true,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "9.4.7",
+      "title": "MiniTwit Dashboards",
+      "type": "dashlist"
     },
     {
       "datasource": {
@@ -366,7 +392,7 @@
         "h": 4,
         "w": 3,
         "x": 0,
-        "y": 16
+        "y": 15
       },
       "id": 35,
       "options": {
@@ -383,7 +409,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -479,9 +505,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 20,
+        "w": 16,
         "x": 3,
-        "y": 16
+        "y": 15
       },
       "id": 44,
       "options": {
@@ -529,7 +555,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-purple"
+                "color": "super-light-purple",
+                "value": null
               },
               {
                 "color": "red",
@@ -545,7 +572,7 @@
         "h": 7,
         "w": 11,
         "x": 0,
-        "y": 20
+        "y": 19
       },
       "id": 37,
       "options": {
@@ -562,7 +589,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -584,7 +611,7 @@
         "type": "prometheus",
         "uid": "P207FEC5A3BD20FE9"
       },
-      "description": "The sum of all HTTP codes across all controllers.",
+      "description": "The sum of all HTTP codes across all controllers for the last 5 minutes.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -595,7 +622,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -606,7 +634,7 @@
         "h": 7,
         "w": 12,
         "x": 11,
-        "y": 20
+        "y": 19
       },
       "id": 41,
       "options": {
@@ -623,7 +651,7 @@
         },
         "showUnfilled": false
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -631,13 +659,13 @@
             "uid": "P207FEC5A3BD20FE9"
           },
           "editorMode": "builder",
-          "expr": "sum by(code) (http_requests_received_total)",
+          "expr": "sum by(code) (rate(http_requests_received_total[5m]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Response Codes across all Controllers",
+      "title": "Response Codes across all Controllers [5m]",
       "type": "bargauge"
     },
     {
@@ -646,7 +674,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 26
       },
       "id": 14,
       "panels": [],
@@ -673,7 +701,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "green",
@@ -725,7 +754,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 28
+        "y": 27
       },
       "id": 10,
       "options": {
@@ -741,7 +770,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -809,7 +838,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "orange",
@@ -829,7 +859,7 @@
         "h": 8,
         "w": 17,
         "x": 6,
-        "y": 28
+        "y": 27
       },
       "id": 4,
       "options": {
@@ -911,7 +941,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -923,7 +954,7 @@
         "h": 7,
         "w": 23,
         "x": 0,
-        "y": 36
+        "y": 35
       },
       "id": 6,
       "options": {
@@ -960,7 +991,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 42
       },
       "id": 12,
       "panels": [],
@@ -1015,7 +1046,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1026,7 +1058,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 44
+        "y": 43
       },
       "id": 18,
       "options": {
@@ -1074,7 +1106,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1085,7 +1118,7 @@
         "h": 8,
         "w": 5,
         "x": 18,
-        "y": 44
+        "y": 43
       },
       "id": 28,
       "options": {
@@ -1102,7 +1135,7 @@
         },
         "showUnfilled": true
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -1149,7 +1182,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1160,7 +1194,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 52
+        "y": 51
       },
       "id": 20,
       "options": {
@@ -1177,7 +1211,7 @@
         },
         "showUnfilled": false
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -1186,13 +1220,15 @@
           },
           "editorMode": "builder",
           "expr": "sum by(endpoint) (http_requests_received_total{controller=\"Sim\"})",
+          "format": "time_series",
           "hide": false,
+          "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "Simulator"
         }
       ],
-      "title": "Simulator Total Request per Endpoint",
+      "title": "Simulator Total Request per Endpoint [all time]",
       "type": "bargauge"
     },
     {
@@ -1212,7 +1248,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1223,7 +1260,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 52
+        "y": 51
       },
       "id": 23,
       "options": {
@@ -1240,7 +1277,7 @@
         },
         "showUnfilled": false
       },
-      "pluginVersion": "9.4.3",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
@@ -1257,7 +1294,7 @@
           "refId": "Simulator"
         }
       ],
-      "title": "Twitter Total Request per Endpoint",
+      "title": "Twitter Total Request per Endpoint [all time]",
       "type": "bargauge"
     },
     {
@@ -1306,7 +1343,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1317,7 +1355,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 60
+        "y": 59
       },
       "id": 25,
       "options": {
@@ -1395,7 +1433,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1406,7 +1445,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 60
+        "y": 59
       },
       "id": 38,
       "options": {
@@ -1495,7 +1534,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 68
+        "y": 67
       },
       "id": 26,
       "options": {
@@ -1584,7 +1623,7 @@
         "h": 8,
         "w": 12,
         "x": 11,
-        "y": 68
+        "y": 67
       },
       "id": 39,
       "options": {
@@ -1633,7 +1672,6 @@
     "refresh_intervals": [
       "5s",
       "10s",
-      "15s",
       "30s",
       "1m",
       "5m",
@@ -1645,8 +1683,8 @@
     ]
   },
   "timezone": "",
-  "title": "MiniTwit",
+  "title": "MiniTwit Monitoring",
   "uid": "a94Zmaa4k",
-  "version": 54,
+  "version": 3,
   "weekStart": ""
 }

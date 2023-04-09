@@ -4,3 +4,9 @@ datasources:
   type: prometheus
   url: http://prometheus:9090
   isDefault: true
+
+- name: "Loki"
+  acess: proxy
+  type: loki
+  url: http://loki:3100
+  isDefault: true
