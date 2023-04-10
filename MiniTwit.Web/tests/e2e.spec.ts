@@ -35,7 +35,7 @@ test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
   await inputElements[3].click();
   await page.keyboard.type('123');
 
-  await page.click('button:text("Sign Up")');
+  await page.click('input[type="submit"][value="Sign Up"]');
 
   // wait for the user to be created before checking the database
   await new Promise(resolve => setTimeout(resolve, 1000));

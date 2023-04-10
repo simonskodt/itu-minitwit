@@ -4,32 +4,35 @@ import { test, expect } from '@playwright/test';
 test('MiniTwit title', async ({ page }) => {
   await page.goto('http://localhost:3000/public');
 
-  await expect(page).toHaveTitle('MiniTwit');
+  await expect(page).toHaveTitle('Public | MiniTwit');
 });
 
 
 test('Register user via GUI', async ({ page }) => {
-  page.goto('http://localhost:3000/register');
+  await page.goto('http://localhost:3000/register');
 
   //create randomUsername, because databse fails if not a unique username
   const randomName = Math.random().toString(36).slice(2, 7);
-  const inputElements =  page.$$('input');
+  const inputElements = await page.$$('input');
 
-  inputElements[0].click();
-  page.keyboard.type("UiTest"+randomName);
+  await inputElements[0].click();
+  await page.keyboard.type("UiTest"+randomName);
 
-  inputElements[1].click();
-  page.keyboard.type(randomName+'@itu.dk');
+  await inputElements[1].click();
+  await page.keyboard.type(randomName+'@itu.dk');
 
-  inputElements[2].click();
-  page.keyboard.type('123');
+  await inputElements[2].click();
+  await page.keyboard.type('123');
 
-  inputElements[3].click();
-  page.keyboard.type('123');
+  await inputElements[3].click();
+  await page.keyboard.type('123');
+  
+  await page.click('input[type="submit"][value="Sign Up"]');
 
-  page.click('button:text("Sign Up")');
+  // add a delay of 2 seconds to allow time for the page to load
+  await page.waitForTimeout(2000);
 
-  expect(page).toHaveURL("http://localhost:3000/public");
+  await expect(page).toHaveURL("http://localhost:3000/login");
 });
 
 
