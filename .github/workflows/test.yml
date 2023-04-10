@@ -40,6 +40,7 @@ jobs:
           echo ${{secrets.DB_CONNECTIONSTRING}} > .local/connection_string.txt
           echo ${{secrets.DB_PASSWORD}} > .local/db_password.txt
           echo $NODE_ENV 
+          pwd
 
 
 
