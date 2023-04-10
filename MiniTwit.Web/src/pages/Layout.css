@@ -105,10 +105,6 @@ div.page div.twitbox p {
     margin: 0;
 }
 
-div.page div.twitbox input[type="text"] {
-    width: 598px;
-}
-
 div.page div.twitbox input[type="submit"] {
     width: 70px;
     margin-left: 10px;
@@ -154,22 +150,22 @@ button {
 }
 
 img {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
 }
 
-.timeline-follow {
+.headers {
     display: flex;
     justify-content: space-between;
     margin-bottom: -8px;
 }
 
-.timeline-left {
+.left {
     text-align: left;
     margin-top: 5px;
 }
 
-.follow-right {
+.right {
     text-align: right;
 }
 
@@ -182,4 +178,41 @@ img {
 
 .page-number button {
     margin: 0px 5px;
+}
+
+.message-container {
+    width: 100%;
+}
+
+.profile-picture {
+    margin-left: 2px;
+}
+
+.message-content {
+    width: 90%;
+}
+
+@media screen and (max-width: 900px) {
+    div.page {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 805px) {
+    .message-content {
+        width: 85%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    div.page {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    img {
+        width: 25px;
+        height: 25px;
+    }
 }

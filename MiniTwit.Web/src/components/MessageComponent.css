@@ -15,5 +15,33 @@
 }
 
 .message-input {
-    width: 80%;
+    width: 90%;
+    flex-basis: 90%;
+    box-sizing: border-box;
+}
+
+.message-container button {
+    flex-basis: 8%;
+    margin-left: 2%;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 700px) {
+    .message-input {
+        width: 90%;
+        flex-basis: 90%;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .message-input {
+        width: 100%;
+        flex-basis: 100%;
+        box-sizing: border-box;
+    }
+
+    .message-container button {
+        margin-left: 0px;
+    }
 }

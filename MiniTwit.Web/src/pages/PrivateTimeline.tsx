@@ -42,20 +42,10 @@ function PrivateTimeline() {
     return () => clearInterval(intervalId);
   }, []);
 
-  if (messages != undefined) {
-    return (
-      <div className="page">
-        <Header isLoggedIn={checkLogIn()} />
-        <div className="body">
-          <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
-          <div className="timeline-follow">
-            <div className="timeline-left">
-              <h2>{displayName()}</h2>
-            </div>
-            <div className="follow-right">
-              <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
-            </div>
-          </div>
+  function showMessages() {
+    if (messages != undefined) {
+      return (
+        <>
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>
@@ -67,17 +57,40 @@ function PrivateTimeline() {
               </view>
             </view>
           ))}
+        </>
+      );
+    }
+    else {
+      return (
+        <div>
+          <ul className="messages">
+            <li>
+              <p></p>
+            </li>
+          </ul>
         </div>
-        <Footer />
-      </div>
+      );
+    }
+  }
 
-    );
-  }
-  else {
-    return (
-      <view></view>
-    );
-  }
+  return (
+    <div className="page">
+      <Header isLoggedIn={checkLogIn()} />
+      <div className="body">
+        <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
+        <div className="headers">
+          <div className="left">
+            <h2>{displayName()}</h2>
+          </div>
+          <div className="right">
+            <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
+          </div>
+        </div>
+        {showMessages()}
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default PrivateTimeline

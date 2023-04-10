@@ -35,7 +35,6 @@
 We currently **lack the following features**:
 
 - Deploy to DigitalOcean with Vagrant.
-- Completing our front-end design.
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.

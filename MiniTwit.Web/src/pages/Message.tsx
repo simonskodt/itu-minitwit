@@ -14,6 +14,12 @@ function generateHash(name: string): string {
     return 'https://www.gravatar.com/avatar/' + hash + '?s=50&d=identicon';
 }
 
+// Transparant background for identicon
+function generateHash2(name: string): string {
+    const hash: string = Md5.hashStr(name);
+    return 'https://api.dicebear.com/5.x/identicon/svg?seed=' + hash;
+}
+
 // Formatting of datetime, so it is more readable
 function formatDatetime(date: string): string {
     return new Date(date).toLocaleString();
@@ -23,12 +29,16 @@ export function Message(props: IMessageProps) {
     return (
         <ul className="messages">
             <li>
-                <img src={generateHash(props.username)} />
-                <p>
-                    <a href={props.username}>{props.username}</a>&nbsp;
-                    {props.text}&nbsp;
-                    <small>&mdash; {formatDatetime(props.date)}</small>
-                </p>
+                <div className="message-container">
+                    <img className="profile-picture" src={generateHash2(props.username)} />
+                    <div className="message-content">
+                        <p>
+                            <b><a href={props.username}>{props.username}</a></b>&nbsp;
+                            {props.text}&nbsp;
+                            <small>&mdash; {formatDatetime(props.date)}</small>
+                        </p>
+                    </div>
+                </div>
             </li>
         </ul>
     )

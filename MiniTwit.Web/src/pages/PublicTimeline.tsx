@@ -24,7 +24,14 @@ function PublicTimeline() {
     <div className="page">
       <Header isLoggedIn={checkLogIn()} />
       <div className="body">
-        <h2>Public Timeline</h2>
+        <div className="headers">
+          <div className="left">
+            <h2>Public Timeline</h2>
+          </div>
+          <div className="right page-number">
+          Page: {pageNumber}
+          </div>
+        </div>
         <MessageSliceComponent key={pageNumber} pageNumber={pageNumber} />
         <div className="page-number">Page: {pageNumber}</div>
         <div className="page-number">
