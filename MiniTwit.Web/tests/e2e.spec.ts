@@ -1,7 +1,6 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { MongoClient,} from 'mongodb';
 import * as fs from 'fs'
-import { BrowserContext } from 'playwright';
 
 async function findUserByUserName(username: string) { 
   const connectionStringFromFile = fs.readFileSync('../../.local/connection_string.txt','utf8');
@@ -16,57 +15,36 @@ async function findUserByUserName(username: string) {
   return qu
 }
 
+test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
+  // Start the test logic
+  test.slow()
+  await page.goto('http://localhost:3000/register');
 
-test.describe.parallel('open session from dashboard', () => {
-  test.slow();
-  let randomName: string;
-  let context: BrowserContext;
-  let page: Page;
+  // create randomUsername, because database fails if not a unique username
+  const randomName = Math.random().toString(36).slice(2, 7);
+  const inputElements = await page.$$('input');
 
-  test.beforeEach(async ({ browser }) => {
-    test.slow()
-    // Create a new browser context and page for each test
-    context = await browser.newContext();
-    page = await context.newPage();
+  await inputElements[0].click();
+  await page.keyboard.type("UiTest"+randomName);
 
-    // Start the test logic
-    await page.goto('http://localhost:3000/register');
+  await inputElements[1].click();
+  await page.keyboard.type(randomName+'@itu.dk');
 
-    // create randomUsername, because database fails if not a unique username
-    randomName = Math.random().toString(36).slice(2, 7);
-    const inputElements = await page.$$('input');
+  await inputElements[2].click();
 
-    await inputElements[0].click();
-    await page.keyboard.type("UiTest"+randomName);
+  await page.keyboard.type('123');
 
-    await inputElements[1].click();
-    await page.keyboard.type(randomName+'@itu.dk');
+  await inputElements[3].click();
+  await page.keyboard.type('123');
 
-    await inputElements[2].click();
+  await page.click('input[type="submit"][value="Sign Up"]');
 
-    await page.keyboard.type('123');
+  // wait for the user to be created before checking the database
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
-    await inputElements[3].click();
-    await page.keyboard.type('123');
+  const result = await findUserByUserName("UiTest"+randomName);
 
-    await page.click('input[type="submit"][value="Sign Up"]');
-  });
+  expect(result?.Username).toBe("UiTest"+randomName);
 
-  test('test_register_user_via_gui_and_check_db_entry', async () => {
-    test.slow()
-    // wait for the user to be created before checking the database
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const result = await findUserByUserName("UiTest"+randomName);
-
-    expect(result?.Username).toBe("UiTest"+randomName);
-  });
-
-  test.afterEach(async () => {
-    // Close the browser context and page after each test
-    await page.close();
-    await context.close();
-  });
 });
-
 
