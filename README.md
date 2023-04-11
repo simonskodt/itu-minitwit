@@ -91,7 +91,7 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
 Add monitoring to your ITU-MiniTwit and peer-review.
 
 - [x] Add Monitoring to Your Systems.
-- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*)
+- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*), see [Issue#17](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/17).
   - [x] Do you see a public timeline?
   - [x] Does the public timeline show messages that the application received from the simulator?
   - [x] Can you create a new user?
@@ -131,7 +131,7 @@ Security Assessment & Pen Testing.
   - [x] B. Risk Analysis
   - [x] C. Pen-Test Your System
 - [x] 2) White Hat Attack The Next Team
-  - Group k Radiator -[checks]-> Group m Jason Derulo
+  - Group k Radiator -[checks]-> Group m Jason Derulo, see [Issue#20](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/20).
 
 ### Week 10
 
