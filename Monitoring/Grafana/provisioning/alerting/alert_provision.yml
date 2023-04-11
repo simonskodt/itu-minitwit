@@ -16,10 +16,7 @@ contactPoints:
 policies:
   - orgId: 1
     receiver: MiniTwit Alerts
-    group_by: [
-        "grafana_folder",
-        "alertname"
-    ]
+    group_by: ["grafana_folder", "alertname"]
 
 groups:
     - orgId: 1
