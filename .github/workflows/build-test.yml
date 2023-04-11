@@ -44,8 +44,10 @@ jobs:
           echo ${{secrets.DB_CONNECTIONSTRING}} > .local/connection_string.txt
           echo ${{secrets.DB_PASSWORD}} > .local/db_password.txt
           docker-compose up -d
-          docker ps
-          docker images
+          cd MiniTwit.Web/
+          npm install
+          cd tests/
+          npx playwright test
           docker-compose down
 
 
