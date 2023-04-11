@@ -1,6 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { MongoClient,} from 'mongodb';
 import * as fs from 'fs'
+import { BrowserContext } from 'playwright';
 
 async function findUserByUserName(username: string) { 
   const connectionStringFromFile = fs.readFileSync('../../.local/connection_string.txt','utf8');
@@ -15,46 +16,54 @@ async function findUserByUserName(username: string) {
   return qu
 }
 
-test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
-  const timeoutMs = 60000;
 
-  // Set a timeout to fail the test if it doesn't complete within the specified time
-  const timeoutPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject(new Error(`Test timed out after ${timeoutMs} ms`));
-    }, timeoutMs);
+test.describe.parallel('open session from dashboard', () => {
+  let randomName: string;
+  let context: BrowserContext;
+  let page: Page;
+
+  test.beforeEach(async ({ browser }) => {
+    // Create a new browser context and page for each test
+    context = await browser.newContext();
+    page = await context.newPage();
+
+    // Start the test logic
+    await page.goto('http://localhost:3000/register');
+
+    // create randomUsername, because database fails if not a unique username
+    randomName = Math.random().toString(36).slice(2, 7);
+    const inputElements = await page.$$('input');
+
+    await inputElements[0].click();
+    await page.keyboard.type("UiTest"+randomName);
+
+    await inputElements[1].click();
+    await page.keyboard.type(randomName+'@itu.dk');
+
+    await inputElements[2].click();
+
+    await page.keyboard.type('123');
+
+    await inputElements[3].click();
+    await page.keyboard.type('123');
+
+    await page.click('input[type="submit"][value="Sign Up"]');
   });
 
-  // Start the test logic
-  await page.goto('http://localhost:3000/register');
+  test('test_register_user_via_gui_and_check_db_entry', async () => {
+    // wait for the user to be created before checking the database
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-  // create randomUsername, because database fails if not a unique username
-  const randomName = Math.random().toString(36).slice(2, 7);
-  const inputElements = await page.$$('input');
+    const result = await findUserByUserName("UiTest"+randomName);
 
-  await inputElements[0].click();
-  await page.keyboard.type("UiTest"+randomName);
+    expect(result?.Username).toBe("UiTest"+randomName);
+  });
 
-  await inputElements[1].click();
-  await page.keyboard.type(randomName+'@itu.dk');
-
-  await inputElements[2].click();
-
-  await page.keyboard.type('123');
-
-  await inputElements[3].click();
-  await page.keyboard.type('123');
-
-  await page.click('input[type="submit"][value="Sign Up"]');
-
-  // wait for the user to be created before checking the database
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  const result = await findUserByUserName("UiTest"+randomName);
-
-  expect(result?.Username).toBe("UiTest"+randomName);
-
-  // Combine the timeout promise with the test logic promise, so that the test will fail if either one fails
-  await Promise.race([timeoutPromise, Promise.resolve()]);
+  test.afterEach(async () => {
+    // Close the browser context and page after each test
+    await page.close();
+    await context.close();
+  });
 });
+
 
