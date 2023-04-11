@@ -16,8 +16,6 @@ async function findUserByUserName(username: string) {
 }
 
 test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
-  // Start the test logic
-  test.slow()
   await page.goto('http://localhost:3000/register');
 
   // create randomUsername, because database fails if not a unique username
