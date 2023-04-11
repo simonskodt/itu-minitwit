@@ -18,11 +18,13 @@ async function findUserByUserName(username: string) {
 
 
 test.describe.parallel('open session from dashboard', () => {
+  test.slow();
   let randomName: string;
   let context: BrowserContext;
   let page: Page;
 
   test.beforeEach(async ({ browser }) => {
+    test.slow()
     // Create a new browser context and page for each test
     context = await browser.newContext();
     page = await context.newPage();
@@ -51,6 +53,7 @@ test.describe.parallel('open session from dashboard', () => {
   });
 
   test('test_register_user_via_gui_and_check_db_entry', async () => {
+    test.slow()
     // wait for the user to be created before checking the database
     await new Promise(resolve => setTimeout(resolve, 2000));
 
