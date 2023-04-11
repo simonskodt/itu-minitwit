@@ -34,7 +34,7 @@ services:
       GF_SECURITY_ADMIN_USER: radiator
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
       GF_SERVER_HTTP_PORT: 3001
-      GF_SMTP_ENABLED: true
+      GF_SMTP_ENABLED: "true"
       GF_SMTP_HOST: smtp.gmail.com:587
       GF_SMTP_USER: radiator.k.devops@gmail.com
       GF_SMTP_PASSWORD: ${SMTP_PASSWORD}
