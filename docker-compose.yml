@@ -44,6 +44,7 @@ services:
 
   itu-minitwit-web:
     image: itu-minitwit-web
+    container_name: minitwit-web
     build:
       context: .
       dockerfile: 'MiniTwit.Web/Dockerfile'
@@ -99,4 +100,5 @@ secrets:
     file: './.local/connection_string.txt'
   grafana_password:
     file: './.local/grafana_password.txt'
+
 

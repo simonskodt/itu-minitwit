@@ -1,5 +1,6 @@
-FROM node:17-alpine as builder
+FROM node:19.7-alpine as builder
 ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
