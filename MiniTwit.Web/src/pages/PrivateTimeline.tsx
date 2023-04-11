@@ -45,23 +45,39 @@ function PrivateTimeline() {
     return () => clearInterval(intervalId);
   }, []);
 
+  function ShowFittedMessages(messages: MessageObjectWithName[]) {
+    return (
+      <div>
+        {messages.map((mes) => (
+          <view key={mes.messageId}>
+            <view>
+              <Message
+                username={mes.userName}
+                text={mes.text}
+                date={mes.pubDate}
+              />
+            </view>
+          </view>
+        ))}
+      </div>
+    )
+  }
+
   function showMessages() {
-    if (messages != undefined) {
+    if (messages != undefined && messages.length >= 15) {
       return (
         <>
-        <div className="scrollable-container">
-          {messages.map((mes) => (
-            <view key={mes.messageId}>
-              <view>
-                <Message
-                  username={mes.userName}
-                  text={mes.text}
-                  date={mes.pubDate}
-                />
-              </view>
-            </view>
-          ))}
-        </div>
+          <div className="scrollable-container">
+            {ShowFittedMessages(messages)}
+          </div>
+        </>
+      );
+    } else if (messages != undefined && messages.length < 15) {
+      return (
+        <>
+          <div>
+            {ShowFittedMessages(messages)}
+          </div>
         </>
       );
     }
@@ -91,7 +107,7 @@ function PrivateTimeline() {
             <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
           </div>
         </div>
-          {showMessages()}
+        {showMessages()}
       </div>
       <Footer />
     </div>
