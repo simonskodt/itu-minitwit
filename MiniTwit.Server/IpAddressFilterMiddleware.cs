@@ -34,7 +34,7 @@ public class IpAddressFilterMiddleware
         if (!IsIpAllowed(clientIpAddress, context))
         {
             context.Response.StatusCode = 403; // Forbidden
-            _logger.LogCritical($"Uknown client IP address: {clientIpAddress} is trying to call backend endpoints");
+            _logger.LogCritical($"Unknown client IP address: {clientIpAddress} is trying to call backend endpoints");
             await context.Response.WriteAsync("The client IP address is not allowed.");
             return;
         }
