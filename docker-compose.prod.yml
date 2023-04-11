@@ -1,10 +1,9 @@
-# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
-
 version: '3.4'
 
 networks:
   main:
     name: itu-minitwit-network
+    driver: bridge
 
 services:
   mongodb:
@@ -21,10 +20,10 @@ services:
       - main
 
   itu-minitwit-server:
-    image: ${DOCKER_USERNAME}/itu-minitwit-server
+    image: ${DOCKER_USERNAME}/itu-minitwit-server:latest
     container_name: minitwit
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__MiniTwit: ${DB_CONNECTION_STRING}
     ports:
@@ -35,7 +34,7 @@ services:
       - mongodb
 
   itu-minitwit-web:
-    image: ${DOCKER_USERNAME}/itu-minitwit-web
+    image: ${DOCKER_USERNAME}/itu-minitwit-web:latest
     ports:
       - '3000:3000'
     networks:

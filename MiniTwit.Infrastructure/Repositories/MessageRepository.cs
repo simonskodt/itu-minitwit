@@ -201,20 +201,17 @@ public class MessageRepository : IMessageRepository
         
         //All the followers where userName is whoId
         var allFollows = GetAllWhoUserFollows(user);
-        
-        var messages = await _context.Messages.Find(m => m.AuthorId == user.Id).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
 
-        foreach (var x in allFollows)
-        {
-            var mes = await _context.Messages.Find(m => m.AuthorId == x.WhomId).SortByDescending(m => m.PubDate).Limit(20).ToListAsync(ct);
-            messages.AddRange(mes);
-        }
+        var whomIds = allFollows.Select(m => m.WhomId);
 
-        var limitedMessages = messages.OrderByDescending(m => m.PubDate).ToList().Take(20);
+        var messages = await _context.Messages
+            .Find(m => m.AuthorId == user.Id || whomIds.Contains(m.AuthorId))
+            .SortByDescending(m => m.PubDate)
+            .ToListAsync(ct);
 
         return new DBResult<IEnumerable<Message>>
         {
-            Model = limitedMessages,
+            Model = messages,
             ErrorType = null
         };
     }

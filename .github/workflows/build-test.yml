@@ -1,4 +1,3 @@
----
 name: Build / Test
 
 on: 
@@ -8,19 +7,24 @@ env:
   NODE_ENV: development
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
+
       - name: Restore dependencies
         run: dotnet restore
-      - name: Build
+
+      - name: Build MiniTwit backend
         run: dotnet build --no-restore
-      - name: Test
+
+      - name: Run backend tests
         run: dotnet test --no-build --verbosity normal
   
   UITest:
