@@ -2,10 +2,6 @@ name: Continuous Deployment
 
 on:
   push:
-    # Run workflow every time something is pushed to the main branch
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
