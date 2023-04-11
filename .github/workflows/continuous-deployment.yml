@@ -77,24 +77,24 @@ jobs:
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-  #     - name: Deploy MiniTwit
-  #       uses: fifsky/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         user: ${{ secrets.SSH_USER }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         args: "-vvv"
-  #         command: |
-  #           docker image prune -a -f
+      - name: Deploy MiniTwit
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          args: "-vvv"
+          command: |
+            docker image prune -a -f
             
-  #           export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING }}
-  #           export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-  #           export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
-  #           cd ./minitwit
-  #           docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
-  #           docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
-  #           docker-compose -f docker-compose.prod.yml down
-  #           docker-compose -f docker-compose.prod.yml up -d
+            export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            cd ./minitwit
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
+            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml up -d
           
   #     - name: Deploy monitoring and logging
   #       uses: fifsky/ssh-action@master
