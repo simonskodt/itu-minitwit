@@ -221,6 +221,7 @@ public class SimController : ControllerBase
     [HttpPost("msgs/{username}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> PostMsgUsername(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
@@ -234,6 +235,9 @@ public class SimController : ControllerBase
                 break;
             case HTTPResponse.Forbidden:
                 _logger.LogError($"Unauthorized user \"{username}\"");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"Username \"{username}\" was not found");
                 break;
             default:
                 _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
