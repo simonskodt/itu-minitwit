@@ -59,7 +59,7 @@ jobs:
         with:
           switches: -avz --delete --include="docker-compose.*.yml" --exclude="*"
           path: .
-          remote_path: ./minitwit/
+          remote_path: ./itu-minitwit/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -69,7 +69,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./Monitoring/
-          remote_path: ./minitwit/Monitoring/
+          remote_path: ./itu-minitwit/Monitoring/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -84,7 +84,7 @@ jobs:
           command: |
             export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
             export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
-            cd ./minitwit
+            cd ./itu-minitwit
             docker-compose -f docker-compose.monitoring.yml up -d
 
       - name: Deploy MiniTwit
@@ -99,7 +99,7 @@ jobs:
             export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
-            cd ./minitwit
+            cd ./itu-minitwit
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
             docker-compose -f docker-compose.prod.yml down
