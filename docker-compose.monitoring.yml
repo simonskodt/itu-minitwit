@@ -54,4 +54,4 @@ services:
 volumes:
   grafana_storage:
   prometheus_storage:
-  loki_storage:/loki:
+  loki_storage:
