@@ -43,6 +43,7 @@ We currently **lack the following features**:
 It would be **nice to have the following features**:
 
 - Create automatic releases when merging into main branch.
+- Switching from HTTP To HTTPS.
 
 ## Weeks
 
