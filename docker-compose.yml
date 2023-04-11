@@ -24,7 +24,6 @@ services:
 
   itu-minitwit-server:
     image: itu-minitwit-server
-    container_name: minitwit
     build: 
       context: .
       dockerfile: 'MiniTwit.Server/Dockerfile'
