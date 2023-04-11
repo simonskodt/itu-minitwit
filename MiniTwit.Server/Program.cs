@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication;
 using MiniTwit.Core;
 using MiniTwit.Core.IRepositories;
@@ -12,7 +11,9 @@ using MiniTwit.Server.Extensions;
 using MiniTwit.Service;
 using Prometheus;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+using Serilog.Sinks.Grafana.Loki;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,7 @@ builder.Services.Configure<HashSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddScoped<IHasher, Argon2Hasher>();
 
 // Add Basic Authentication
-builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => {});
+builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", options => { });
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
@@ -47,30 +48,25 @@ builder.Services.AddScoped<ILatestRepository, LatestRepository>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<DataInitializer>();
 
-var app = builder.Build();
-
-// Setup logger
-Log.Logger = new LoggerConfiguration()
-    .Enrich.FromLogContext()
-    .Enrich.WithEnvironmentName()
-    .WriteTo.Debug()
-    .WriteTo.Console()
-    .WriteTo.Elasticsearch(ConfigureElasticSink(builder.Configuration, app.Environment.EnvironmentName))
-    .Enrich.WithProperty("Environment", app.Environment.EnvironmentName)
-    .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
-    
-ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
+// Add logging
+builder.Host.UseSerilog((ctx, config) =>
 {
-    return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]!))
-    {
-        AutoRegisterTemplate = true,
-        IndexFormat = $"{Assembly.GetExecutingAssembly()
-            .GetName().Name?.ToLower()
-            .Replace(".", "-")}-{environment?
-            .ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
-    };
-}
+    config.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .Enrich.WithProperty("Application", ctx.HostingEnvironment.ApplicationName)
+        .Enrich.WithProperty("Environment", ctx.HostingEnvironment.EnvironmentName)
+        .WriteTo.GrafanaLoki(
+            ctx.Configuration.GetSection("loki:Uri").Value!,
+            new[] { new LokiLabel { Key = "app", Value = "minitwit" } }
+        );
+
+    if (ctx.HostingEnvironment.IsDevelopment())
+        config.MinimumLevel.Debug()
+            .WriteTo.Console(new RenderedCompactJsonFormatter());
+});
+
+var app = builder.Build();
 
 // Seed DB
 app.SeedDatabase(app.Environment.IsDevelopment());
@@ -96,10 +92,15 @@ app.UseCors(x => x
 
 // app.UseHttpsRedirection();
 
+// Monitoring
 app.UseMetricServer();
-app.UseHttpMetrics(options => {
+app.UseHttpMetrics(options =>
+{
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
+
+// Logging
+app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -109,4 +110,4 @@ app.MapMetrics();
 
 app.Run();
 
-public partial class Program {}
+public partial class Program { }
