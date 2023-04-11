@@ -49,23 +49,23 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:webbuildcache,mode=max
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build-images # Image building must succeed
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-images # Image building must succeed
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Copy docker-compose files to live server
-  #       uses: burnett01/rsync-deployments@5.2.1
-  #       with:
-  #         switches: -avz --delete --include="docker-compose.*.yml" --exclude="*"
-  #         path: .
-  #         remote_path: ./minitwit/
-  #         remote_host: ${{ secrets.SSH_HOST }}
-  #         remote_user: ${{ secrets.SSH_USER }}
-  #         remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Copy docker-compose files to live server
+        uses: burnett01/rsync-deployments@5.2.1
+        with:
+          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*"
+          path: .
+          remote_path: ./minitwit/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   #     - name: Copy monitoring/logging configuration files to live server
   #       uses: burnett01/rsync-deployments@5.2.1
