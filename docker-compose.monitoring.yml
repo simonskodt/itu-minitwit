@@ -2,7 +2,8 @@ version: '3.4'
 
 networks:
   main:
-    name: itu-minitwit-monitoring
+    name: itu-minitwit-network
+    external: true # Join MiniTwit network
 
 services:
   prometheus:
