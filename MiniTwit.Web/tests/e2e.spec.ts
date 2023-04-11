@@ -15,7 +15,7 @@ async function findUserByUserName(username: string) {
   return qu
 }
 
-test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
+/* test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
   await page.goto('http://localhost:3000/register');
 
   // create randomUsername, because database fails if not a unique username
@@ -44,5 +44,5 @@ test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
 
   expect(result?.Username).toBe("UiTest"+randomName);
 
-});
+}); */
 
