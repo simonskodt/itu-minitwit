@@ -8,6 +8,8 @@ import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
 import React from 'react';
+import './Layout.css';
+
 
 function replaceSpaces(str: string): string {
   return str.replace(/%20/g, " ");
@@ -47,6 +49,7 @@ function PrivateTimeline() {
     if (messages != undefined) {
       return (
         <>
+        <div className="scrollable-container">
           {messages.map((mes) => (
             <view key={mes.messageId}>
               <view>
@@ -58,6 +61,7 @@ function PrivateTimeline() {
               </view>
             </view>
           ))}
+        </div>
         </>
       );
     }
@@ -87,7 +91,7 @@ function PrivateTimeline() {
             <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
           </div>
         </div>
-        {showMessages()}
+          {showMessages()}
       </div>
       <Footer />
     </div>
