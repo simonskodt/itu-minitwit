@@ -193,7 +193,7 @@ img {
 }
 
 .scrollable-container {
-    height: 500px;
+    height: 800px;
     overflow-y: auto;
 }
 
@@ -203,7 +203,7 @@ img {
     }
 
     .scrollable-container {
-        height: 480px;
+        height: 750px;
         overflow-y: auto;
     }
 }
@@ -214,8 +214,16 @@ img {
     }
 
     .scrollable-container {
-        height: 435px;
+        height: 650px;
         overflow-y: auto;
+    }
+}
+
+
+@media screen and (max-width: 770px) {
+    img {
+        width: 25px;
+        height: 25px;
     }
 }
 
@@ -225,14 +233,7 @@ img {
     }
 
     .scrollable-container {
-        height: 400px;
+        height: 600px;
         overflow-y: auto;
-    }
-}
-
-@media screen and (max-width: 770px) {
-    img {
-        width: 25px;
-        height: 25px;
     }
 }
