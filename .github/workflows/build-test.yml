@@ -43,7 +43,7 @@ jobs:
           mkdir .local
           echo ${{secrets.DB_CONNECTIONSTRING}} > .local/connection_string.txt
           echo ${{secrets.DB_PASSWORD}} > .local/db_password.txt
-          docker-compose up --build
+          docker-compose up -d
           docker-compose down
 
 
