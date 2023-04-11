@@ -40,7 +40,7 @@ test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
   await page.click('input[type="submit"][value="Sign Up"]');
 
   // wait for the user to be created before checking the database
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const result = await findUserByUserName("UiTest"+randomName);
 
