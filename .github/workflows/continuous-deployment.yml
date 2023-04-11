@@ -77,6 +77,19 @@ jobs:
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Deploy monitoring and logging
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          args: "-vvv"
+          command: |
+            export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
+            export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
+            cd ./minitwit
+            docker-compose -f docker-compose.monitoring up -d
+
       - name: Deploy MiniTwit
         uses: fifsky/ssh-action@master
         with:
@@ -94,16 +107,3 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml up -d
-          
-  #     - name: Deploy monitoring and logging
-  #       uses: fifsky/ssh-action@master
-  #         with:
-  #           host: ${{ secrets.SSH_HOST }}
-  #           user: root
-  #           key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #           args: "-vvv"
-  #           command: |
-  #             export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
-  #             export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
-  #             cd ./minitwit
-  #             docker-compose -f docker-compose.monitoring up -d
