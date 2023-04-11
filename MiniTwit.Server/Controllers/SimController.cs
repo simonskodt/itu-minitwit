@@ -327,7 +327,7 @@ public class SimController : ControllerBase
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
-                _logger.LogError($"User id \"{userResponse.Model!.Id!}\" not found");
+                _logger.LogError($"User (to follow) id \"{followerCreateDTO.Follow}\" not found");
                 return NotFound();
             }
 
@@ -340,7 +340,7 @@ public class SimController : ControllerBase
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
-                _logger.LogError($"Follower id \"{followerCreateDTO.Unfollow}\" not found");
+                _logger.LogError($"User (to unfollow) id \"{followerCreateDTO.Unfollow}\" not found");
                 return NotFound();
             }
 
