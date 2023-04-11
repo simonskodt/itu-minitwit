@@ -8,9 +8,6 @@ on:
   pull_request:
     branches:
       - main
-  # allow manual triggers for now too
-  workflow_dispatch:
-    manual: true
 
 jobs:
   build-images:
