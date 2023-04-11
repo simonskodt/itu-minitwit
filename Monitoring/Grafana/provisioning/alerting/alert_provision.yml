@@ -9,9 +9,17 @@ contactPoints:
       - uid: fXHMGMYVz
         type: email
         settings:
-          addresses: gume@itu.dk;
+          addresses: gume@itu.dk;sijs@itu.dk;vibr@itu.dk;niwl@itu.dk;
           singleEmail: true
         disableResolveMessage: false
+
+policies:
+  - orgId: 1
+    receiver: MiniTwit Alerts
+    group_by: [
+        "grafana_folder",
+        "alertname"
+    ]
 
 groups:
     - orgId: 1
