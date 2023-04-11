@@ -28,6 +28,7 @@
   - [Week 7](#week-7)
   - [Week 8](#week-8)
   - [Week 9](#week-9)
+  - [Week 10](#week-10)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -38,8 +39,6 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add logging.
-- Check security.
 
 It would be **nice to have the following features**:
 
@@ -120,7 +119,7 @@ Enhancing CI/CD setup with test suite and static code analysis.
 Add logging to your ITU-MiniTwit.
 
 - [x] 1) Add Logging to Your Systems
-- [ ] 2) Test that Your Logging Works
+- [x] 2) Test that Your Logging Works
   - The Devs introduce a bug; the Ops resolve the bug by using the logs.
 
 ### Week 9
@@ -128,11 +127,19 @@ Add logging to your ITU-MiniTwit.
 Security Assessment & Pen Testing.
 
 - [ ] 1) Perform a Security Assessment
-  - [ ] A. Risk Identification
+  - [x] A. Risk Identification
   - [ ] B. Risk Analysis
   - [ ] C. Pen-Test Your System
-- [ ] 2) White Hat Attack The Next Team
+- [x] 2) White Hat Attack The Next Team
   - Group k Radiator -[checks]-> Group m Jason Derulo
+
+### Week 10
+
+Isolate components into services/containers/VMs.
+
+- [ ] 1) Add Scaling to your projects
+- [ ] 2) Rolling Updates
+- [ ] 3) Software Maintenance
 
 ## Course description
 
