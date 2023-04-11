@@ -38,6 +38,7 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
+- Add scaling.
 
 It would be **nice to have the following features**:
 
@@ -60,7 +61,7 @@ Refactor ITU-MiniTwit in another programming language and tech stack.
 
 - [x] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
 - [x] 2) Containerize ITU-MiniTwit with Docker.
-- [x] 3) Describe Distributed Workflow.
+- [x] 3) Describe Distributed Workflow, see [CONTRIBUTE.md](https://github.com/simonskodt/itu-minitwit/blob/main/CONTRIBUTE.md).
 
 ### Week 3
 
@@ -125,10 +126,10 @@ Add logging to your ITU-MiniTwit.
 
 Security Assessment & Pen Testing.
 
-- [ ] 1) Perform a Security Assessment
+- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/SECURITY_ASSESSMENT.md)
   - [x] A. Risk Identification
-  - [ ] B. Risk Analysis
-  - [ ] C. Pen-Test Your System
+  - [x] B. Risk Analysis
+  - [x] C. Pen-Test Your System
 - [x] 2) White Hat Attack The Next Team
   - Group k Radiator -[checks]-> Group m Jason Derulo
 
