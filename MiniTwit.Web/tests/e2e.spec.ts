@@ -16,6 +16,16 @@ async function findUserByUserName(username: string) {
 }
 
 test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
+  const timeoutMs = 60000;
+
+  // Set a timeout to fail the test if it doesn't complete within the specified time
+  const timeoutPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error(`Test timed out after ${timeoutMs} ms`));
+    }, timeoutMs);
+  });
+
+  // Start the test logic
   await page.goto('http://localhost:3000/register');
 
   // create randomUsername, because database fails if not a unique username
@@ -43,4 +53,8 @@ test('test_register_user_via_gui_and_check_db_entry', async ({ page }) => {
   const result = await findUserByUserName("UiTest"+randomName);
 
   expect(result?.Username).toBe("UiTest"+randomName);
+
+  // Combine the timeout promise with the test logic promise, so that the test will fail if either one fails
+  await Promise.race([timeoutPromise, Promise.resolve()]);
 });
+

@@ -32,7 +32,7 @@ test('Register user via GUI', async ({ page }) => {
   // add a delay of 2 seconds to allow time for the page to load
   await page.waitForTimeout(2000);
 
-  await expect(page).toHaveURL("http://localhost:3000/hej");
+  await expect(page).toHaveURL("http://localhost:3000/login");
 });
 
 
