@@ -84,7 +84,7 @@ jobs:
           command: |
             docker image prune -a -f
             
-            export DB_CONNECTION_STRING=${{ DB_CONNECTIONSTRING }}
+            export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             cd ./minitwit
