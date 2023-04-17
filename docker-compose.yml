@@ -1,0 +1,118 @@
+version: '3.4'
+
+networks:
+  main:
+    name: itu-minitwit-network
+
+services:
+  mongodb:
+    image: mongo:latest
+    command: [--auth]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: radiator
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27018:27017'
+    networks:
+      - main
+    secrets:
+      - db_password
+
+  itu-minitwit-server:
+    image: itu-minitwit-server
+    build: 
+      context: .
+      dockerfile: 'MiniTwit.Server/Dockerfile'
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__MiniTwit:
+    ports:
+      - '80:80'
+    networks:
+      - main
+    depends_on:
+      - mongodb
+    secrets:
+      - source: connection_string
+        target: ConnectionStrings__MiniTwit
+
+  itu-minitwit-web:
+    image: itu-minitwit-web
+    container_name: minitwit-web
+    build:
+      context: .
+      dockerfile: 'MiniTwit.Web/Dockerfile'
+    ports:
+      - '3000:3000'
+    networks:
+      - main
+    depends_on:
+      - itu-minitwit-server
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_storage:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - main
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    volumes:
+      - loki_storage:/loki
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - main
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: radiator
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_password
+      GF_SERVER_HTTP_PORT: 3001
+      GF_SMTP_ENABLED: "true"
+      GF_SMTP_HOST: smtp.gmail.com:587
+      GF_SMTP_USER: radiator.k.devops@gmail.com
+      GF_SMTP_PASSWORD__FILE: /run/secrets/smtp_password
+      GF_SMTP_FROM_ADDRESS: radiator.k.devops@gmail.com
+    volumes:
+      - ./Monitoring/Grafana/provisioning/:/etc/grafana/provisioning/
+      - ./Monitoring/Grafana/dashboards/:/var/lib/grafana/dashboards/
+      - grafana_storage:/var/lib/grafana
+    ports:
+      - "9091:3001"
+    depends_on:
+      - prometheus
+      - loki
+    networks:
+      - main
+    secrets:
+      - grafana_password
+      - smtp_password
+
+volumes:
+  mongodb_data_container:
+  grafana_storage:
+  prometheus_storage:
+  loki_storage:
+
+secrets:
+  db_password:
+    file: './.local/db_password.txt'
+  connection_string:
+    file: './.local/connection_string.txt'
+  grafana_password:
+    file: './.local/grafana_password.txt'
+  smtp_password:
+    file: './.local/smtp_password.txt'
