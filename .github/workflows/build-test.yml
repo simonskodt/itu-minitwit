@@ -47,7 +47,7 @@ jobs:
           npm install
           cd tests/
           npx playwright test
-          docker-compose down
+          docker-compose -f docker-compose.ui.yml down 
 
 
 
