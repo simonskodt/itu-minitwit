@@ -199,7 +199,7 @@ public class MessageRepository : IMessageRepository
             };
         }
         
-        //All the followers where userName is whoId
+        //All the followers where username is whoId
         var allFollows = GetAllWhoUserFollows(user);
 
         var whomIds = allFollows.Select(m => m.WhomId);

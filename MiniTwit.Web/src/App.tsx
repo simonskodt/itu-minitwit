@@ -5,7 +5,7 @@ import PublicTimeline from "./pages/PublicTimeline";
 import Register from "./pages/Register";
 import PrivateTimeline from "./pages/PrivateTimeline";
 import TimeLine from "./pages/TimeLine";
-import React, { Component, useEffect }  from 'react';
+import { useEffect }  from 'react';
 
 const DEVELOPMENT = "http://localhost:5151/";
 const PRODUCTION = "http://164.92.167.188:80/";
@@ -18,7 +18,7 @@ export default function App() {
     const pathname = window.location.pathname.replace('/', '');
     const withoutSpaces = pathname.replace(/%20/g, " ");
     document.title = `${withoutSpaces.charAt(0).toUpperCase()}${withoutSpaces.slice(1)} | MiniTwit`;
-  }, [window.location.pathname]);
+  }, []);
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/" element={<TimeLine />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} /> 
-        <Route path="/:userName" element={<PrivateTimeline/>}></Route>
+        <Route path="/:username" element={<PrivateTimeline/>}></Route>
       </Routes>
     </>
   );

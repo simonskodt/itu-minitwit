@@ -1,10 +1,10 @@
 import "../pages/Layout.css";
 import { fetchPublicTimeline } from "../pages/fetch";
 import { useState } from "react";
-import { MessageObjectWithName } from "../builders/interface";
 import { useEffect } from "react";
 import { Message } from "../pages/Message";
-import React, { Component }  from 'react';
+import React from 'react';
+import { MessageDTO } from "../models/MessageDTO";
 
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 
 const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
 
-  const [AllMessages, setMessages] = useState<MessageObjectWithName[]>();
+  const [AllMessages, setMessages] = useState<MessageDTO[]>();
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -29,14 +29,14 @@ const MessageSliceComponent: React.FC<Props> = ({ pageNumber }) => {
     return () => clearInterval(intervalId);
   }, [pageNumber]);
 
-  if (AllMessages != undefined) {
+  if (AllMessages !== undefined) {
     return (
       <>
         {AllMessages?.map((mes) => (
           <view key={mes.messageId}>
             <view>
               <Message
-                username={mes.userName}
+                username={mes.username}
                 text={mes.text}
                 date={mes.pubDate}
               />

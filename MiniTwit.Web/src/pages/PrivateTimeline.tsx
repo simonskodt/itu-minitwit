@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { checkLogIn } from "../builders/functions";
-import { MessageObjectWithName } from "../builders/interface";
 import { fetchPrivateTimeLine } from "./fetch";
 import Footer from "./Footer";
 import Header from "../components/Header";
 import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
-import React from 'react';
 import './Layout.css';
+import { MessageDTO } from "../models/MessageDTO";
 
 
 function replaceSpaces(str: string): string {
@@ -19,21 +18,21 @@ function PrivateTimeline() {
   const url = window.location.href;
   const parts = url.split("/");
   const tempUserName = parts[parts.length - 1];
-  const userName = replaceSpaces(tempUserName)
-  const [messages, setMessages] = useState<MessageObjectWithName[]>();
+  const username = replaceSpaces(tempUserName)
+  const [messages, setMessages] = useState<MessageDTO[]>();
   const sessionUser = sessionStorage.getItem('username')
 
   const displayName = () => {
-    if (userName == sessionUser) {
+    if (username === sessionUser) {
       return "My Timeline"
     } else {
-      return userName + "'s TimeLine"
+      return username + "'s TimeLine"
     }
   }
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const messages = await fetchPrivateTimeLine(userName);
+      const messages = await fetchPrivateTimeLine(username);
       setMessages(messages);
     };
     fetchMessages();
@@ -43,10 +42,10 @@ function PrivateTimeline() {
     }, 2000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [username]);
 
   function showMessages() {
-    if (messages != undefined) {
+    if (messages !== undefined) {
       return (
         <>
         <div className="scrollable-container">
@@ -54,7 +53,7 @@ function PrivateTimeline() {
             <view key={mes.messageId}>
               <view>
                 <Message
-                  username={mes.userName}
+                  username={mes.username}
                   text={mes.text}
                   date={mes.pubDate}
                 />
@@ -82,13 +81,13 @@ function PrivateTimeline() {
     <div className="page">
       <Header isLoggedIn={checkLogIn()} />
       <div className="body">
-        <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
+        <MessageComponent isLoggedIn={checkLogIn()} clickedUser={username} />
         <div className="headers">
           <div className="left">
             <h2>{displayName()}</h2>
           </div>
           <div className="right">
-            <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
+            <FollowComponent isLoggedIn={checkLogIn()} userToFollow={username} />
           </div>
         </div>
           {showMessages()}

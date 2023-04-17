@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { isPropertySignature } from 'typescript';
+import { Component } from 'react';
 import { getCurrentUsername } from '../builders/functions';
 import '../pages/Layout.css';
 
-const userName = sessionStorage.getItem('username')
+const username = sessionStorage.getItem('username')
 
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
@@ -19,7 +18,7 @@ function getMenu(isLoggedIn: boolean) {
             <>
                 <a href={getCurrentUsername()}>my timeline</a>&nbsp;|&nbsp;
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
-                <a href="./" onClick={ () => sessionStorage.clear()}>sign out [{userName}]</a>
+                <a href="./" onClick={ () => sessionStorage.clear()}>sign out [{username}]</a>
             </>
         );
     }
@@ -29,7 +28,7 @@ interface Props {
     isLoggedIn: boolean;
 }
 
-class Header extends React.Component<Props> {
+class Header extends Component<Props> {
     render() {
         return (
             <div className="layout">

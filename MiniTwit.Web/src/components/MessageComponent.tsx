@@ -1,6 +1,6 @@
 import './MessageComponent.css';
 import { AppService } from '../services/app.service';
-import React, { Component, useState }  from 'react';
+import React, { useState }  from 'react';
 
 
 interface Props {
@@ -13,7 +13,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
     const [placeholderText, setPlaceholderText] = useState('Write here');
 
     const appService = new AppService();
-    const userName = sessionStorage.getItem('username')
+    const username = sessionStorage.getItem('username')
 
     function postMessage(text: string, username: any): void {
         appService.getUserId(username).then((result) => {
@@ -27,14 +27,14 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
 
     function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === 'Enter') {
-            postMessage(message, userName);
+            postMessage(message, username);
         }
     }
 
-    if (isLoggedIn && userName == clickedUser) {
+    if (isLoggedIn && username === clickedUser) {
         return (
             <div className='twitbox'>
-                <h3>What&apos;s on your mind, {userName}?</h3>
+                <h3>What&apos;s on your mind, {username}?</h3>
                 <div className="message-container">
                     <input
                         className='message-input'
@@ -49,7 +49,7 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
                         onBlur={() => setPlaceholderText('Write here')}
                         onKeyDown = {handleKeyDown}
                     />
-                    <button className='message-button' onClick={() => postMessage(message, userName)}>Share</button>
+                    <button className='message-button' onClick={() => postMessage(message, username)}>Share</button>
                 </div>
             </div>
         );

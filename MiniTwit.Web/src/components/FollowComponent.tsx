@@ -1,8 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './MessageComponent.css'
-import { API_URL } from '../App';
 import { AppService } from '../services/app.service'
-import { ButtonGroup } from '@mui/material';
 
 interface Props {
     isLoggedIn: boolean;
@@ -11,16 +9,16 @@ interface Props {
 
 const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
     const appService = new AppService();
-    const userName = sessionStorage.getItem('username');
+    const username = sessionStorage.getItem('username');
 
     const [isFollowing, setIsFollowing] = useState(false);
     const [followButtonText, setFollowButtonText] = useState('');
 
     useEffect(() => {
         const fetchMessages = async () => {
-            const res = await appService.getUserId(String(userName));
+            const res = await appService.getUserId(String(username));
             const isFollowing = await appService.getIsFollowing(res.data.id, userToFollow);
-            if (isFollowing.data == true) {
+            if (isFollowing.data === true) {
                 setFollowButtonText('Unfollow');
             } else {
                 setFollowButtonText('Follow');
@@ -28,18 +26,18 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
             setIsFollowing(isFollowing.data)
         };
         fetchMessages();
-    }, []);
+    }, [userToFollow, username]);
 
     function HandleFollow() {
-        appService.getUserId(String(userName)).then((res) => {
+        appService.getUserId(String(username)).then((res) => {
             const id = res.data.id;
             appService.getIsFollowing(id, userToFollow).then((isFollowing) => {
                 if (isFollowing.data) {
-                    UnFollow(userName);
+                    UnFollow(username);
                     setFollowButtonText('Follow');
                     setIsFollowing(false);
                 } else {
-                    Follow(userName);
+                    Follow(username);
                     setFollowButtonText('Unfollow');
                     setIsFollowing(true);
                 }
@@ -65,7 +63,7 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
         })
     }
 
-    if (isLoggedIn && !(userName == userToFollow)) {
+    if (isLoggedIn && !(username === userToFollow)) {
         return (
             <div>
                 <button onClick={() => HandleFollow()}>{followButtonText}</button>

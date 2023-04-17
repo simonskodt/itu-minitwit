@@ -141,8 +141,3 @@ export class AppService {
     }
   }
 }
-
-export interface APIError {
-  statis: number
-  err_msg: string
-}

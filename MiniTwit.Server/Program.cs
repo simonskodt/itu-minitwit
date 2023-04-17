@@ -23,8 +23,7 @@ builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 // Add services to the container.
 
 // Configure MongoDB
-var dbSettings = builder.Configuration.GetSection(nameof(MiniTwitDatabaseSettings));
-builder.Services.Configure<MiniTwitDatabaseSettings>(dbSettings);
+builder.Services.Configure<MiniTwitDatabaseSettings>(builder.Configuration.GetSection(nameof(MiniTwitDatabaseSettings)));
 builder.Services.Configure<MiniTwitDatabaseSettings>(options => options.ConnectionString = builder.Configuration.GetConnectionString("MiniTwit")!);
 
 // Configure Hasher
