@@ -2,7 +2,6 @@ import Footer from "./Footer";
 import Header from "../components/Header";
 import "./Layout.css";
 import { useState } from "react";
-import React, { Component }  from 'react';
 import { checkLogIn } from "../builders/functions";
 import MessageSliceComponent from "../components/MessageSliceComponent";
 

@@ -1,4 +1,3 @@
-import React, { Component }  from 'react';
 import './Layout.css';
 import { checkLogIn, getCurrentUsername } from '../builders/functions';
 
