@@ -221,6 +221,7 @@ public class SimController : ControllerBase
     [HttpPost("msgs/{username}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> PostMsgUsername(string username, [FromBody] MessageCreateDTO messageCreateDTO, [FromQuery] int latest = -1)
     {
         await UpdateLatestAsync(latest);
@@ -234,6 +235,9 @@ public class SimController : ControllerBase
                 break;
             case HTTPResponse.Forbidden:
                 _logger.LogError($"Unauthorized user \"{username}\"");
+                break;
+            case HTTPResponse.NotFound:
+                _logger.LogError($"Username \"{username}\" was not found");
                 break;
             default:
                 _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
@@ -327,7 +331,7 @@ public class SimController : ControllerBase
 
             if (followResponse.HTTPResponse == HTTPResponse.NotFound)
             {
-                _logger.LogError($"User id \"{userResponse.Model!.Id!}\" not found");
+                _logger.LogError($"User (to follow) id \"{followerCreateDTO.Follow}\" not found");
                 return NotFound();
             }
 
@@ -340,11 +344,11 @@ public class SimController : ControllerBase
 
             if (unfollowResponse.HTTPResponse == HTTPResponse.NotFound)
             {
-                _logger.LogError($"Follower id \"{followerCreateDTO.Follow}\" not found");
+                _logger.LogError($"User (to unfollow) id \"{followerCreateDTO.Unfollow}\" not found");
                 return NotFound();
             }
 
-            _logger.LogInformation($"User \"{userResponse.Model!.Id!}\" now unfollows \"{followerCreateDTO.Follow}\"");
+            _logger.LogInformation($"User \"{userResponse.Model!.Id!}\" now unfollows \"{followerCreateDTO.Unfollow}\"");
             return NoContent();
         }
     }

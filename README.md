@@ -12,8 +12,7 @@
 | ------------- | ------------- |
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
-| Monitoring (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
-| Logging (requires login) |  |
+| Monitoring and Logging (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
 
 ## Contents
 
@@ -28,6 +27,7 @@
   - [Week 7](#week-7)
   - [Week 8](#week-8)
   - [Week 9](#week-9)
+  - [Week 10](#week-10)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -38,12 +38,12 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
-- Add logging.
-- Check security.
+- Add scaling.
 
 It would be **nice to have the following features**:
 
 - Create automatic releases when merging into main branch.
+- Switching from HTTP To HTTPS.
 
 ## Weeks
 
@@ -62,7 +62,7 @@ Refactor ITU-MiniTwit in another programming language and tech stack.
 
 - [x] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
 - [x] 2) Containerize ITU-MiniTwit with Docker.
-- [x] 3) Describe Distributed Workflow.
+- [x] 3) Describe Distributed Workflow, see [CONTRIBUTE.md](https://github.com/simonskodt/itu-minitwit/blob/main/CONTRIBUTE.md).
 
 ### Week 3
 
@@ -92,7 +92,7 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
 Add monitoring to your ITU-MiniTwit and peer-review.
 
 - [x] Add Monitoring to Your Systems.
-- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*)
+- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*), see [Issue#17](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/17).
   - [x] Do you see a public timeline?
   - [x] Does the public timeline show messages that the application received from the simulator?
   - [x] Can you create a new user?
@@ -120,19 +120,27 @@ Enhancing CI/CD setup with test suite and static code analysis.
 Add logging to your ITU-MiniTwit.
 
 - [x] 1) Add Logging to Your Systems
-- [ ] 2) Test that Your Logging Works
+- [x] 2) Test that Your Logging Works
   - The Devs introduce a bug; the Ops resolve the bug by using the logs.
 
 ### Week 9
 
 Security Assessment & Pen Testing.
 
-- [ ] 1) Perform a Security Assessment
-  - [ ] A. Risk Identification
-  - [ ] B. Risk Analysis
-  - [ ] C. Pen-Test Your System
-- [ ] 2) White Hat Attack The Next Team
-  - Group k Radiator -[checks]-> Group m Jason Derulo
+- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/SECURITY_ASSESSMENT.md)
+  - [x] A. Risk Identification
+  - [x] B. Risk Analysis
+  - [x] C. Pen-Test Your System
+- [x] 2) White Hat Attack The Next Team
+  - Group k Radiator -[checks]-> Group m Jason Derulo, see [Issue#20](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/20).
+
+### Week 10
+
+Isolate components into services/containers/VMs.
+
+- [ ] 1) Add Scaling to your projects
+- [ ] 2) Rolling Updates
+- [ ] 3) Software Maintenance
 
 ## Course description
 
