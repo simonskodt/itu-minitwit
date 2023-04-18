@@ -108,9 +108,9 @@ public class MessageRepository : IMessageRepository
     public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default)
     {
         var messages = await _context.Messages
-            .Find(new BsonDocument())
+            .Find(m => m.Flagged == 0)
             .SortByDescending(m => m.PubDate)
-            .Skip((pageNumber - 1) * 50)
+            .Skip((pageNumber -1) * 50)
             .Limit(50)
             .ToListAsync();
         

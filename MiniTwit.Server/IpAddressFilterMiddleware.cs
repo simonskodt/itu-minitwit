@@ -22,7 +22,7 @@ public class IpAddressFilterMiddleware
     public async Task Invoke(HttpContext context)
     {
         IPAddress clientIpAddress = context.Connection.RemoteIpAddress!;
-
+/* 
         if (clientIpAddress == null)
         {
             context.Response.StatusCode = 400; // Bad Request
@@ -30,6 +30,7 @@ public class IpAddressFilterMiddleware
             await context.Response.WriteAsync("Unable to determine the client IP address.");
             return;
         }
+*/
 
         if (!IsIpAllowed(clientIpAddress, context))
         {
@@ -44,6 +45,9 @@ public class IpAddressFilterMiddleware
 
     public bool IsIpAllowed(IPAddress ipAddress, HttpContext context)
     {
+        if (ipAddress == null){
+            return true;
+        }
         bool isAllowed = false;
 
         foreach (IPAddressRange range in _allowedIpRanges)

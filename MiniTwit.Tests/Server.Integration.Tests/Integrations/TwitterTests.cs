@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
@@ -11,24 +13,17 @@ namespace MiniTwit.Tests.Integration.Integrations;
 public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
 {
     private CustomWebApplicationFactory _factory;
-    private const string BaseUrl = "http://164.92.167.188/";
-    private WebApplicationFactoryClientOptions _options;
-    private HttpClient _client;
 
     public TwitterTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
-        _options = new WebApplicationFactoryClientOptions
-        {
-            BaseAddress = new Uri(BaseUrl) //Mock Client IP
-        };
-        _client = _factory.CreateClient();
     }
+    
 
     [Fact]
     public async Task Timeline_given_valid_userId_returns_all_messages_from_followers_and_OK()
     {
-        var actual = await _client.GetAsync("/?userId=000000000000000000000001");
+        var actual = await _factory.CreateClient().GetAsync("/?userId=000000000000000000000001");
         var content = await actual.Content.ReadFromJsonAsync<IEnumerable<Message>>();
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
@@ -44,7 +39,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Timeline_given_invalid_userId_returns_NotFound()
     {
-        var actual = await _client.GetAsync("/?userId=000000000000000000000000");
+        var actual = await _factory.CreateClient().GetAsync("/?userId=000000000000000000000000");
 
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
     }
@@ -52,7 +47,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Public_returns_all_non_flagged_messages_and_OK()
     {
-        var actual = await _client.GetAsync("/public/1");
+        var actual = await _factory.CreateClient().GetAsync("/public/1");
         var content = await actual.Content.ReadFromJsonAsync<IEnumerable<Message>>();
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
@@ -72,7 +67,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task UserTimeline_given_valid_username_returns_all_users_messages_and_OK()
     {
-        var actual = await _client.GetAsync("/Gustav");
+        var actual = await _factory.CreateClient().GetAsync("/Gustav");
         var content = await actual.Content.ReadFromJsonAsync<IEnumerable<Message>>();
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
@@ -89,7 +84,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task UserTimeline_given_invalid_username_returns_NotFound()
     {
-        var actual = await _client.GetAsync("/test");
+        var actual = await _factory.CreateClient().GetAsync("/test");
 
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
     }
@@ -97,7 +92,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task FollowUser_given_valid_username_returns_NoContent()
     {
-        var actual = await _client.PostAsync("/Victor/follow?userId=000000000000000000000002", null);
+        var actual = await _factory.CreateClient().PostAsync("/Victor/follow?userId=000000000000000000000002", null);
 
         Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
@@ -105,7 +100,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task FollowUser_given_invalid_username_returns_NotFound()
     {
-        var actual = await _client.PostAsync("/test/follow?userId=000000000000000000000002", null);
+        var actual = await _factory.CreateClient().PostAsync("/test/follow?userId=000000000000000000000002", null);
 
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
     }
@@ -113,14 +108,14 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task UnfollowUser_given_valid_username_returns_OK()
     {
-        var actual = await _client.DeleteAsync("/Victor/unfollow?userId=000000000000000000000002");
+        var actual = await _factory.CreateClient().DeleteAsync("/Victor/unfollow?userId=000000000000000000000002");
         Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
 
     [Fact]
     public async Task UnfollowUser_given_invalid_username_returns_NotFound()
     {
-        var actual = await _client.DeleteAsync("/test/unfollow?userId=000000000000000000000002");
+        var actual = await _factory.CreateClient().DeleteAsync("/test/unfollow?userId=000000000000000000000002");
 
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
     }
@@ -128,7 +123,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task AddMessage_given_valid_userId_returns_NoContent()
     {
-        var actual = await _client.PostAsync("/add_message?userId=000000000000000000000001&text=test", null);
+        var actual = await _factory.CreateClient().PostAsync("/add_message?userId=000000000000000000000001&text=test", null);
 
         Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
@@ -136,7 +131,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task AddMessage_given_invalid_userId_returns_NotFound()
     {
-        var actual = await _client.PostAsync("/add_message?userId=000000000000000000000000&text=test", null);
+        var actual = await _factory.CreateClient().PostAsync("/add_message?userId=000000000000000000000000&text=test", null);
         var content = actual.Content.ReadFromJsonAsync<Message>();
 
         Assert.Equal(HttpStatusCode.NotFound, actual.StatusCode);
@@ -146,7 +141,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Login_given_valid_username_and_password_returns_OK()
     {
         var loginDTO = new LoginDTO { Username = "Gustav", Password = "password" };
-        var actual = await _client.PostAsJsonAsync("/login", loginDTO);
+        var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
     }
@@ -155,7 +150,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Login_given_invalid_username_returns_Unauthorized()
     {
         var loginDTO = new LoginDTO { Username = "G", Password = "password" };
-        var actual = await _client.PostAsJsonAsync("/login", loginDTO);
+        var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
         var content = await actual.Content.ReadFromJsonAsync<APIError>();
 
         Assert.Equal(HttpStatusCode.Unauthorized, actual.StatusCode);
@@ -167,7 +162,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Login_given_invalid_password_returns_Unauthorized()
     {
         var loginDTO = new LoginDTO { Username = "Gustav", Password = "pass" };
-        var actual = await _client.PostAsJsonAsync("/login", loginDTO);
+        var actual = await _factory.CreateClient().PostAsJsonAsync("/login", loginDTO);
         var content = await actual.Content.ReadFromJsonAsync<APIError>();
 
         Assert.Equal(HttpStatusCode.Unauthorized, actual.StatusCode);
@@ -179,7 +174,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Register_given_non_taken_username_returns_NoContent()
     {
         var registerDTO = new UserCreateDTO { Username = "The Tester", Email = "test@test.com", Password = "password" };
-        var actual = await _client.PostAsJsonAsync("/register", registerDTO);
+        var actual = await _factory.CreateClient().PostAsJsonAsync("/register", registerDTO);
 
         Assert.Equal(HttpStatusCode.NoContent, actual.StatusCode);
     }
@@ -188,7 +183,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Register_given_taken_username_returns_BadRequest()
     {
         var registerDTO = new UserCreateDTO { Username = "Gustav", Email = "test@test.com", Password = "password" };
-        var actual = await _client.PostAsJsonAsync("/register", registerDTO);
+        var actual = await _factory.CreateClient().PostAsJsonAsync("/register", registerDTO);
 
         Assert.Equal(HttpStatusCode.BadRequest, actual.StatusCode);
     }
@@ -196,7 +191,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Logout_returns_OK()
     {
-        var actual = await _client.PostAsync("/logout", null);
+        var actual = await _factory.CreateClient().PostAsync("/logout", null);
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
     }
