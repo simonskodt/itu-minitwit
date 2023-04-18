@@ -1,4 +1,3 @@
-using NetTools;
 using System.Net;
 
 namespace MiniTwit.Server;
@@ -6,17 +5,17 @@ namespace MiniTwit.Server;
 public class IpAddressFilterMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IList<IPAddressRange> _allowedIpRanges;
+    private readonly IList<IPAddress> _allowedIpAddresses;
     private readonly ILogger<IpAddressFilterMiddleware> _logger;
 
-    public IpAddressFilterMiddleware(RequestDelegate next, List<string> allowedIpRanges, ILogger<IpAddressFilterMiddleware> logger)
+    public IpAddressFilterMiddleware(RequestDelegate next, IList<string> allowedIpRanges, ILogger<IpAddressFilterMiddleware> logger)
     {
-        _next = next;
-        _allowedIpRanges = allowedIpRanges.ConvertAll(x => IPAddressRange.Parse(x));
+        _allowedIpAddresses = allowedIpRanges.Select(x => IPAddress.Parse(x)).ToList();
         _logger = logger;
+        _next = next;
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task InvokeAsync(HttpContext context)
     {
         IPAddress clientIpAddress = context.Connection.RemoteIpAddress!;
 
@@ -28,7 +27,7 @@ public class IpAddressFilterMiddleware
             return;
         }
 
-        await _next.Invoke(context);
+        await _next(context);
     }
 
     public bool IsIpAllowed(IPAddress ipAddress, HttpContext context)
@@ -37,17 +36,7 @@ public class IpAddressFilterMiddleware
         {
             return true;
         }
-        bool isAllowed = false;
 
-        foreach (IPAddressRange range in _allowedIpRanges)
-        {
-            if (IPAddress.IsLoopback(context.Connection.LocalIpAddress!) || range.Contains(ipAddress))
-            {
-                isAllowed = true;
-                break;
-            }
-        }
-
-        return isAllowed;
+        return IPAddress.IsLoopback(context.Connection.LocalIpAddress!) || _allowedIpAddresses.Contains(ipAddress);
     }
 }

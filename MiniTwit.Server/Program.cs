@@ -101,11 +101,11 @@ app.UseHttpMetrics(options =>
 });
 
 //Ip filtering
-// app.UseMiddleware<IpAddressFilterMiddleware>(new List<string>()
-// {
-//     "164.92.167.188",
-//     "104.248.134.203"
-// });
+app.UseMiddleware<IpAddressFilterMiddleware>(new List<string>()
+{
+    "164.92.167.188",
+    "104.248.134.203"
+});
 
 // Logging
 app.UseSerilogRequestLogging();
