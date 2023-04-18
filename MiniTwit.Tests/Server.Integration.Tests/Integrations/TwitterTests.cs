@@ -11,7 +11,7 @@ namespace MiniTwit.Tests.Integration.Integrations;
 public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
 {
     private CustomWebApplicationFactory _factory;
-    private const string BaseUrl = "164.92.167.188";
+    private const string BaseUrl = "http://164.92.167.188/";
     private WebApplicationFactoryClientOptions _options;
     private HttpClient _client;
 
