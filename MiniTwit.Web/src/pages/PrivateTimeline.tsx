@@ -10,7 +10,6 @@ import FollowComponent from "../components/FollowComponent";
 import React from 'react';
 import './Layout.css';
 
-
 function replaceSpaces(str: string): string {
   return str.replace(/%20/g, " ");
 }

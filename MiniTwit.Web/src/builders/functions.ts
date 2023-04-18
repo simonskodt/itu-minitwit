@@ -48,9 +48,6 @@ export async function makeMessageObjectWithName(message: any): Promise<MessageOb
 }
 
 export function buildUser(json: any): User {
-    let id: any;
-    let username: any;
-    let email: any;
 
     const user = {
         id: json.id,
