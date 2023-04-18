@@ -22,7 +22,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
         {
             BaseAddress = new Uri(BaseUrl) //Mock Client IP
         };
-        _client = _factory.CreateClient(_options);
+        _client = _factory.CreateClient();
     }
 
     [Fact]
