@@ -15,7 +15,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
 
     private WebApplicationFactoryClientOptions options = new WebApplicationFactoryClientOptions
     {
-        BaseAddress = new Uri(BaseUrl)
+        BaseAddress = new Uri(BaseUrl) //Mock Client IP
     };
 
     public TwitterTests(CustomWebApplicationFactory factory)
