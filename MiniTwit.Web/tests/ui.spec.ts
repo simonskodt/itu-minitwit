@@ -11,7 +11,7 @@ test('MiniTwit title', async ({ page }) => {
 test('Register user via GUI', async ({ page }) => {
   await page.goto('http://localhost:3000/register');
 
-  //create randomUsername, because databse fails if not a unique username
+  //create randomUsername, because database fails if not a unique username
   const randomName = Math.random().toString(36).slice(2, 7);
   const inputElements = await page.$$('input');
 
