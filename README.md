@@ -12,8 +12,7 @@
 | ------------- | ------------- |
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
-| Monitoring (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
-| Logging (requires login) |  |
+| Monitoring and Logging (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
 
 ## Contents
 
@@ -39,10 +38,12 @@ We currently **lack the following features**:
 - Refactor the tests to work with new design.
 - Implement UI and end-to-end tests.
 - Make UML-diagram of system.
+- Add scaling.
 
 It would be **nice to have the following features**:
 
 - Create automatic releases when merging into main branch.
+- Switching from HTTP To HTTPS.
 
 ## Weeks
 
@@ -61,7 +62,7 @@ Refactor ITU-MiniTwit in another programming language and tech stack.
 
 - [x] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
 - [x] 2) Containerize ITU-MiniTwit with Docker.
-- [x] 3) Describe Distributed Workflow.
+- [x] 3) Describe Distributed Workflow, see [CONTRIBUTE.md](https://github.com/simonskodt/itu-minitwit/blob/main/CONTRIBUTE.md).
 
 ### Week 3
 
@@ -91,7 +92,7 @@ Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction laye
 Add monitoring to your ITU-MiniTwit and peer-review.
 
 - [x] Add Monitoring to Your Systems.
-- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*)
+- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*), see [Issue#17](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/17).
   - [x] Do you see a public timeline?
   - [x] Does the public timeline show messages that the application received from the simulator?
   - [x] Can you create a new user?
@@ -126,12 +127,12 @@ Add logging to your ITU-MiniTwit.
 
 Security Assessment & Pen Testing.
 
-- [ ] 1) Perform a Security Assessment
+- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/SECURITY_ASSESSMENT.md)
   - [x] A. Risk Identification
-  - [ ] B. Risk Analysis
-  - [ ] C. Pen-Test Your System
+  - [x] B. Risk Analysis
+  - [x] C. Pen-Test Your System
 - [x] 2) White Hat Attack The Next Team
-  - Group k Radiator -[checks]-> Group m Jason Derulo
+  - Group k Radiator -[checks]-> Group m Jason Derulo, see [Issue#20](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/20).
 
 ### Week 10
 
