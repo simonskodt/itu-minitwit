@@ -100,13 +100,6 @@ app.UseHttpMetrics(options =>
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
 
-//Ip filtering
-// app.UseMiddleware<IpAddressFilterMiddleware>(new List<string>()
-// {
-//     "164.92.167.188",
-//     "104.248.134.203"
-// });
-
 // Logging
 app.UseSerilogRequestLogging();
 
