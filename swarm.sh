@@ -31,7 +31,7 @@ function creatingDockerSwarmClusterNode {
 
     CONFIG='{"name":"Swarm-Manager","tags":["demo"],
         "size":"s-1vcpu-1gb", "image":"docker-20-04",
-        "ssh_keys":["f7:2c:15:5d:f6:d9:9d:3a:4f:b6:81:6a:7c:69:a0:94"]}'
+        "ssh_keys":["35:27:02:78:dc:a4:80:b6:90:77:9d:19:f2:46:f4:13"]}'
 
     println "Creating Droplet..." "$green"
     SWARM_MANAGER_ID=$(curl -X POST $DROPLETS_API -d "$CONFIG"\
@@ -50,7 +50,7 @@ function creatingWorkerNodes {
     WORKER1_ID=$(curl -X POST $DROPLETS_API\
         -d'{"name":"worker1","tags":["demo"],"region":"fra1",
         "size":"s-1vcpu-1gb","image":"docker-20-04",
-        "ssh_keys":["f7:2c:15:5d:f6:d9:9d:3a:4f:b6:81:6a:7c:69:a0:94"]}'\
+        "ssh_keys":["35:27:02:78:dc:a4:80:b6:90:77:9d:19:f2:46:f4:13"]}'\
         -H "$BEARER_AUTH_TOKEN" -H "$JSON_CONTENT" | jq -r .droplet.id ) && sleep 3 && echo "$WORKER1_ID"
 
     export JQFILTER='.droplets | .[] | select (.name == "worker1") | .networks.v4 | .[]| select (.type == "public") | .ip_address'
@@ -63,7 +63,7 @@ function creatingWorkerNodes {
     WORKER2_ID=$(curl -X POST $DROPLETS_API\
        -d'{"name":"worker2","tags":["demo"],"region":"fra1",
        "size":"s-1vcpu-1gb","image":"docker-20-04",
-       "ssh_keys":["f7:2c:15:5d:f6:d9:9d:3a:4f:b6:81:6a:7c:69:a0:94"]}'\
+       "ssh_keys":["35:27:02:78:dc:a4:80:b6:90:77:9d:19:f2:46:f4:13"]}'\
        -H "$BEARER_AUTH_TOKEN" -H "$JSON_CONTENT"\
        | jq -r .droplet.id )\
        && sleep 3 && echo "$WORKER2_ID"
