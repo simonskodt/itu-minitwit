@@ -83,16 +83,15 @@ Continue refactoring, Setup CI & CD for reproducible builds, tests, delivery, an
 
 Cleaning and polishing of your ITU-MiniTwit, introduction of DB abstraction layer, and entering maintenance (Simulator starts).
 
-- Complete and polish your ITU-MiniTwit implementation
-  - [x] Add missing features.
-  - [x] Introduce a DB abstraction layer in your ITU-MiniTwit.
+- [x] 1) Add missing features.
+- [x] 2) Introduce a DB abstraction layer in your ITU-MiniTwit.
   
 ### Week 6
 
 Add monitoring to your ITU-MiniTwit and peer-review.
 
-- [x] Add Monitoring to Your Systems.
-- [x] Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*), see [Issue#17](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/17).
+- [x] 1) Add Monitoring to Your Systems.
+- [x] 2) Software Maintenance II: Check the user interface of another group (Group m, *Jason Derulo*), see [Issue#17](https://github.com/NiclasHjortkjaer/itu-minitwit/issues/17).
   - [x] Do you see a public timeline?
   - [x] Does the public timeline show messages that the application received from the simulator?
   - [x] Can you create a new user?
@@ -140,7 +139,14 @@ Isolate components into services/containers/VMs.
 
 - [ ] 1) Add Scaling to your projects
 - [ ] 2) Rolling Updates
-- [ ] 3) Software Maintenance
+- [x] 3) Software Maintenance
+
+### Week 11
+
+Workshop: How to SSL in front of Docker Swarm.
+
+- [ ] 1) Using LetsEncrypt and Nginx as a reverse proxy.
+- [ ] 2) Using Digital Ocean managed load balancers as SSL terminator.
 
 ## Course description
 
