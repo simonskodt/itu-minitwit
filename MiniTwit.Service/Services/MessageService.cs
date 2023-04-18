@@ -197,4 +197,9 @@ public class MessageService : IMessageService
 
         return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
+
+    public async Task IndexDB()
+    {
+        await _messageRepository.IndexDB();
+    }
 }
