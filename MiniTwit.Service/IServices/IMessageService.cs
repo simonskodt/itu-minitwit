@@ -20,4 +20,5 @@ public interface IMessageService
     Task<Response<IEnumerable<MessageWithAutherNameDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default);
+    Task IndexDB();
 }

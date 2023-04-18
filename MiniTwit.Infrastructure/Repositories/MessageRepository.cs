@@ -3,6 +3,7 @@ using MiniTwit.Core.Entities;
 using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Core.Responses;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq;
 
@@ -107,9 +108,9 @@ public class MessageRepository : IMessageRepository
     public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default)
     {
         var messages = await _context.Messages
-            .Find(m => m.Flagged == 0)
+            .Find(new BsonDocument())
             .SortByDescending(m => m.PubDate)
-            .Skip((pageNumber -1) * 50)
+            .Skip((pageNumber - 1) * 50)
             .Limit(50)
             .ToListAsync();
         
@@ -352,5 +353,12 @@ public class MessageRepository : IMessageRepository
     private async Task<User?> GetUserByUsernameAsync(string username, CancellationToken ct = default)
     {
         return await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync(ct);
+    }
+
+    public async Task IndexDB(){
+        var collection = _context.Messages;
+        var indexKeysDefinition = Builders<Message>.IndexKeys.Descending(m => m.PubDate);
+        var indexModel = new CreateIndexModel<Message>(indexKeysDefinition, new CreateIndexOptions { Background = true });
+        await collection.Indexes.CreateOneAsync(indexModel);
     }
 }

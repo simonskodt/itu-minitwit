@@ -286,4 +286,9 @@ public class TwitterController : ControllerBase
         var response = _serviceManager.UserService.GetByUsername(username);
         return response.ToActionResult();
     }
+
+    [HttpPut("/Messages/IndexDB")]
+    public void IndexDatabase(){
+        _serviceManager.MessageService.IndexDB();
+    }
 }
