@@ -1,4 +1,3 @@
-
 using NetTools;
 using System.Net;
 
@@ -6,11 +5,9 @@ namespace MiniTwit.Server;
 
 public class IpAddressFilterMiddleware
 {
-
     private readonly RequestDelegate _next;
-    private readonly List<IPAddressRange> _allowedIpRanges;
+    private readonly IList<IPAddressRange> _allowedIpRanges;
     private readonly ILogger<IpAddressFilterMiddleware> _logger;
-
 
     public IpAddressFilterMiddleware(RequestDelegate next, List<string> allowedIpRanges, ILogger<IpAddressFilterMiddleware> logger)
     {
@@ -22,15 +19,6 @@ public class IpAddressFilterMiddleware
     public async Task Invoke(HttpContext context)
     {
         IPAddress clientIpAddress = context.Connection.RemoteIpAddress!;
-/* 
-        if (clientIpAddress == null)
-        {
-            context.Response.StatusCode = 400; // Bad Request
-            _logger.LogError("Unable to determine the client IP address");
-            await context.Response.WriteAsync("Unable to determine the client IP address.");
-            return;
-        }
-*/
 
         if (!IsIpAllowed(clientIpAddress, context))
         {
@@ -45,7 +33,8 @@ public class IpAddressFilterMiddleware
 
     public bool IsIpAllowed(IPAddress ipAddress, HttpContext context)
     {
-        if (ipAddress == null){
+        if (ipAddress == null)
+        {
             return true;
         }
         bool isAllowed = false;
@@ -59,10 +48,6 @@ public class IpAddressFilterMiddleware
             }
         }
 
-        if (!isAllowed)
-        {
-            return false;
-        }
         return isAllowed;
     }
 }

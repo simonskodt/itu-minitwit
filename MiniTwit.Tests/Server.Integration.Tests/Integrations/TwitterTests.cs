@@ -1,9 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Net.Sockets;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Testing;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.Error;
@@ -18,7 +16,7 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
     {
         _factory = factory;
     }
-    
+
 
     [Fact]
     public async Task Timeline_given_valid_userId_returns_all_messages_from_followers_and_OK()
