@@ -6,6 +6,7 @@ using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
 using MiniTwit.Security.Hashers;
+using MiniTwit.Server;
 using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
 using MiniTwit.Service;
@@ -97,6 +98,13 @@ app.UseHttpMetrics(options =>
 {
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
+
+//Ip filtering
+// app.UseMiddleware<IpAddressFilterMiddleware>(new List<string>()
+// {
+//     "164.92.167.188",
+//     "104.248.134.203"
+// });
 
 // Logging
 app.UseSerilogRequestLogging();

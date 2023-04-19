@@ -9,7 +9,6 @@ import FollowComponent from "../components/FollowComponent";
 import './Layout.css';
 import { MessageDTO } from "../models/MessageDTO";
 
-
 function replaceSpaces(str: string): string {
   return str.replace(/%20/g, " ");
 }

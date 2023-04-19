@@ -4,7 +4,6 @@ using MiniTwit.Core.Error;
 using MiniTwit.Core.IRepositories;
 using MiniTwit.Core.Responses;
 using MongoDB.Driver;
-using System.Linq;
 
 namespace MiniTwit.Infrastructure.Repositories;
 
@@ -83,8 +82,8 @@ public class MessageRepository : IMessageRepository
 
     public DBResult<IEnumerable<Message>> GetAllNonFlagged(CancellationToken ct = default)
     {
-        var messages = _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToList(ct); 
-        
+        var messages = _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToList(ct);
+
         return new DBResult<IEnumerable<Message>>
         {
             Model = messages,
@@ -94,8 +93,8 @@ public class MessageRepository : IMessageRepository
 
     public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedAsync(CancellationToken ct = default)
     {
-        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToListAsync(ct); 
-        
+        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToListAsync(ct);
+
         return new DBResult<IEnumerable<Message>>
         {
             Model = messages,
@@ -109,10 +108,10 @@ public class MessageRepository : IMessageRepository
         var messages = await _context.Messages
             .Find(m => m.Flagged == 0)
             .SortByDescending(m => m.PubDate)
-            .Skip((pageNumber -1) * 50)
+            .Skip((pageNumber - 1) * 50)
             .Limit(50)
             .ToListAsync();
-        
+
         return new DBResult<IEnumerable<Message>>
         {
             Model = messages,
@@ -198,8 +197,8 @@ public class MessageRepository : IMessageRepository
                 ErrorType = ErrorType.INVALID_USERNAME
             };
         }
-        
-        //All the followers where username is whoId
+
+        //All the followers where userName is whoId
         var allFollows = GetAllWhoUserFollows(user);
 
         var whomIds = allFollows.Select(m => m.WhomId);
@@ -352,5 +351,13 @@ public class MessageRepository : IMessageRepository
     private async Task<User?> GetUserByUsernameAsync(string username, CancellationToken ct = default)
     {
         return await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync(ct);
+    }
+
+    public async Task IndexDB()
+    {
+        var collection = _context.Messages;
+        var indexKeysDefinition = Builders<Message>.IndexKeys.Descending(m => m.PubDate);
+        var indexModel = new CreateIndexModel<Message>(indexKeysDefinition, new CreateIndexOptions { Background = true });
+        await collection.Indexes.CreateOneAsync(indexModel);
     }
 }
