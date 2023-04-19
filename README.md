@@ -62,7 +62,7 @@ Refactor ITU-MiniTwit in another programming language and tech stack.
 
 - [x] 1) Refactor ITU-MiniTwit to another language and technology of your choice.
 - [x] 2) Containerize ITU-MiniTwit with Docker.
-- [x] 3) Describe Distributed Workflow, see [CONTRIBUTE.md](https://github.com/simonskodt/itu-minitwit/blob/main/CONTRIBUTE.md).
+- [x] 3) Describe Distributed Workflow, see [CONTRIBUTE.md](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/CONTRIBUTE.md).
 
 ### Week 3
 
