@@ -28,6 +28,8 @@
   - [Week 8](#week-8)
   - [Week 9](#week-9)
   - [Week 10](#week-10)
+  - [Week 11](#week-11)
+  - [Week 12](#week-12)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -147,6 +149,10 @@ Workshop: How to SSL in front of Docker Swarm.
 
 - [ ] 1) Using LetsEncrypt and Nginx as a reverse proxy.
 - [ ] 2) Using Digital Ocean managed load balancers as SSL terminator.
+
+### Week 12
+
+TBA.
 
 ## Course description
 
