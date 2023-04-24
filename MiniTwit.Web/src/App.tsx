@@ -5,12 +5,7 @@ import PublicTimeline from "./pages/PublicTimeline";
 import Register from "./pages/Register";
 import PrivateTimeline from "./pages/PrivateTimeline";
 import TimeLine from "./pages/TimeLine";
-import { useEffect }  from 'react';
-
-const DEVELOPMENT = "http://localhost:80/";
-const PRODUCTION = "http://164.92.167.188:80/";
-
-export const API_URL = process.env.NODE_ENV === 'development' ? DEVELOPMENT : PRODUCTION;
+import { useEffect } from 'react';
 
 export default function App() {
   useEffect(() => {
@@ -26,8 +21,8 @@ export default function App() {
         <Route path="/public" element={<PublicTimeline />} />
         <Route path="/" element={<TimeLine />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} /> 
-        <Route path="/:username" element={<PrivateTimeline/>}></Route>
+        <Route path="/register" element={<Register />} />
+        <Route path="/:username" element={<PrivateTimeline />}></Route>
       </Routes>
     </>
   );
