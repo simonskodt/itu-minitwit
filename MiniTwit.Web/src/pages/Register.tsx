@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Navigate } from "react-router-dom"
-import { AppService } from '../services/app.service';
 import Footer from './Footer';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
-import { checkLogIn } from '../builders/functions';
+import { checkLogIn } from '../state/SessionStorage';
+import { UserService } from '../services/UserService';
+import { APIError } from '../models/APIError';
 
 function Register() {
   const [username, setUsername] = useState('')
@@ -13,7 +14,7 @@ function Register() {
   const [passwordRepeat, setPasswordRepeat] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const service = new AppService()
+  const service = new UserService()
 
   const navigate = useNavigate()
 
@@ -45,7 +46,7 @@ function Register() {
         alert("You were successfully registered and can login now")
         navigate('/login')
       })
-      .catch(error => setError(error))
+      .catch((error: APIError) => setError(error.error_msg))
   }
 
   if (checkLogIn())
@@ -65,19 +66,19 @@ function Register() {
             <dl>
               <dt>Username:</dt>
               <dd>
-                <input type="text" name="username" size={30} placeholder="Username" value={username} onChange={e => setUsername(e.target.value)}></input>
+                <input type="text" name="username" size={30} placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
               </dd>
               <dt>E-Mail:</dt>
               <dd>
-                <input type="text" name="email" size={30} placeholder="Email" onChange={e => setEmail(e.target.value)}></input>
+                <input type="text" name="email" size={30} placeholder="Email" onChange={e => setEmail(e.target.value)} />
               </dd>
               <dt>Password:</dt>
               <dd>
-                <input type="password" name="password" size={30} placeholder="Password" onChange={e => setPassword(e.target.value)}></input>
+                <input type="password" name="password" size={30} placeholder="Password" onChange={e => setPassword(e.target.value)} />
               </dd>
               <dt>Password <small>(repeat)</small>:</dt>
               <dd>
-                <input type="password" name="password2" size={30} placeholder="Password" onChange={e => setPasswordRepeat(e.target.value)}></input>
+                <input type="password" name="password2" size={30} placeholder="Password" onChange={e => setPasswordRepeat(e.target.value)} />
               </dd>
             </dl>
             <div className="actions"><input type="submit" value="Sign Up" /></div>
