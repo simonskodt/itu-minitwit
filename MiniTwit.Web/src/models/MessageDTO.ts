@@ -1,7 +1,7 @@
 export interface MessageDTO {
-    messageId: string,
+    id: string,
     authorId: string,
-    username: string
+    authorName: string
     text: string,
     pubDate: string,
     flagged: number,

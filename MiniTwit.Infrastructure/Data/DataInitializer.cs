@@ -50,19 +50,19 @@ public class DataInitializer
         _context.Users.InsertMany(new[] { gustav, simon, nikolaj, victor });
 
         // Messages
-        var m1 = MessageCreator.Create(gustav.Id!, "Gustav's first tweet!", DateTime.Now.AddDays(-1));
-        var m2 = MessageCreator.Create(gustav.Id!, "Gustav's second tweet!", DateTime.Now.AddDays(-0.5));
-        var m3 = MessageCreator.Create(gustav.Id!, "Gustav's Flagged", DateTime.Now, 1);
+        var m1 = MessageCreator.Create(gustav.Id!, "Gustav", "Gustav's first tweet!", DateTime.Now.AddDays(-1));
+        var m2 = MessageCreator.Create(gustav.Id!, "Gustav", "Gustav's second tweet!", DateTime.Now.AddDays(-0.5));
+        var m3 = MessageCreator.Create(gustav.Id!, "Gustav", "Gustav's Flagged", DateTime.Now, 1);
 
-        var m4 = MessageCreator.Create(simon.Id!, "Simon's first tweet");
-        var m5 = MessageCreator.Create(simon.Id!, "Simon's second tweet");
-        var m6 = MessageCreator.Create(simon.Id!, "Simon's third tweet");
+        var m4 = MessageCreator.Create(simon.Id!, "Simon", "Simon's first tweet");
+        var m5 = MessageCreator.Create(simon.Id!, "Simon", "Simon's second tweet");
+        var m6 = MessageCreator.Create(simon.Id!, "Simon", "Simon's third tweet");
 
-        var m7 = MessageCreator.Create(nikolaj.Id!, "Nikolaj1");
-        var m8 = MessageCreator.Create(nikolaj.Id!, "Nikolaj2");
+        var m7 = MessageCreator.Create(nikolaj.Id!, "Nikolaj", "Nikolaj1");
+        var m8 = MessageCreator.Create(nikolaj.Id!, "Nikolaj", "Nikolaj2");
 
-        var m9 = MessageCreator.Create(victor.Id!, "Victor1");
-        var m10 = MessageCreator.Create(victor.Id!, "Victor2");
+        var m9 = MessageCreator.Create(victor.Id!, "Victor", "Victor1");
+        var m10 = MessageCreator.Create(victor.Id!, "Victor", "Victor2");
 
         _context.Messages.InsertMany(new[] { m1, m2, m3, m4, m5, m6, m7, m8, m9, m10 });
 

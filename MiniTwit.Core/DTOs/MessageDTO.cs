@@ -6,6 +6,7 @@ public record MessageDTO
 {
     public string? Id { get; init; }
     public string? AuthorId { get; init; }
+    public string? AuthorName { get; init; }
     public string? Text { get; init; }
     public DateTime PubDate { get; init; }
     public int Flagged { get; init; }
@@ -22,14 +23,4 @@ public record MessageDetailsDTO
 public record MessageCreateDTO
 {
     public string? Content { get; init; }
-}
-
-public record MessageWithAutherNameDTO
-{
-    public string? Id { get; init; }
-    public string? AuthorId { get; init; }
-    public string? AuthorName {get; init;}
-    public string? Text { get; init; }
-    public DateTime PubDate { get; init; }
-    public int Flagged { get; init; }
 }

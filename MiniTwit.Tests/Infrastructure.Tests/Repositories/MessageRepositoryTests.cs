@@ -20,6 +20,7 @@ public class MessageRepositoryTests : RepoTests
         var message = new Message
         {
             AuthorId = "000000000000000000000001",
+            AuthorName = "Gustav",
             PubDate = DateTime.Now,
             Flagged = 0,
             Text = "Test Tweet"
@@ -35,6 +36,7 @@ public class MessageRepositoryTests : RepoTests
 
         Assert.Equal(expected.ErrorType, actual.ErrorType);
         Assert.Equal(expected.Model.AuthorId, actual.Model!.AuthorId);
+        Assert.Equal(expected.Model.AuthorName, actual.Model!.AuthorName);
         Assert.Equal(expected.Model.Text, actual.Model!.Text);
         actual.Model.PubDate.Should().BeCloseTo(expected.Model.PubDate, 2000.Milliseconds());
         Assert.Equal(expected.Model.Flagged, actual.Model!.Flagged);
@@ -56,15 +58,15 @@ public class MessageRepositoryTests : RepoTests
 
         Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000008", AuthorId = "000000000000000000000003", Text = "Nikolaj2", PubDate = DateTime.Parse("01/01/2023 12:00:06"), Flagged = 0 }),              // 1
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000007", AuthorId = "000000000000000000000003", Text = "Nikolaj1", PubDate = DateTime.Parse("01/01/2023 12:00:05"), Flagged = 0 }),              // 2
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),   // 3
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),  // 4
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000004", AuthorId = "000000000000000000000002", Text = "Simon's first tweet", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),   // 5
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000010", AuthorId = "000000000000000000000004", Text = "Victor2", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),               // 6
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000009", AuthorId = "000000000000000000000004", Text = "Victor1", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 0 }),               // 7
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }), // 8
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }) // 9
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000008", AuthorId = "000000000000000000000003", AuthorName = "Nikolaj", Text = "Nikolaj2", PubDate = DateTime.Parse("01/01/2023 12:00:06"), Flagged = 0 }),              // 1
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000007", AuthorId = "000000000000000000000003", AuthorName = "Nikolaj", Text = "Nikolaj1", PubDate = DateTime.Parse("01/01/2023 12:00:05"), Flagged = 0 }),              // 2
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),   // 3
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),  // 4
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000004", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's first tweet", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),   // 5
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000010", AuthorId = "000000000000000000000004", AuthorName = "Victor", Text = "Victor2", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),               // 6
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000009", AuthorId = "000000000000000000000004", AuthorName = "Victor", Text = "Victor1", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 0 }),               // 7
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }), // 8
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }) // 9
         );
     }
 
@@ -75,9 +77,9 @@ public class MessageRepositoryTests : RepoTests
 
         Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
         );
     }
 
@@ -97,9 +99,9 @@ public class MessageRepositoryTests : RepoTests
 
         Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000003", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's Flagged", PubDate = DateTime.Parse("01/01/2023 12:00:01"), Flagged = 1 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
         );
     }
 
@@ -119,11 +121,11 @@ public class MessageRepositoryTests : RepoTests
 
         Assert.Null(actual.ErrorType);
         Assert.Collection(actual.Model!,
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000004", AuthorId = "000000000000000000000002", Text = "Simon's first tweet", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
-            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000006", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's third tweet", PubDate = DateTime.Parse("01/01/2023 12:00:04"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000005", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's second tweet", PubDate = DateTime.Parse("01/01/2023 12:00:03"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000004", AuthorId = "000000000000000000000002", AuthorName = "Simon", Text = "Simon's first tweet", PubDate = DateTime.Parse("01/01/2023 12:00:02"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000001", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's first tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 }),
+            m => m.Should().BeEquivalentTo(new Message { Id = "000000000000000000000002", AuthorId = "000000000000000000000001", AuthorName = "Gustav", Text = "Gustav's second tweet!", PubDate = DateTime.Parse("01/01/2023 12:00:00"), Flagged = 0 })
         );
     }
 
