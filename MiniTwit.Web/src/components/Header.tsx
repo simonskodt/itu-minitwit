@@ -1,8 +1,6 @@
 import { Component } from 'react';
-import { getCurrentUsername } from '../builders/functions';
+import { getCurrentUsername } from '../state/SessionStorage';
 import '../pages/Layout.css';
-
-const username = sessionStorage.getItem('username')
 
 function getMenu(isLoggedIn: boolean) {
     if (!isLoggedIn) {
@@ -18,7 +16,7 @@ function getMenu(isLoggedIn: boolean) {
             <>
                 <a href={getCurrentUsername()}>my timeline</a>&nbsp;|&nbsp;
                 <a href="./public">public timeline</a>&nbsp;|&nbsp;
-                <a href="./" onClick={ () => sessionStorage.clear()}>sign out [{username}]</a>
+                <a href="./" onClick={ () => sessionStorage.clear()}>sign out [{getCurrentUsername()}]</a>
             </>
         );
     }
