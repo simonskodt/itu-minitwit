@@ -1,6 +1,7 @@
 import './MessageComponent.css';
-import { AppService } from '../services/app.service';
 import React, { useState }  from 'react';
+import { UserService } from '../services/UserService';
+import { MesssageService } from '../services/MessageService';
 
 
 interface Props {
@@ -12,13 +13,13 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
     const [message, setMessage] = useState('');
     const [placeholderText, setPlaceholderText] = useState('Write here');
 
-    const appService = new AppService();
+    const userService = new UserService();
+    const messageService = new MesssageService();
     const username = sessionStorage.getItem('username')
 
     function postMessage(text: string, username: any): void {
-        appService.getUserId(username).then((result) => {
-            const id = result.data.id
-            appService.sendMessage(text, id)
+        userService.getUserById(username).then((user) => {
+            messageService.createMessage(text, user.id)
             setMessage('');
             setPlaceholderText('Write here');
             alert('Message posted!');

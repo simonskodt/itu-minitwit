@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { Navigate } from "react-router-dom"
-import { AppService } from '../services/app.service';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from './Footer';
-import { checkLogIn } from '../builders/functions';
+import { checkLogIn } from '../state/SessionStorage';
+import { AuthenticationService } from '../services/AuthenticationService';
+import { APIError } from '../models/APIError';
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const service = new AppService()
+  const authService = new AuthenticationService()
 
   const navigate = useNavigate()
 
@@ -28,14 +29,14 @@ const Login = () => {
       return
     }
 
-    service.Login(username, password)
+    authService.login(username, password)
       .then(user => {
         sessionStorage.setItem('username', user.username)
         sessionStorage.setItem('isLoggedIn', 'true')
         navigate('/')
       })
-      .catch(error => {
-        setError(error)
+      .catch((error: APIError) => {
+        setError(error.error_msg)
         sessionStorage.setItem('isLoggedIn', 'false')
       })
   }

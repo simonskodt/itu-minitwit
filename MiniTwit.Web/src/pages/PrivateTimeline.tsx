@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { checkLogIn } from "../builders/functions";
-import { fetchPrivateTimeLine } from "./fetch";
+import { checkLogIn } from "../state/SessionStorage";
 import Footer from "./Footer";
 import Header from "../components/Header";
 import { Message } from "./Message";
@@ -8,6 +7,7 @@ import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
 import './Layout.css';
 import { MessageDTO } from "../models/MessageDTO";
+import { MesssageService } from "../services/MessageService";
 
 function replaceSpaces(str: string): string {
   return str.replace(/%20/g, " ");
@@ -20,6 +20,7 @@ function PrivateTimeline() {
   const username = replaceSpaces(tempUserName)
   const [messages, setMessages] = useState<MessageDTO[]>();
   const sessionUser = sessionStorage.getItem('username')
+  const messageService = new MesssageService()
 
   const displayName = () => {
     if (username === sessionUser) {
@@ -31,7 +32,7 @@ function PrivateTimeline() {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const messages = await fetchPrivateTimeLine(username);
+      const messages = await messageService.getPrivateTimeline(username);
       setMessages(messages);
     };
     fetchMessages();
@@ -47,10 +48,10 @@ function PrivateTimeline() {
     return (
       <div>
         {messages.map((mes) => (
-          <view key={mes.messageId}>
+          <view key={mes.id}>
             <view>
               <Message
-                username={mes.username}
+                username={mes.authorName}
                 text={mes.text}
                 date={mes.pubDate}
               />
