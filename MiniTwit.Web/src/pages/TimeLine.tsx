@@ -1,15 +1,15 @@
 import './Layout.css';
-import { checkLogIn, getCurrentUsername } from '../builders/functions';
+import { checkLogIn, getCurrentUsername } from '../state/SessionStorage';
+import { Navigate } from 'react-router-dom';
 
 function TimeLine() {
   if (checkLogIn()) {
-    console.log(checkLogIn())
     return (
-      <input type="hidden">{window.location.href = '/' + getCurrentUsername()}</input>
+      <Navigate replace to={"/" + getCurrentUsername()} />
     )
   } else {
     return (
-      <input type="hidden">{window.location.href = '/public'}</input>
+      <Navigate replace to="/public" />
     )
   }
 }
