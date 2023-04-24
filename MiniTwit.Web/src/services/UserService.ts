@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { UserCreateDTO, UserDTO } from "../models/UserDTO";
-import { APIError } from "../models/APIError";
 import axiosClient, { requestConfig } from "../AxiosConfig";
 
 export class UserService {
