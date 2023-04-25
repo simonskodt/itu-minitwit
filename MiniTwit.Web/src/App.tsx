@@ -8,7 +8,7 @@ import TimeLine from "./pages/TimeLine";
 import React, { Component, useEffect }  from 'react';
 
 const DEVELOPMENT = "http://localhost:80/";
-const PRODUCTION = "http://164.92.167.188:80/";
+const PRODUCTION = "http://161.35.130.166:80/";
 
 export const API_URL = process.env.NODE_ENV === 'development' ? DEVELOPMENT : PRODUCTION;
 
