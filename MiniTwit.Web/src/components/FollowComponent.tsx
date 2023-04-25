@@ -20,7 +20,8 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
     useEffect(() => {
         const fetchMessages = async () => {
             const user = await userService.getUserById(String(username));
-            const isFollowing = await followerService.getIsFollowingUser(user.id, userToFollow);
+            setIsFollowing(await followerService.getIsFollowingUser(user.id, userToFollow))
+            
             if (isFollowing === true) {
                 setFollowButtonText('Unfollow');
             } else {
@@ -48,7 +49,7 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
         });
     }
 
-    function Follow(username: any) {
+    function Follow(username: string) {
         userService.getUserById(username).then((user) => {
             followerService.followUser(userToFollow, user.id).then(() => {
                 alert('You are now following ' + userToFollow);
@@ -56,7 +57,7 @@ const FollowComponent: React.FC<Props> = ({ isLoggedIn, userToFollow }) => {
         })
     }
 
-    function UnFollow(username: any) {
+    function UnFollow(username: string) {
         userService.getUserById(username).then((user) => {
             followerService.unfollowUser(userToFollow, user.id).then(() => {
                 alert('You are no longer following ' + userToFollow);
