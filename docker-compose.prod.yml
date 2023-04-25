@@ -2,7 +2,7 @@ version: '3.4'
 
 networks:
   main:
-    driver: bridge
+    driver: overlay
 
 services:
   itu-minitwit-server:
