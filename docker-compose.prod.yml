@@ -19,7 +19,7 @@ services:
     ports:
       - '80:80'
     networks:
-      - mainy
+      - main
     depends_on:
       - mongodb
 
