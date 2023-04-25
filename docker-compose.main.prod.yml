@@ -3,14 +3,27 @@ version: '3.4'
 networks:
   main:
     name: itu-minitwit-network
-    external: true # Join MiniTwit network
+    driver: bridge
 
 services:
+  mongodb:
+    image: mongo:latest
+    command: [--auth]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: radiator
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27018:27017'
+    networks:
+      - main
+
   prometheus:
       image: prom/prometheus:latest
       container_name: prometheus
       volumes:
-        - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+        - ./Monitoring/prometheus.prod.yml:/etc/prometheus/prometheus.yml
         - prometheus_storage:/prometheus
       ports:
         - "9090:9090"
@@ -56,3 +69,4 @@ volumes:
   grafana_storage:
   prometheus_storage:
   loki_storage:
+  mongodb_data_container:
