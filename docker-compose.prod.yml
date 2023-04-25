@@ -3,6 +3,9 @@ version: '3.4'
 networks:
   main:
     driver: overlay
+    ipam:
+      config:
+        - subnet: 192.168.18.0/24
 
 services:
   itu-minitwit-server:
