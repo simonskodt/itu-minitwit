@@ -19,8 +19,6 @@ services:
       - '80:80'
     networks:
       - main
-    depends_on:
-      - mongodb
 
   itu-minitwit-web:
     image: ${DOCKER_USERNAME}/itu-minitwit-web:latest
