@@ -7,7 +7,6 @@ networks:
 services:
   itu-minitwit-server:
     image: ${DOCKER_USERNAME}/itu-minitwit-server:latest
-    container_name: minitwit
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
