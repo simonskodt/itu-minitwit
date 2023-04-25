@@ -18,4 +18,5 @@ public interface IMessageRepository
     Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default);
     DBResult<IEnumerable<Message>> GetAllFollowedByUserId(string userId, CancellationToken ct = default);
     Task<DBResult<IEnumerable<Message>>> GetAllFollowedByUserIdAsync(string userId, CancellationToken ct = default);
+    Task IndexDB();
 }

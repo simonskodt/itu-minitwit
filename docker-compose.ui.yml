@@ -1,0 +1,68 @@
+version: '3.4'
+
+networks:
+  main:
+    name: itu-minitwit-network
+
+services:
+  mongodb:
+    image: mongo:latest
+    command: [--auth]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: radiator
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - '27018:27017'
+    networks:
+      - main
+    secrets:
+      - db_password
+
+  itu-minitwit-server:
+    image: itu-minitwit-server
+    build: 
+      context: .
+      dockerfile: 'MiniTwit.Server/Dockerfile'
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__MiniTwit:
+    ports:
+      - '80:80'
+    networks:
+      - main
+    depends_on:
+      - mongodb
+    secrets:
+      - source: connection_string
+        target: ConnectionStrings__MiniTwit
+
+  itu-minitwit-web:
+    image: itu-minitwit-web
+    container_name: minitwit-web
+    build:
+      context: .
+      dockerfile: 'MiniTwit.Web/Dockerfile'
+    environment : #Node_Env bestemmer om man bruger production database eller localhost..
+      - NODE_ENV=${NODE_ENV}
+    ports:
+      - '3000:3000'
+    networks:
+      - main
+    depends_on:
+      - itu-minitwit-server
+      
+volumes:
+  mongodb_data_container:
+
+
+secrets:
+  db_password:
+    file: './.local/db_password.txt'
+  connection_string:
+    file: './.local/connection_string.txt'
+
+
+

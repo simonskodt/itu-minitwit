@@ -6,6 +6,7 @@ using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
 using MiniTwit.Security.Hashers;
+using MiniTwit.Server;
 using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
 using MiniTwit.Service;

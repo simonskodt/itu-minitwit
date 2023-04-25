@@ -251,7 +251,7 @@ public class TwitterController : ControllerBase
         return await Task.FromResult(Ok());
     }
 
-    
+
     /// <summary>
     /// Find out if the given user is followed by the given username.
     /// </summary>
@@ -285,5 +285,11 @@ public class TwitterController : ControllerBase
     {
         var response = _serviceManager.UserService.GetByUsername(username);
         return response.ToActionResult();
+    }
+
+    [HttpPut("/Messages/IndexDB")]
+    public void IndexDatabase()
+    {
+        _serviceManager.MessageService.IndexDB();
     }
 }

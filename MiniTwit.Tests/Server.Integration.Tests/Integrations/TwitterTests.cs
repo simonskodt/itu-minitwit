@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using MiniTwit.Core.DTOs;
 using MiniTwit.Core.Entities;
 using MiniTwit.Core.Error;
@@ -16,11 +17,11 @@ public class TwitterTests : IClassFixture<CustomWebApplicationFactory>
         _factory = factory;
     }
 
+
     [Fact]
     public async Task Timeline_given_valid_userId_returns_all_messages_from_followers_and_OK()
     {
-        var client = _factory.CreateClient();
-        var actual = await client.GetAsync("/?userId=000000000000000000000001");
+        var actual = await _factory.CreateClient().GetAsync("/?userId=000000000000000000000001");
         var content = await actual.Content.ReadFromJsonAsync<IEnumerable<Message>>();
 
         Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
