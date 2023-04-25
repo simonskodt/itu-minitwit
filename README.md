@@ -41,9 +41,10 @@ We currently **lack the following features**:
 
 - Deploy to DigitalOcean with Vagrant.
 - Refactor the tests to work with new design.
-- Implement UI and end-to-end tests.
+- Implement end-to-end tests.
 - Make UML-diagram of system.
 - Add scaling.
+- Use Terraform for IaC.
 
 It would be **nice to have the following features**:
 
