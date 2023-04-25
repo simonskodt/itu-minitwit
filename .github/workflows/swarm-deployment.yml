@@ -36,5 +36,6 @@ jobs:
             cd ./itu-minitwit
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
-            docker network create -d overlay main
-            docker stack deploy -c docker-compose.prod.yml minitwit
+            docker-compose -f docker-compose.prod.yml up
+            # docker network create -d overlay main
+            # docker stack deploy -c docker-compose.prod.yml minitwit
