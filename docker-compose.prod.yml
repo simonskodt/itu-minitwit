@@ -16,8 +16,6 @@ services:
       replicas: 2
       update_config:
         delay: 10s
-      placement:
-        - "node.role==manager"
     ports:
       - '80:80'
     networks:
@@ -31,8 +29,6 @@ services:
       replicas: 2
       update_config:
         delay: 10s
-      placement:
-        - "node.role==manager"
     ports:
       - '3000:3000'
     networks:
