@@ -13,10 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Copy docker-compose files to Swarm Manager
+      - name: Copy docker-compose production file to Swarm Manager
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz --delete --include="docker-compose.*.yml" --exclude="*"
+          switches: -avz --delete --include="docker-compose.prod.yml" --exclude="*"
           path: .
           remote_path: ./itu-minitwit/
           remote_host: ${{ secrets.SSH_HOST_SWARM }}
