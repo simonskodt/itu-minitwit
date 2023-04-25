@@ -131,7 +131,7 @@ Add logging to your ITU-MiniTwit.
 
 Security Assessment & Pen Testing.
 
-- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/SECURITY_ASSESSMENT.md)
+- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/SECURITY_ASSESSMENT.md)
   - [x] A. Risk Identification
   - [x] B. Risk Analysis
   - [x] C. Pen-Test Your System
