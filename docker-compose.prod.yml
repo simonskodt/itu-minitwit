@@ -12,7 +12,7 @@ services:
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__MiniTwit: ${DB_CONNECTION_STRING}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         delay: 10s
     ports:
@@ -23,7 +23,7 @@ services:
   itu-minitwit-web:
     image: ${DOCKER_USERNAME}/itu-minitwit-web:latest
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         delay: 10s
     ports:
