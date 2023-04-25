@@ -29,7 +29,6 @@ jobs:
           host: ${{ secrets.SSH_HOST_SWARM }}
           user: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          args: "-v"
           command: |
             export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
