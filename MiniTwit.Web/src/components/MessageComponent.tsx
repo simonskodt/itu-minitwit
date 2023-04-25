@@ -2,6 +2,7 @@ import './MessageComponent.css';
 import React, { useState }  from 'react';
 import { UserService } from '../services/UserService';
 import { MesssageService } from '../services/MessageService';
+import { getCurrentUsername } from '../state/SessionStorage';
 
 
 interface Props {
@@ -15,9 +16,9 @@ const MessageComponent: React.FC<Props> = ({ isLoggedIn, clickedUser }) => {
 
     const userService = new UserService();
     const messageService = new MesssageService();
-    const username = sessionStorage.getItem('username')
+    const username = getCurrentUsername()
 
-    function postMessage(text: string, username: any): void {
+    function postMessage(text: string, username: string): void {
         userService.getUserById(username).then((user) => {
             messageService.createMessage(text, user.id)
             setMessage('');
