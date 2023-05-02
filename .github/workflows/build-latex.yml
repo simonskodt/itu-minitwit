@@ -21,11 +21,10 @@ jobs:
         with:
           working_directory: ./Report
           root_file: main.tex
-          compiler: pdfLaTeX
 
       - name: Upload report PDF file to repository
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: 'Created report ${date}'
-          directory: 'Documents'
+          directory: './Documents'
