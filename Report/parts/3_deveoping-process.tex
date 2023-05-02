@@ -10,7 +10,7 @@ To facilitate the continues integration of new code by all developers, several w
 \subsection{build-test.yml}
 This workflow performs the build and testing of the entire stack of the service, including the backend and fronted. The pipeline is triggered on push event to any branch and includes two jobs: \\
 
-\textbf{build-test-backend}, which runs on an ubunto 20.04 machine and includes the following steps:
+\textbf{build-test-backend}, which runs on an ubuntu 20.04 machine and includes the following steps:
 
 \begin{enumerate}
     \item Checkout the repository
@@ -36,17 +36,17 @@ Pipeline for codeQL (C sharp)
 
 \subsection{eslint.yml}
 Pipeline for checking TS code\\
-\includegraphics[width=10cm]{Report/img/Eslint_report.png}
+\includegraphics[width=10cm]{Eslint_report.png}
 
 \subsection{snyk-security.yml}
 Pipeline for Snyk Security\\
-\includegraphics[width=10cm]{Report/img/Snyk_report.png}
+\includegraphics[width=10cm]{Snyk_report.png}
 
 \subsection{SonarCloud \& CodeClimate}
 Integration with sonarcloud and codeclimate \\
 
-\includegraphics[width=10cm]{Report/img/Sonar_cloud.png}
-\includegraphics[width=10cm]{Report/img/Code_climate.png}
+\includegraphics[width=10cm]{Sonar_cloud.png}
+\includegraphics[width=10cm]{Code_climate.png}
 
 \subsection{continuous-deployment.yml}
 Deploytment pipeline (only on push)\\
