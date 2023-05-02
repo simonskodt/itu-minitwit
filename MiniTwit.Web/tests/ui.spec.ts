@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('MiniTwit title', async ({ page }) => {
-  await page.goto('http://::1:3000/public');
+  await page.goto('http://127.0.0.1:3000/public');
 
   await expect(page).toHaveTitle('Public | MiniTwit');
 });
 
 
 test('Register user via GUI', async ({ page }) => {
-  await page.goto('http://::1:3000/register');
+  await page.goto('http://127.0.0.1:3000/register');
 
   //create randomUsername, because database fails if not a unique username
   const randomName = Math.random().toString(36).slice(2, 7);
@@ -31,7 +31,7 @@ test('Register user via GUI', async ({ page }) => {
   // add a delay of 2 seconds to allow time for the page to load
   await page.waitForTimeout(2000);
 
-  await expect(page).toHaveURL("http://::1:3000/login");
+  await expect(page).toHaveURL("http://127.0.0.1:3000/login");
 });
 
 
