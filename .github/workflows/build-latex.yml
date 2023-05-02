@@ -31,3 +31,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: 'Created report ${date}'
           directory: './Documents'
+          force: 'true'
+          author_email: 'gume@itu.dk'
