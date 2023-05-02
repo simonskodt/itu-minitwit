@@ -158,11 +158,11 @@ Workshop: How to SSL in front of Docker Swarm.
 
 Encode your infrastructure setup.
 
-- [ ] 1) Automating also the creation of infrastructure.
+- [ ] Automating also the creation of infrastructure.
 
 ### Week 13
 
-TBA.
+- [ ] Write report, see [BSc_group_k.pdf](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/BSc_group_k.pdf).
 
 ## Course description
 
