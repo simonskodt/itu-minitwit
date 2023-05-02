@@ -1,0 +1,31 @@
+\documentclass[11pt]{report}
+
+\input{preamble.tex}
+
+\begin{document}
+\pagenumbering{roman}
+\input{frontpage.tex}
+
+\tableofcontents
+\newpage
+
+% Reset page counter on the first real page
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Parts
+\input{Report/parts/1_introduction}       
+\input{Report/parts/2_system-perspective}
+\input{Report/parts/3_deveoping-process}
+\input{Report/parts/4_lessons}
+\input{Report/parts/5_conclusion}
+
+% References
+\nocite{*}
+\bibliographystyle{apacite}
+\bibliography{Report/bibliography}
+
+% Appendix
+\input{Report/appendix.tex}
+
+\end{document}
