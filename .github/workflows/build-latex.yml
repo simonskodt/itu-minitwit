@@ -1,0 +1,28 @@
+name: Compile Latex and release PDF
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
+jobs:
+  build-report:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Compile Latex files
+        uses: xu-cheng/latex-action@v2
+        with:
+          working_directory: Report
+          root_file: miain.tex
+          compiler: pdfLaTeX
+
+      - name: Upload report PDF file to repository
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Created report ${date}'
+          directory: 'Documents'
