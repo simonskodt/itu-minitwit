@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: csharp-sarif
-        path: results/csharp.sarif
+        path: /home/runner/work/itu-minitwit/results/csharp.sarif
         
     - name: List SARIF files
       run: find . -name "*.sarif"
