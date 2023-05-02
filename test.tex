@@ -1,0 +1,97 @@
+\documentclass{article}
+\input{settings}
+
+\title{BDSA Assignment 1}
+\author{Ib Scherer\\ Gustav Metnik-Beck}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    Link to github repo: \url{https://github.itu.dk/ibsc/Assignment1}
+\end{center}
+
+\section*{C\#}
+\subsection*{Generics}
+\textbf{Compare the following two methods:}
+\begin{center}
+\end{center}
+
+\subsection*{Explain in you own words what the type constraints mean for both methods.}
+
+In the first method, the type constraint is set on the generic type T. This means that it must follow the given constraint in all places the generic type T is used. 
+In this case, we are given a collection (classes implementing IEnumerables are collections) of T type objects that must implement the IComparable interface. Likewise, the parameter \textit{x} must also implement the IComparable interface in order to not get an error from the compiler. We are also given a generic type U which has no constraints.
+
+The second method also takes in a collection of T type objects and compares them with a single T type object. The constraints dictate that T derives from U, and that U must implement IComparable. Therefore, by the law of inheritance, T must also be comparable. As an example, T could be a Duck class, and U could be an Animal class. In this example, the Duck class inherits from the Animal class, and the Animal class inherits the IComparable interface.
+
+\newpage
+\section*{Software Engineering}
+
+\subsection*{Exercise 1}
+\textbf{What is meant by "knowledge acquisition is not sequential"? Provide a concrete example of knowledge acquisition that illustrates this.}
+
+"Knowledge acquisition is not sequential" means that learning something new is not a linear process. New information can change the reality of previously acquired knowledge, sometimes proving it wrong.
+
+We don't know what we don't know. Which can sometimes be detrimental to software engineering, as our lack of knowledge can result in poor coding which in turn, when we know more about the problem we are solving, can force us to change the structure of our code. The unsequential acquisition of knowledge therefore has a direct influence on software engineering.
+
+A concrete example of knowledge acquisition being non-linear is machine learning. Here the algorithm involved typically continuously examines data and finds patterns. All it learns from examining is knowledge until disproved by better findings, from which new knowledge can be built for better and more correct results.
+
+\subsection*{Exercise 2}
+\textbf{Specify which of the following decisions were made during requirements or system design:}
+\begin{itemize}
+    \item “The ticket distributor is composed of a user interface subsystem, a subsystem for computing tariff, and a network subsystem managing communication with the central computer.”
+    
+    \item“The ticket distributor will use PowerPC processor chips.”
+    
+    \item“The ticket distributor provides the traveler with an on-line help.”
+\end{itemize}
+
+The first decision was made under system design, as it defines design goals towards specific hardware and software needed, where the system is decomposed into subsystems.
+
+The second decision was also made under system design, since it describes the hardware platform on which the system will run.
+
+The third decision was made during the requirements phase, since it is a functional requirement, stating one of the services the system provides.
+
+\subsection*{Exercise 3}
+\textbf{In the following description, explain when the term account is used as an application domain concept and when as a solution domain concept:
+{\color{gray}"Assume you are developing an online system for managing bank accounts for mobile customers. A major design issue is how to provide access to the accounts when the customer cannot establish an online connection. One proposal is that accounts are made available on the mobile computer, even if the server is not up. In this case, the accounts show the amounts from the last connected session."}}
+
+The first two occurrences of account are used as application domain concepts, since they are described in the aspects of the real-world system ("physical" bank accounts).
+
+The last two occurrences of account are used as solution domain concepts as they are described in the sense of solutions to the overall problem by making the accounts available on the mobile computer. However, the actual account is not on the computer making it a transformation of the application domain concepts.
+
+\subsection*{Exercise 4}
+\textbf{A passenger aircraft is composed of several millions of individual parts and requires thousands of persons to assemble. A four-lane highway bridge is another example of complexity. The first version of Word for Windows, a word processor released by Microsoft in November 1989, required 55 person-years, resulted into 249,000 lines of source code, and was delivered 4 years late. Aircraft and highway bridges are usually delivered on time and below budget, whereas software is often not. Discuss what are, in your opinion, the differences between developing an aircraft, a bridge, and a word processor, which would cause this situation.}
+
+Software is, by nature, mostly an invisible and unintangible field of engineering/work. This is the key difference between a word processor and a bridge or aircraft. They are all uniquely complex, with different areas of expertise needed. They can all take a long time to design and produce. And they all cost quite a lot of funding. But where as an aircraft can literally carry you from point A to point B, and you can follow it's physical production and see how far it is from completion, the same cannot be said for software. A bridge - however complex or as simple as it might be - also shares these key feature with an aircraft: the tangibility of the product and it's production.
+
+Opening Microsoft Word, as the average user (or even investor), does not present to you the same feeling as a physical object. Knowing that Word took 55 person-years and 249,000 lines of code to produce also doesn't quite convey the amount of work that was put into it, because it is not something humans have evolved to understand - unlike the size and stability of physical objects. What would happen if you removed a piece of the code? It might still work, and this only makes the \textit{"x lines of code"} metric less comprehensive. We also know, as software developers ourselves, that some lines of code can be compressed into fewer lines or expanded to use more if we wanted to, letting us bloat this number whichever way we please. 
+
+A piece of software also rarely has much to show before it is complete. We stated that a bridge's production could be viewed physically, which means that we can see when it is done or near completion. Code on the other hand does not work like this. Parts of the code can perhaps be viewed before completion, but the entirety of the product is the culmination of all the software working together correctly and adhering to the constraints and requirements set out for it. Sometimes, pieces of software do not work together correctly, which requires them to be changed, refactored, or rebuilt which can cascade into more software not working with the new changes (which then in turn can do the same). Software development is much like knowledge in this sense: Not being acquired (developed) sequentially, unlike bridges.
+
+And the Final key difference to note: Software engineering is currently a very young and small branch of engineering. According to Robert C. Martin, there is a doubling of programmers every 5 years, which means that half of all programmers have less than 5 years experience \footnote{Robert C. Martin: "The Future of Programming" - 2019 \url{https://www.youtube.com/watch?v=BHnMItX2hEQ&t=3942s&ab_channel=Pusher}}. This fact is not shared with the classic engineering arts, and (we assume) this is part of the reason why software sometimes goes over budget and time - the work force is simply too small and is mostly inexperienced.
+
+
+\subsection*{Exercise 5}
+\textbf{Specify which of these statements are functional requirements and which are nonfunctional requirements:}
+\begin{itemize}
+    \item “\textit{The TicketDistributor must enable a traveler to buy weekly passes.}” is a functional requirement, because it states how the system should behave in a particular situation. 
+    
+    \item “\textit{The TicketDistributor must be written in Java.}” is a non-functional requirement because it defines a system constraint, which is not related directly to the functional behavior of the system, namely the programming language to be used.
+    
+    \item “\textit{The TicketDistributor must be easy to use.}” is a non-functional requirement because it states how the usability should be.
+    
+    \item “\textit{The TicketDistributor must always be available.}” is a non-functional requirement because it states how the reliability of the system should be.
+    
+    \item “\textit{The TicketDistributor must provide a phone number to call when it fails.}” is a non-functional requirement because it states a behaviour for when the system fails, which is under usability.
+\end{itemize}
+\subsection*{Exercise 6}
+\textbf{What is the purpose of modeling?}
+
+The purpose of modeling is to make simplified representations of reality that help us define, analyze, communicate concepts too complex from the real world. 
+
+It is a tool that makes it easier for us to relate to a given problem, and reflect on how we can solve it by reducing its complexity by building simple representations of reality, ignoring the irrelevant details and emphasizing the most important aspects. However, the models very purpose is that of which we define it to have, in hope of it being able to further our goals by using it.
+
+
+\end{document}
