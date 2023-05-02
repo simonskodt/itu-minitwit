@@ -17,7 +17,7 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           working_directory: Report
-          root_file: miain.tex
+          root_file: main.tex
           compiler: pdfLaTeX
 
       - name: Upload report PDF file to repository
