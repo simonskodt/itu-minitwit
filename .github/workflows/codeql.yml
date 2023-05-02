@@ -44,4 +44,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: csharp-sarif
-        path: /home/runner/work/itu-minitwit/results/csharp.sarif
+        path: csharp.result.sarif
