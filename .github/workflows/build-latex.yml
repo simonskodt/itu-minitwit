@@ -25,6 +25,9 @@ jobs:
           extra_system_packages: "inkscape"
           post_compile: "latexmk -c"
 
+      - name: Move report PDF to documents
+        run: mv /Report/main.pdf /Documents/report.pdf
+
       - name: Upload report PDF file to Documents directory
         uses: actions-js/push@master
         with:
@@ -32,4 +35,4 @@ jobs:
           message: 'Created report ${date}'
           directory: './Documents'
           force: 'true'
-          author_email: 'gume@itu.dk'
+          author_email: 'gustav.mb@outlook.com'
