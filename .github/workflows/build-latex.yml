@@ -28,7 +28,7 @@ jobs:
           post_compile: "latexmk -c"
 
       - name: Move report PDF to Documents directory
-        run: mv ./Report/main.pdf ./Documents/DevOps-report.pdf
+        run: mv ./Report/main.pdf ./Documents/BSc_group_k.pdf
 
       - name: Cleanup temp files in Report directory
         run: |
