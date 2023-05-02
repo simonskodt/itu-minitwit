@@ -4,7 +4,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 COPY ["MiniTwit.Web/package.json", "MiniTwit.Web/package-lock.json*", "./"]
-RUN npm install --production
+RUN npm install --omit=dev
 RUN npm install --location=global serve
 
 # add app
