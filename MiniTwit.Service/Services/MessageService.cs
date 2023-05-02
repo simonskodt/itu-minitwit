@@ -158,9 +158,9 @@ public class MessageService : IMessageService
         return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
 
-    public async Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedAsync(CancellationToken ct = default)
+    public async Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedAsync(int limit, CancellationToken ct = default)
     {
-        var dbResult = await _messageRepository.GetAllNonFlaggedAsync(ct);
+        var dbResult = await _messageRepository.GetAllNonFlaggedAsync(limit, ct);
 
         return new Response<IEnumerable
         <MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
@@ -185,9 +185,9 @@ public class MessageService : IMessageService
         return new Response<IEnumerable<MessageDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<MessageDTO>>());
     }
 
-    public async Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default)
+    public async Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, int limit, CancellationToken ct = default)
     {
-        var dbResult = await _messageRepository.GetAllNonFlaggedByUsernameAsync(username, ct);
+        var dbResult = await _messageRepository.GetAllNonFlaggedByUsernameAsync(username, limit, ct);
 
         if (dbResult.ErrorType != null)
         {

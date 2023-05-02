@@ -10,6 +10,6 @@ public interface IFollowerService
     Response Delete(string userId, string targetUsername);
     Task<Response> DeleteAsync(string userId, string targetUsername);
     Response<IEnumerable<FollowerDTO>> GetAllFollowersByUsername(string username, CancellationToken ct = default);
-    Task<Response<IEnumerable<FollowerDTO>>> GetAllFollowersByUsernameAsync(string username, CancellationToken ct = default);
+    Task<Response<IEnumerable<FollowerDTO>>> GetAllFollowersByUsernameAsync(string username, int limit, CancellationToken ct = default);
     Task<Response<bool?>> GetIsFollowed(string userId, string username);
 }

@@ -74,7 +74,7 @@ public class SimController : ControllerBase
     /// <summary>
     /// Get a specific number of the most recent non-flagged messages.
     /// </summary>
-    /// <param name="no">The number maximum number of messages to return.</param>
+    /// <param name="no">The maximum number of messages to return.</param>
     /// <param name="latest">The latest value of the request.</param>
     /// <param name="ct"></param>
     /// <returns>Either a number of the most recent messages or Forbidden if unauthorized.</returns>
@@ -87,27 +87,13 @@ public class SimController : ControllerBase
     {
         await UpdateLatestAsync(latest);
 
-        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(ct);
-        var messages = response.Model!.ToList().Take(no);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedAsync(no, ct);
         var messageDTOList = new List<MessageDetailsDTO>();
 
-        foreach (var message in messages)
+        foreach (var message in response.Model!)
         {
-            var userResponse = await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!);
+            var userResponse = await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!, ct);
             var user = userResponse.Model;
-
-            switch (userResponse.HTTPResponse)
-            {
-                case HTTPResponse.Ok:
-                    _logger.LogInformation($"Authorized user: {user!.Username}");
-                    break;
-                case HTTPResponse.Forbidden:
-                    _logger.LogError($"Unauthorized user: {user!.Username}");
-                    break;
-                default:
-                    _logger.LogWarning($"Unexpected status code: {userResponse.HTTPResponse}");
-                    break;
-            }
 
             var dto = new MessageDetailsDTO
             {
@@ -115,13 +101,14 @@ public class SimController : ControllerBase
                 Username = user!.Username,
                 PubDate = message.PubDate
             };
+            
             messageDTOList.Add(dto);
         }
 
         switch (response.HTTPResponse)
         {
             case HTTPResponse.Ok:
-                _logger.LogInformation($"Most recent messages: {response.Model}");
+                _logger.LogInformation($"Fetched messages: {messageDTOList.Count}");
                 break;
             case HTTPResponse.Forbidden:
                 _logger.LogError("Unauthorized");
@@ -131,7 +118,7 @@ public class SimController : ControllerBase
                 break;
         }
 
-        return Ok(messageDTOList.OrderByDescending(m => m.PubDate));
+        return Ok(messageDTOList);
     }
 
     /// <summary>
@@ -153,7 +140,7 @@ public class SimController : ControllerBase
     {
         await UpdateLatestAsync(latest);
 
-        var response = await _serviceManager.MessageService.GetAllNonFlaggedByUsernameAsync(username, ct);
+        var response = await _serviceManager.MessageService.GetAllNonFlaggedByUsernameAsync(username, no, ct);
 
         if (response.HTTPResponse == HTTPResponse.NotFound)
         {
@@ -161,27 +148,12 @@ public class SimController : ControllerBase
             return NotFound();
         }
 
-        var reponseList = response.Model!;
-
         var messageDTOList = new List<MessageDetailsDTO>();
 
-        foreach (var message in reponseList)
+        foreach (var message in response.Model!)
         {
             var userResponse = await _serviceManager.UserService.GetByUserIdAsync(message.AuthorId!, ct);
             var user = userResponse.Model;
-
-            switch (userResponse.HTTPResponse)
-            {
-                case HTTPResponse.Ok:
-                    _logger.LogInformation($"Authorized user: {user!.Username}");
-                    break;
-                case HTTPResponse.Forbidden:
-                    _logger.LogError($"Unauthorized user: {user!.Username}");
-                    break;
-                default:
-                    _logger.LogWarning($"Unexpected status code: {userResponse.HTTPResponse}");
-                    break;
-            }
 
             var dto = new MessageDetailsDTO()
             {
@@ -196,17 +168,14 @@ public class SimController : ControllerBase
         switch (response.HTTPResponse)
         {
             case HTTPResponse.Ok:
-                _logger.LogDebug($"Most recent messages: {response.Model}");
-                break;
-            case HTTPResponse.NotFound:
-                _logger.LogError("No messages found");
+                _logger.LogDebug($"Fetched messages: {messageDTOList.Count}");
                 break;
             default:
                 _logger.LogWarning($"Unexpected status code: {response.HTTPResponse}");
                 break;
         }
 
-        return Ok(messageDTOList.Take(no));
+        return Ok(messageDTOList);
     }
 
     /// <summary>
@@ -266,7 +235,7 @@ public class SimController : ControllerBase
     {
         await UpdateLatestAsync(latest);
 
-        var followers = await _serviceManager.FollowerService.GetAllFollowersByUsernameAsync(username, ct);
+        var followers = await _serviceManager.FollowerService.GetAllFollowersByUsernameAsync(username, no, ct);
 
         if (followers.HTTPResponse == HTTPResponse.NotFound)
         {
@@ -276,7 +245,7 @@ public class SimController : ControllerBase
 
         var followersDTOs = new FollowerDetailsDTO();
 
-        foreach (var follower in followers.Model!.Take(no))
+        foreach (var follower in followers.Model!)
         {
             var user = await _serviceManager.UserService.GetByUserIdAsync(follower.WhoId!, ct);
             followersDTOs.Follows.Add(user.Model!.Username!);

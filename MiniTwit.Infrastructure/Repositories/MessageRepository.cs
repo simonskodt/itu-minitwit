@@ -91,9 +91,9 @@ public class MessageRepository : IMessageRepository
         };
     }
 
-    public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedAsync(CancellationToken ct = default)
+    public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedAsync(int limit, CancellationToken ct = default)
     {
-        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).ToListAsync(ct);
+        var messages = await _context.Messages.Find(m => m.Flagged == 0).SortByDescending(m => m.PubDate).Limit(limit).ToListAsync(ct);
 
         return new DBResult<IEnumerable<Message>>
         {
@@ -243,7 +243,7 @@ public class MessageRepository : IMessageRepository
         };
     }
 
-    public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default)
+    public async Task<DBResult<IEnumerable<Message>>> GetAllNonFlaggedByUsernameAsync(string username, int limit, CancellationToken ct = default)
     {
         var user = await GetUserByUsernameAsync(username, ct);
 
@@ -259,6 +259,7 @@ public class MessageRepository : IMessageRepository
         var messages = await _context.Messages
             .Find(m => m.AuthorId == user.Id && m.Flagged == 0)
             .SortByDescending(m => m.PubDate)
+            .Limit(limit)
             .ToListAsync(ct);
 
         return new DBResult<IEnumerable<Message>>

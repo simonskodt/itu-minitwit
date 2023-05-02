@@ -16,9 +16,9 @@ public interface IMessageService
     Response<IEnumerable<MessageDTO>> GetAllFollowedByUserId(string userId, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllFollowedByUserIdAsync(string userId, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlagged(CancellationToken ct = default);
-    Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedAsync(CancellationToken ct = default);
+    Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedAsync(int limit, CancellationToken ct = default);
     Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedPageNumberLimitAsync(int pageNumber, CancellationToken ct = default);
     Response<IEnumerable<MessageDTO>> GetAllNonFlaggedByUsername(string username, CancellationToken ct = default);
-    Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, CancellationToken ct = default);
+    Task<Response<IEnumerable<MessageDTO>>> GetAllNonFlaggedByUsernameAsync(string username, int limit, CancellationToken ct = default);
     Task IndexDB();
 }
