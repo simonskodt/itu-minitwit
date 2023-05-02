@@ -2,11 +2,12 @@ name: Build & Test
 
 on: 
   [push]
+
 env: 
   NODE_ENV: development
 
 jobs:
-  build-test-backend:
+  backend:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
@@ -26,7 +27,7 @@ jobs:
       - name: Run backend tests
         run: dotnet test --no-build --verbosity normal
   
-  build-test-frontend:
+  frontend:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository

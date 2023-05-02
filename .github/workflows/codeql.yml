@@ -3,6 +3,9 @@ name: "CodeQL"
 on:
   pull_request:
     branches: ["main"]
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
+      - 'Documents/**'
+      - 'Report/**'
   schedule:
     - cron: '25 16 * * 2'
 

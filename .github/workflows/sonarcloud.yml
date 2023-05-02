@@ -3,8 +3,14 @@ name: SonarCloud analysis
 on:
   push:
     branches: [ "main" ]
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
+      - 'Documents/**'
+      - 'Report/**'
   pull_request:
     branches: [ "main" ]
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
+      - 'Documents/**'
+      - 'Report/**'
   workflow_dispatch:
 
 permissions:
