@@ -35,6 +35,7 @@ jobs:
           cd Report
           rm *.txt
           rm *.bbl
+          rm *.xml
           sudo rm -rf svg-inkscape
 
       - name: Upload report PDF file to repository
