@@ -21,6 +21,7 @@ jobs:
         with:
           working_directory: ./Report
           root_file: main.tex
+          latexmk_shell_escape: true
 
       - name: Upload report PDF file to repository
         uses: actions-js/push@master
