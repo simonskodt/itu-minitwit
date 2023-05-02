@@ -35,4 +35,3 @@ jobs:
           message: 'Created report ${date}'
           directory: './Report'
           force: 'true'
-          author_email: 'gustav.mb@outlook.com'
