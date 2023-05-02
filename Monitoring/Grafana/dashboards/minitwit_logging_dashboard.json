@@ -1,347 +1,334 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "target": {
-            "limit": 100,
-            "matchAny": false,
-            "tags": [],
-            "type": "dashboard"
-          },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
           "type": "dashboard"
-        }
-      ]
-    },
-    "description": "Logging of the MiniTwit application",
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 3,
-    "links": [],
-    "liveNow": false,
-    "panels": [
-      {
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
         },
-        "description": "",
-        "gridPos": {
-          "h": 2,
-          "w": 23,
-          "x": 0,
-          "y": 0
-        },
-        "id": 16,
-        "options": {
-          "code": {
-            "language": "plaintext",
-            "showLineNumbers": false,
-            "showMiniMap": false
-          },
-          "content": "# Welcome to the MiniTwit Logging Dashboard",
-          "mode": "markdown"
-        },
-        "pluginVersion": "9.4.7",
-        "transparent": true,
-        "type": "text"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 2
-        },
-        "id": 50,
-        "panels": [],
-        "title": "Overview",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "mappings": [],
-            "min": 1,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "dark-red",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "debug"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "semi-dark-blue",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "error"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "semi-dark-red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "info"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "warning"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "yellow",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 19,
-          "x": 0,
-          "y": 3
-        },
-        "id": 58,
-        "options": {
-          "displayMode": "gradient",
-          "minVizHeight": 10,
-          "minVizWidth": 0,
-          "orientation": "horizontal",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showUnfilled": true
-        },
-        "pluginVersion": "9.4.7",
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "P8E80F9AEF21F6940"
-            },
-            "editorMode": "builder",
-            "expr": "sum by(level) (rate({app=\"minitwit\"} | json level=\"level\" [5m]))",
-            "legendFormat": "{{level}}",
-            "queryType": "range",
-            "refId": "A"
-          }
-        ],
-        "title": "Log level distribution [5m]",
-        "type": "bargauge"
-      },
-      {
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
-        "description": "",
-        "gridPos": {
-          "h": 6,
-          "w": 4,
-          "x": 19,
-          "y": 3
-        },
-        "id": 56,
-        "options": {
-          "folderId": 0,
-          "maxItems": 10,
-          "query": "",
-          "showHeadings": true,
-          "showRecentlyViewed": false,
-          "showSearch": true,
-          "showStarred": false,
-          "tags": []
-        },
-        "pluginVersion": "9.4.7",
-        "title": "MiniTwit Dashboards",
-        "type": "dashlist"
-      },
-      {
-        "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
-        },
-        "description": "All logs recorded from the MiniTwit backend.",
-        "gridPos": {
-          "h": 13,
-          "w": 23,
-          "x": 0,
-          "y": 9
-        },
-        "id": 48,
-        "maxDataPoints": 1000,
-        "options": {
-          "dedupStrategy": "none",
-          "enableLogDetails": true,
-          "prettifyLogMessage": false,
-          "showCommonLabels": false,
-          "showLabels": false,
-          "showTime": true,
-          "sortOrder": "Descending",
-          "wrapLogMessage": true
-        },
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "P8E80F9AEF21F6940"
-            },
-            "editorMode": "builder",
-            "expr": "{app=\"minitwit\"} | json level=\"level\", method=\"RequestMethod\", path=\"RequestPath\", code=\"StatusCode\", name=\"Application\", env=\"Environment\", message=\"Message\", action=\"ActionName\" | line_format `[{{.level}}] {{.name}} ({{.env}}): {{.message}}`",
-            "maxLines": 250,
-            "queryType": "range",
-            "refId": "A",
-            "resolution": 1
-          }
-        ],
-        "title": "MiniTwit Logs [last 500 lines]",
-        "transformations": [],
-        "type": "logs"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 22
-        },
-        "id": 52,
-        "panels": [],
-        "title": "Errors",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
-        },
-        "description": "",
-        "gridPos": {
-          "h": 10,
-          "w": 23,
-          "x": 0,
-          "y": 23
-        },
-        "id": 54,
-        "options": {
-          "dedupStrategy": "none",
-          "enableLogDetails": true,
-          "prettifyLogMessage": false,
-          "showCommonLabels": false,
-          "showLabels": false,
-          "showTime": true,
-          "sortOrder": "Descending",
-          "wrapLogMessage": true
-        },
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "P8E80F9AEF21F6940"
-            },
-            "editorMode": "builder",
-            "expr": "{app=\"minitwit\"} | json message=\"Message\", level=\"level\", name=\"Application\", env=\"Environment\", action=\"ActionName\", path=\"RequestPath\" | line_format `[{{.level}}] {{.action}} ({{.env}}) @ \"{{.path}}\": {{.message}}` | level = `error`",
-            "maxLines": 500,
-            "queryType": "range",
-            "refId": "Errors"
-          },
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "P8E80F9AEF21F6940"
-            },
-            "editorMode": "builder",
-            "expr": "{app=\"minitwit\"} | json message=\"Message\", level=\"level\", name=\"Application\", env=\"Environment\", action=\"ActionName\", path=\"RequestPath\" | line_format `[{{.level}}] {{.action}} ({{.env}}) @ \"{{.path}}\": {{.message}}` | level = `warning`",
-            "hide": false,
-            "maxLines": 500,
-            "queryType": "range",
-            "refId": "Warnings"
-          }
-        ],
-        "title": "Logged Errors and Warnings [last 500 lines]",
-        "type": "logs"
+        "type": "dashboard"
       }
-    ],
-    "refresh": "10s",
-    "revision": 1,
-    "schemaVersion": 38,
-    "style": "dark",
-    "tags": [],
-    "templating": {
-      "list": []
+    ]
+  },
+  "description": "Logging of the MiniTwit application",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 2,
+        "w": 23,
+        "x": 0,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Welcome to the MiniTwit Logging Dashboard",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.4.7",
+      "transparent": true,
+      "type": "text"
     },
-    "time": {
-      "from": "now-6h",
-      "to": "now"
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 50,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
     },
-    "timepicker": {},
-    "timezone": "",
-    "title": "MiniTwit Logging",
-    "uid": "rMmO7PYVk",
-    "version": 7,
-    "weekStart": ""
-  }
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "debug"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "info"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "warning"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 19,
+        "x": 0,
+        "y": 3
+      },
+      "id": 58,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(level) (rate({app=\"minitwit\"} | json level=\"level\" [5m]))",
+          "legendFormat": "{{level}}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Log level distribution [5m]",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 19,
+        "y": 3
+      },
+      "id": 56,
+      "options": {
+        "folderId": 0,
+        "maxItems": 10,
+        "query": "",
+        "showHeadings": true,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "9.4.7",
+      "title": "MiniTwit Dashboards",
+      "type": "dashlist"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "All logs recorded from the MiniTwit backend.",
+      "gridPos": {
+        "h": 13,
+        "w": 23,
+        "x": 0,
+        "y": 9
+      },
+      "id": 48,
+      "maxDataPoints": 1000,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "builder",
+          "expr": "{app=\"minitwit\"} | json level=\"level\", method=\"RequestMethod\", path=\"RequestPath\", code=\"StatusCode\", name=\"Application\", env=\"Environment\", message=\"Message\", action=\"ActionName\" | line_format `[{{.level}}] {{.name}} ({{.env}}): {{.message}}`",
+          "maxLines": 250,
+          "queryType": "range",
+          "refId": "A",
+          "resolution": 1
+        }
+      ],
+      "title": "MiniTwit Logs [last 500 lines]",
+      "transformations": [],
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 52,
+      "panels": [],
+      "title": "Errors",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 10,
+        "w": 23,
+        "x": 0,
+        "y": 23
+      },
+      "id": 54,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{app=\"minitwit\"} | json message=\"Message\", level=\"level\", name=\"Application\", env=\"Environment\", action=\"ActionName\", path=\"RequestPath\" | line_format `[{{.level}}] {{.action}} ({{.env}}) @ \"{{.path}}\": {{.message}}` | level  != `info` and level != `debug`",
+          "maxLines": 500,
+          "queryType": "range",
+          "refId": "Errors"
+        }
+      ],
+      "title": "Logged Errors and Warnings [last 500 lines]",
+      "type": "logs"
+    }
+  ],
+  "refresh": "10s",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "MiniTwit Logging",
+  "uid": "rMmO7PYVk",
+  "version": 2,
+  "weekStart": ""
+}

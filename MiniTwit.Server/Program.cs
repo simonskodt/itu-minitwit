@@ -6,14 +6,12 @@ using MiniTwit.Infrastructure.Data;
 using MiniTwit.Infrastructure.Repositories;
 using MiniTwit.Security;
 using MiniTwit.Security.Hashers;
-using MiniTwit.Server;
 using MiniTwit.Server.Authentication;
 using MiniTwit.Server.Extensions;
 using MiniTwit.Service;
 using Prometheus;
 using Serilog;
 using Serilog.Events;
-using Serilog.Formatting.Compact;
 using Serilog.Sinks.Grafana.Loki;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +22,7 @@ builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 // Add services to the container.
 
 // Configure MongoDB
-var dbSettings = builder.Configuration.GetSection(nameof(MiniTwitDatabaseSettings));
-builder.Services.Configure<MiniTwitDatabaseSettings>(dbSettings);
+builder.Services.Configure<MiniTwitDatabaseSettings>(builder.Configuration.GetSection(nameof(MiniTwitDatabaseSettings)));
 builder.Services.Configure<MiniTwitDatabaseSettings>(options => options.ConnectionString = builder.Configuration.GetConnectionString("MiniTwit")!);
 
 // Configure Hasher
@@ -63,8 +60,7 @@ builder.Host.UseSerilog((ctx, config) =>
         );
 
     if (ctx.HostingEnvironment.IsDevelopment())
-        config.MinimumLevel.Debug()
-            .WriteTo.Console(new RenderedCompactJsonFormatter());
+        config.MinimumLevel.Debug().WriteTo.Console();
 });
 
 var app = builder.Build();

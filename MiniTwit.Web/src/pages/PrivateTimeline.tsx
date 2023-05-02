@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { checkLogIn } from "../builders/functions";
-import { MessageObjectWithName } from "../builders/interface";
-import { fetchPrivateTimeLine } from "./fetch";
+import { checkLogIn } from "../state/SessionStorage";
 import Footer from "./Footer";
 import Header from "../components/Header";
 import { Message } from "./Message";
 import MessageComponent from "../components/MessageComponent";
 import FollowComponent from "../components/FollowComponent";
-import React from 'react';
 import './Layout.css';
+import { MessageDTO } from "../models/MessageDTO";
+import { MesssageService } from "../services/MessageService";
 
 function replaceSpaces(str: string): string {
   return str.replace(/%20/g, " ");
@@ -18,21 +17,22 @@ function PrivateTimeline() {
   const url = window.location.href;
   const parts = url.split("/");
   const tempUserName = parts[parts.length - 1];
-  const userName = replaceSpaces(tempUserName)
-  const [messages, setMessages] = useState<MessageObjectWithName[]>();
+  const username = replaceSpaces(tempUserName)
+  const [messages, setMessages] = useState<MessageDTO[]>();
   const sessionUser = sessionStorage.getItem('username')
+  const messageService = new MesssageService()
 
   const displayName = () => {
-    if (userName == sessionUser) {
+    if (username === sessionUser) {
       return "My Timeline"
     } else {
-      return userName + "'s TimeLine"
+      return username + "'s TimeLine"
     }
   }
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const messages = await fetchPrivateTimeLine(userName);
+      const messages = await messageService.getPrivateTimeline(username);
       setMessages(messages);
     };
     fetchMessages();
@@ -42,16 +42,16 @@ function PrivateTimeline() {
     }, 2000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [username]);
 
-  function ShowFittedMessages(messages: MessageObjectWithName[]) {
+  function ShowFittedMessages(messages: MessageDTO[]) {
     return (
       <div>
         {messages.map((mes) => (
-          <view key={mes.messageId}>
+          <view key={mes.id}>
             <view>
               <Message
-                username={mes.userName}
+                username={mes.authorName}
                 text={mes.text}
                 date={mes.pubDate}
               />
@@ -63,7 +63,7 @@ function PrivateTimeline() {
   }
 
   function showMessages() {
-    if (messages != undefined && messages.length >= 15) {
+    if (messages !== undefined && messages.length >= 15) {
       return (
         <>
           <div className="scrollable-container">
@@ -71,7 +71,7 @@ function PrivateTimeline() {
           </div>
         </>
       );
-    } else if (messages != undefined && messages.length < 15) {
+    } else if (messages !== undefined && messages.length < 15) {
       return (
         <>
           <div>
@@ -97,13 +97,13 @@ function PrivateTimeline() {
     <div className="page">
       <Header isLoggedIn={checkLogIn()} />
       <div className="body">
-        <MessageComponent isLoggedIn={checkLogIn()} clickedUser={userName} />
+        <MessageComponent isLoggedIn={checkLogIn()} clickedUser={username} />
         <div className="headers">
           <div className="left">
             <h2>{displayName()}</h2>
           </div>
           <div className="right">
-            <FollowComponent isLoggedIn={checkLogIn()} userToFollow={userName} />
+            <FollowComponent isLoggedIn={checkLogIn()} userToFollow={username} />
           </div>
         </div>
         {showMessages()}
