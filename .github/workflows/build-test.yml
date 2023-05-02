@@ -28,7 +28,6 @@ jobs:
   
   build-test-frontend:
     runs-on: ubuntu-22.04
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -61,12 +60,4 @@ jobs:
           cd tests/
           npx playwright test
           cd ../..
-          docker-compose -f docker-compose.ui.yml down 
-
-
-
-          
-       
-
-
-
+          docker-compose -f docker-compose.ui.yml down

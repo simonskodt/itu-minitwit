@@ -13,6 +13,8 @@
 | Website | [http://164.92.167.188:3000](http://164.92.167.188:3000)  |
 | Swagger  | [http://164.92.167.188/swagger/index.html](http://164.92.167.188/swagger/index.html)  |
 | Monitoring and Logging (requires login) | [http://164.92.167.188:9091](http://164.92.167.188:9091) |
+| Status on projects | [http://104.248.134.203/status.html](http://104.248.134.203/status.html) |
+| Weekly commit activity per group | [http://138.197.185.85/commit_activity_weekly.svg](http://138.197.185.85/commit_activity_weekly.svg) |
 
 ## Contents
 
@@ -30,6 +32,7 @@
   - [Week 10](#week-10)
   - [Week 11](#week-11)
   - [Week 12](#week-12)
+  - [Week 13](#week-13)
 - [Course description](#course-description)
 
 ## Missing Implementations
@@ -38,9 +41,10 @@ We currently **lack the following features**:
 
 - Deploy to DigitalOcean with Vagrant.
 - Refactor the tests to work with new design.
-- Implement UI and end-to-end tests.
+- Implement end-to-end tests.
 - Make UML-diagram of system.
 - Add scaling.
+- Use Terraform for IaC.
 
 It would be **nice to have the following features**:
 
@@ -128,7 +132,7 @@ Add logging to your ITU-MiniTwit.
 
 Security Assessment & Pen Testing.
 
-- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/SECURITY_ASSESSMENT.md)
+- [x] 1) Perform a Security Assessment, see [SECURITY_ASSESSMENT.md](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/SECURITY_ASSESSMENT.md)
   - [x] A. Risk Identification
   - [x] B. Risk Analysis
   - [x] C. Pen-Test Your System
@@ -139,8 +143,8 @@ Security Assessment & Pen Testing.
 
 Isolate components into services/containers/VMs.
 
-- [ ] 1) Add Scaling to your projects
-- [ ] 2) Rolling Updates
+- [x] 1) Add Scaling to your projects
+- [x] 2) Rolling Updates
 - [x] 3) Software Maintenance
 
 ### Week 11
@@ -151,6 +155,12 @@ Workshop: How to SSL in front of Docker Swarm.
 - [ ] 2) Using Digital Ocean managed load balancers as SSL terminator.
 
 ### Week 12
+
+Encode your infrastructure setup.
+
+- [ ] 1) Automating also the creation of infrastructure.
+
+### Week 13
 
 TBA.
 

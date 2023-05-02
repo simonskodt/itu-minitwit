@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
+      - 'Documents/**'
+      - 'Report/**'
   workflow_dispatch:
 
 jobs:
@@ -98,6 +101,6 @@ jobs:
           args: "-vvv"
           command: |
             export GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}
-            export SMTP_PASSWORD=${{ secrets.SMPT_PASSWORD }}
+            export SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
             cd ./itu-minitwit
             docker-compose -f docker-compose.monitoring.yml up -d

@@ -1,0 +1,75 @@
+%--------------------
+% Packages
+% -------------------
+
+% Localization
+\usepackage[english]{babel}
+
+% === Page Setup ===
+% Default font
+\usepackage[utf8]{inputenc}
+
+% Package for changing page margins (before fancyhdr) 
+\usepackage{fullpage}
+
+% Package to change header and footer
+\usepackage{fancyhdr}
+
+% Package to tweak paragraph skipping (instead of indents, a small skip is added after every paragraph)
+\usepackage{parskip}
+
+% Line spacing
+\renewcommand{\baselinestretch}{1.3}
+
+% Better captions
+\usepackage{caption}
+
+% Enables custom format of enumerations (examples: 1., 1), (1)...)
+\usepackage[shortlabels]{enumitem}
+
+% Package for cross referencing (also loads url package)
+\usepackage{xcolor}
+\usepackage{hyperref}       
+\hypersetup{
+  colorlinks,
+  citecolor=violet,
+  linkcolor=black,
+  urlcolor=blue}
+\usepackage[normalem]{ulem}
+
+% === Chapter/Section Rendering ===
+\usepackage{titlesec}
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\thechapter\:}{1em}{} 
+\titlespacing*{\chapter}{0pt}{0pt}{15pt}
+
+% === Graphics ===
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{svg}
+\graphicspath{{img/}}
+
+% === Bibliography ===
+\usepackage{apacite}
+\usepackage{natbib}
+\usepackage[nottoc]{tocbibind} % Add "References" entry to toc
+% Change spacing between bib entries
+\setlength{\bibsep}{10.0pt}
+
+% === Appendix ===
+\usepackage[toc]{appendix}
+
+% === Custom Commands === %
+% Count the number of characters in the given file including spaces
+% Usage: \charcountspaces{<filename>}
+% Example: \charcountspaces{main}
+\newcommand{\charcountspaces}[1]{
+\immediate\write18{expr `texcount -1 -sum -merge #1.tex` + `texcount -1 -sum -merge -char #1.tex` - 1 > charspaces.txt
+}\input{charspaces.txt}}
+
+% Count the number of characters in the given file excluding spaces
+% Usage: \charcountspaces{<filename>}
+% Example: \charcountspaces{main}
+\newcommand{\charcount}[1]{
+\immediate\write18{expr `texcount -1 -sum -merge -char #1.tex` - 1 > chars.txt
+}\input{chars.txt}}
