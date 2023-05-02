@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Compile Latex files
+      - name: Compile Latex files to PDF
         uses: xu-cheng/latex-action@v2
         with:
           working_directory: ./Report
@@ -26,15 +26,15 @@ jobs:
           post_compile: "latexmk -c"
 
       - name: Move report PDF to Documents directory
-        run: mv ./Report/main.pdf ./Documents
+        run: mv ./Report/main.pdf ./Documents/DevOps-report.pdf
 
-      - name: Clean up temp files in Report directory
+      - name: Cleanup temp files in Report directory
         run: |
           cd Report
           rm chars.txt
           rm charspaces.txt
           rm main.bbl
-          rm -rf svg-inkscape
+          rm -r svg-inkscape
 
       - name: Upload report PDF file to repository
         uses: actions-js/push@master
