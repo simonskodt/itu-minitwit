@@ -45,6 +45,3 @@ jobs:
       with:
         name: csharp-sarif
         path: /home/runner/work/itu-minitwit/results/csharp.sarif
-        
-    - name: List SARIF files
-      run: find . -name "*.sarif"
