@@ -32,7 +32,7 @@
 \usepackage{hyperref}       
 \hypersetup{
   colorlinks,
-  citecolor=violet,
+  citecolor=black,
   linkcolor=black,
   urlcolor=blue}
 \usepackage[normalem]{ulem}
@@ -50,11 +50,16 @@
 \graphicspath{{img/}}
 
 % === Bibliography ===
-\usepackage{apacite}
-\usepackage{natbib}
+% \usepackage{apacite}
+% \usepackage[round]{natbib}
+\usepackage[
+    backend=biber,
+    sorting=ynt,
+    toc
+]{biblatex}
 \usepackage[nottoc]{tocbibind} % Add "References" entry to toc
 % Change spacing between bib entries
-\setlength{\bibsep}{10.0pt}
+% \setlength{\bibsep}{10.0pt}
 
 % === Appendix ===
 \usepackage[toc]{appendix}
