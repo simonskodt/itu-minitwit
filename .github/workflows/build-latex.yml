@@ -1,0 +1,47 @@
+name: Compile Latex and release PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths: # Only run if file is changed in Report directory
+      - 'Report/**'
+  workflow_dispatch:
+  
+jobs:
+  build-report:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Compile Latex files to PDF
+        uses: xu-cheng/latex-action@v2
+        with:
+          working_directory: ./Report
+          root_file: main.tex
+          latexmk_shell_escape: true
+          extra_system_packages: "inkscape"
+          post_compile: "latexmk -c"
+
+      - name: Move report PDF to Documents directory
+        run: mv ./Report/main.pdf ./Documents/DevOps-report.pdf
+
+      - name: Cleanup temp files in Report directory
+        run: |
+          cd Report
+          rm *.txt
+          rm *.bbl
+          rm *.xml
+          sudo rm -rf svg-inkscape
+
+      - name: Upload report PDF file to repository
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "Created report PDF"
+          directory: './Documents'
+          force: 'true'

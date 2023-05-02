@@ -67,19 +67,19 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         context.Users.InsertMany(new[] { gustav, simon, nikolaj, victor });
 
         // Messages
-        var m1 = MessageCreator.Create("000000000000000000000001", gustav.Id!, "Gustav's first tweet!", DateTime.Parse("01/01/2023 12:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m2 = MessageCreator.Create("000000000000000000000002", gustav.Id!, "Gustav's second tweet!", DateTime.Parse("01/01/2023 12:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m3 = MessageCreator.Create("000000000000000000000003", gustav.Id!, "Gustav's Flagged", DateTime.Parse("01/01/2023 12:00:01", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal), 1);
+        var m1 = MessageCreator.Create("000000000000000000000001", gustav.Id!, "Gustav", "Gustav's first tweet!", DateTime.Parse("01/01/2023 12:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m2 = MessageCreator.Create("000000000000000000000002", gustav.Id!, "Gustav", "Gustav's second tweet!", DateTime.Parse("01/01/2023 12:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m3 = MessageCreator.Create("000000000000000000000003", gustav.Id!, "Gustav", "Gustav's Flagged", DateTime.Parse("01/01/2023 12:00:01", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal), 1);
 
-        var m4 = MessageCreator.Create("000000000000000000000004", simon.Id!, "Simon's first tweet", DateTime.Parse("01/01/2023 12:00:02", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m5 = MessageCreator.Create("000000000000000000000005", simon.Id!, "Simon's second tweet", DateTime.Parse("01/01/2023 12:00:03", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m6 = MessageCreator.Create("000000000000000000000006", simon.Id!, "Simon's third tweet", DateTime.Parse("01/01/2023 12:00:04", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m4 = MessageCreator.Create("000000000000000000000004", simon.Id!, "Simon", "Simon's first tweet", DateTime.Parse("01/01/2023 12:00:02", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m5 = MessageCreator.Create("000000000000000000000005", simon.Id!, "Simon", "Simon's second tweet", DateTime.Parse("01/01/2023 12:00:03", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m6 = MessageCreator.Create("000000000000000000000006", simon.Id!, "Simon", "Simon's third tweet", DateTime.Parse("01/01/2023 12:00:04", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
 
-        var m7 = MessageCreator.Create("000000000000000000000007", nikolaj.Id!, "Nikolaj1", DateTime.Parse("01/01/2023 12:00:05", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m8 = MessageCreator.Create("000000000000000000000008", nikolaj.Id!, "Nikolaj2", DateTime.Parse("01/01/2023 12:00:06", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m7 = MessageCreator.Create("000000000000000000000007", nikolaj.Id!, "Nikolaj", "Nikolaj1", DateTime.Parse("01/01/2023 12:00:05", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m8 = MessageCreator.Create("000000000000000000000008", nikolaj.Id!, "Nikolaj", "Nikolaj2", DateTime.Parse("01/01/2023 12:00:06", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
 
-        var m9 = MessageCreator.Create("000000000000000000000009", victor.Id!, "Victor1", DateTime.Parse("01/01/2023 12:00:01", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
-        var m10 = MessageCreator.Create("000000000000000000000010", victor.Id!, "Victor2", DateTime.Parse("01/01/2023 12:00:02", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m9 = MessageCreator.Create("000000000000000000000009", victor.Id!, "Victor", "Victor1", DateTime.Parse("01/01/2023 12:00:01", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+        var m10 = MessageCreator.Create("000000000000000000000010", victor.Id!, "Victor", "Victor2", DateTime.Parse("01/01/2023 12:00:02", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
 
         context.Messages.InsertMany(new[] { m1, m2, m3, m4, m5, m6, m7, m8, m9, m10 });
 

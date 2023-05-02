@@ -1,8 +1,8 @@
 import Footer from "./Footer";
 import Header from "../components/Header";
 import "./Layout.css";
-import React, { useState } from "react";
-import { checkLogIn } from "../builders/functions";
+import { useState } from "react";
+import { checkLogIn } from "../state/SessionStorage";
 import MessageSliceComponent from "../components/MessageSliceComponent";
 
 function PublicTimeline() {

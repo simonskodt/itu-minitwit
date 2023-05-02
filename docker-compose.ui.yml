@@ -57,12 +57,8 @@ services:
 volumes:
   mongodb_data_container:
 
-
 secrets:
   db_password:
     file: './.local/db_password.txt'
   connection_string:
     file: './.local/connection_string.txt'
-
-
-

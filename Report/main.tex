@@ -1,0 +1,33 @@
+\documentclass[11pt]{report}
+
+\input{preamble.tex}
+% Import the bibliography file
+\addbibresource{bibliography.bib}
+
+\begin{document}
+\pagenumbering{roman}
+\input{frontpage.tex}
+
+\tableofcontents
+\newpage
+
+% Reset page counter on the first real page
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Parts
+\input{parts/1_introduction}       
+\input{parts/2_system-perspective}
+\input{parts/3_deveoping-process}
+\input{parts/4_lessons}
+\input{parts/5_conclusion}
+
+% References
+\phantomsection
+\addcontentsline{toc}{chapter}{References}
+\printbibliography[title={References}]
+
+% Appendix
+\input{appendix.tex}
+
+\end{document}
