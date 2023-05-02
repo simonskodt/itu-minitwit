@@ -1,6 +1,8 @@
 \documentclass[11pt]{report}
 
 \input{preamble.tex}
+% Import the bibliography file
+\addbibresource{bibliography.bib}
 
 \begin{document}
 \pagenumbering{roman}
@@ -21,11 +23,9 @@
 \input{parts/5_conclusion}
 
 % References
+\phantomsection
 \addcontentsline{toc}{chapter}{References}
 \printbibliography[title={References}]
-% \nocite{*}
-% \bibliographystyle{apacite}
-% \bibliography{bibliography}
 
 % Appendix
 \input{appendix.tex}
