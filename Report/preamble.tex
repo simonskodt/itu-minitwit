@@ -60,14 +60,14 @@
 \usepackage[toc]{appendix}
 
 % === Custom Commands === %
-% Count number of characters in the given file including spaces
+% Count the number of characters in the given file including spaces
 % Usage: \charcountspaces{<filename>}
 % Example: \charcountspaces{main}
 \newcommand{\charcountspaces}[1]{
 \immediate\write18{expr `texcount -1 -sum -merge #1.tex` + `texcount -1 -sum -merge -char #1.tex` - 1 > charspaces.txt
 }\input{charspaces.txt}}
 
-% Count number of characters in the given file excluding spaces
+% Count the number of characters in the given file excluding spaces
 % Usage: \charcountspaces{<filename>}
 % Example: \charcountspaces{main}
 \newcommand{\charcount}[1]{
