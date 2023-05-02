@@ -42,3 +42,6 @@ jobs:
       with:
         name: csharp-sarif
         path: results/csharp.sarif
+        
+    - name: List SARIF files
+      run: find . -name "*.sarif"
