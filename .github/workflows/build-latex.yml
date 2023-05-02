@@ -22,8 +22,10 @@ jobs:
           working_directory: ./Report
           root_file: main.tex
           latexmk_shell_escape: true
+          extra_system_packages: "inkscape"
+          post_compile: "latexmk -c"
 
-      - name: Upload report PDF file to repository
+      - name: Upload report PDF file to Documents directory
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
