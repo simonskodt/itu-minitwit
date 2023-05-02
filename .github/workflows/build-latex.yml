@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths: # Only run if file is changed in Report directory
+      - 'Report/**'
   workflow_dispatch:
   
 jobs:

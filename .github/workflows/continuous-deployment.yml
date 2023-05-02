@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
       - 'Documents/**'
       - 'Report/**'
   workflow_dispatch:
