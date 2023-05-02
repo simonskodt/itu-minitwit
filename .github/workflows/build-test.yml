@@ -1,7 +1,12 @@
 name: Build & Test
 
 on: 
-  [push]
+  push:
+    branches:
+      - "**"
+    paths-ignore: # Only run if file is changed outside of the Report and Documents directory
+      - 'Documents/**'
+      - 'Report/**'
 
 env: 
   NODE_ENV: development
