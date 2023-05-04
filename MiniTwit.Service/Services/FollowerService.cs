@@ -75,9 +75,9 @@ public class FollowerService : IFollowerService
         return new Response<IEnumerable<FollowerDTO>>(Ok, dbResult.ConvertModelTo<IEnumerable<FollowerDTO>>());
     }
 
-    public async Task<Response<IEnumerable<FollowerDTO>>> GetAllFollowersByUsernameAsync(string username, CancellationToken ct = default)
+    public async Task<Response<IEnumerable<FollowerDTO>>> GetAllFollowersByUsernameAsync(string username, int limit, CancellationToken ct = default)
     {
-        var dbResult = await _repository.GetAllFollowersByUsernameAsync(username, ct);
+        var dbResult = await _repository.GetAllFollowersByUsernameAsync(username, limit, ct);
 
         if (dbResult.Model == null)
         {

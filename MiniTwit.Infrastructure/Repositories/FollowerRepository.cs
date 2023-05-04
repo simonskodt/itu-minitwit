@@ -205,7 +205,7 @@ public class FollowerRepository : IFollowerRepository
         };
     }
 
-    public async Task<DBResult<IEnumerable<Follower>>> GetAllFollowersByUsernameAsync(string username, CancellationToken ct = default)
+    public async Task<DBResult<IEnumerable<Follower>>> GetAllFollowersByUsernameAsync(string username, int limit, CancellationToken ct = default)
     {
         var user = await GetUserByUsernameAsync(username, ct);
 
@@ -218,7 +218,7 @@ public class FollowerRepository : IFollowerRepository
             };
         }
 
-        var followers = await _context.Followers.Find(f => f.WhomId == user.Id).ToListAsync(ct);
+        var followers = await _context.Followers.Find(f => f.WhomId == user.Id).Limit(limit).ToListAsync(ct);
 
         return new DBResult<IEnumerable<Follower>>
         {
