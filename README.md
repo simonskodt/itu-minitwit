@@ -4,6 +4,7 @@
 [![.NET](https://img.shields.io/badge/--512BD4?logo=.net&logoColor=ffffff)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/--3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsimonskodt%2Fitu-minitwit.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsimonskodt%2Fitu-minitwit?ref=badge_shield)
 <a href="https://codeclimate.com/github/simonskodt/itu-minitwit/maintainability"><img src="https://api.codeclimate.com/v1/badges/6988da87fa2308716260/maintainability" /></a>
 
 # DevOps&mdash;Twitter Project
@@ -193,3 +194,7 @@ As a participant of the DevOps course at the IT University of Copenhagen, we are
 - Infrastructure as Code: We will manage and provision infrastructure using code, and understand how this can improve the consistency and reliability of our deployments.
 
 By the end of this course, we will have developed a solid foundation in DevOps concepts and practices, and will have the skills and confidence to build, deploy, and manage applications at scale.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsimonskodt%2Fitu-minitwit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsimonskodt%2Fitu-minitwit?ref=badge_large)
