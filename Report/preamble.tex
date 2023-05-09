@@ -23,6 +23,7 @@
 
 % Better captions
 \usepackage{caption}
+\usepackage{subcaption}
 
 % Enables custom format of enumerations (examples: 1., 1), (1)...)
 \usepackage[shortlabels]{enumitem}
@@ -74,3 +75,10 @@
 \newcommand{\charcount}[1]{
 \immediate\write18{expr `texcount -1 -sum -merge -char #1.tex` - 1 > chars.txt
 }\input{chars.txt}}
+
+\newcommand{\wordcount}[1]{
+\immediate\write18{expr `texcount -1 -inc -incbib -sum #1.tex` -1 > wordcount.txt}
+\input{wordcount.txt}}
+
+% === Code ===
+\usepackage{listings}
