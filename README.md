@@ -6,7 +6,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=simonskodt_itu-minitwit&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=simonskodt_itu-minitwit)
 <a href="https://codeclimate.com/github/simonskodt/itu-minitwit/maintainability"><img src="https://api.codeclimate.com/v1/badges/6988da87fa2308716260/maintainability" /></a>
 [![Snyk Security](https://github.com/simonskodt/itu-minitwit/actions/workflows/snyk-security.yml/badge.svg)](https://github.com/simonskodt/itu-minitwit/actions/workflows/snyk-security.yml)
-
 [![Build & Test](https://github.com/simonskodt/itu-minitwit/actions/workflows/build-test.yml/badge.svg)](https://github.com/simonskodt/itu-minitwit/actions/workflows/build-test.yml)
 [![Continuous Deployment](https://github.com/simonskodt/itu-minitwit/actions/workflows/continuous-deployment.yml/badge.svg)](https://github.com/simonskodt/itu-minitwit/actions/workflows/continuous-deployment.yml)
 [![Swarm Deployment](https://github.com/simonskodt/itu-minitwit/actions/workflows/swarm-deployment.yml/badge.svg)](https://github.com/simonskodt/itu-minitwit/actions/workflows/swarm-deployment.yml)
