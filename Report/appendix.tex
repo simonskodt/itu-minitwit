@@ -3,12 +3,9 @@
 \appendix
 \appendixpage
 
-\chapter{Test}
-\label{appendix:test}
-
 \chapter{Dependencies}
-\label{appendix:dependencies}
-\section{NPM dependencies}
+
+\section{\textit{NPM} Dependencies} \label{appendix:dependencies}
 \begin{itemize}
     \item @emotion/react@11.10.6
     \item @emotion/styled@11.10.6
@@ -49,7 +46,7 @@ Example of a dependency graph for the npm package @playwright/test made from: \u
 \end{figure}
 
 
-\subsection{C\# application dependencies}
+\section{\textit{C\#} Application Dependencies}
 
 \textit{MiniTwit.Core}
 \begin{itemize}
@@ -114,11 +111,85 @@ Example of a dependency graph for the npm package @playwright/test made from: \u
 \end{itemize}
 
 
+\section{CI/CD}
+\textit{build-latex.yml}
+\begin{itemize}
+    \item ubuntu-22.04
+    \item actions/checkout@v3
+    \item xu-cheng/latex-action@v2
+    \item actions-js/push@master
+\end{itemize}
 
+\textit{build-test.yml}
+\begin{itemize}
+    \item ubuntu-20.04
+    \item actions/checkout@v3
+    \item actions/setup-dotnet@v3
+    \item ubuntu-22.04
+    \item actions/setup-node@v3
+\end{itemize}
 
+\textit{codeql.yml}
+\begin{itemize}
+    \item ubuntu-latest
+    \item actions/checkout@v3
+    \item github/codeql-action/init@v2
+    \item github/codeql-action/autobuild@v2
+    \item github/codeql-action/analyze@v2
+    \item actions/upload-artifact@v2
+\end{itemize}
 
+\textit{continuos-deployment.yml}
+\begin{itemize}
+    \item ubuntu-latest
+    \item actions/checkout@v3
+    \item docker/setup-buildx-action@v2
+    \item docker/login-action@v2
+    \item docker/build-push-action@v4
+    \item burnett01/rsync-deployments@5.2.1
+    \item fifsky/ssh-action@master
+\end{itemize}
 
+\textit{eslint.yml}
+\begin{itemize}
+    \item ubuntu-latest
+    \item actions/checkout@v3
+    \item github/codeql-action/upload-sarif@v2
+\end{itemize}
 
+\textit{snyk-security.yml}
+\begin{itemize}
+    \item ubuntu-latest
+    \item actions/checkout@master
+    \item actions/setup-dotnet@master
+    \item snyk/actions/setup@master
+    \item actions/setup-node@master
+    \item github/codeql-action/upload-sarif@v2 
+\end{itemize}
 
+\textit{sonarcloud.yml}
+\begin{itemize}
+    \item ubuntu-latest
+    \item SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049 
+\end{itemize}
 
-
+\section{Licenses of Direct Dependencies}
+\begin{itemize}
+    \item MIT License
+    \item BSD 2-Clause "Simplified" License
+    \item BSD 3-Clause "New" or "Revised" License
+    \item Apache License 2.0
+    \item ISC License
+    \item Creative Commons Attribution 4.0
+    \item Creative Commons Zero v1.0 Universal
+    \item Do What The F*ck You Want To Public License
+    \item Unicode License Agreement - Data Files and Software (2016)
+    \item W3C Software Notice and Document License (2015-05-13)
+    \item BSD-4-Clause (University of California-Specific)
+    \item IETF Contribution Agreement
+    \item University of Illinois/NCSA Open Source License
+    \item UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+    \item zlib License
+    \item Microsoft .Net Library
+    \item Proprietary License
+\end{itemize}
