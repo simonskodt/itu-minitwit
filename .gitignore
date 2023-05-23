@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/csharp,python,visualstudiocode,visualstudio,flask,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=csharp,python,visualstudiocode,visualstudio,flask,linux
 
+
+
 # VS Code
 *.vscode
 
@@ -426,7 +428,7 @@ instance/*
 
 # Distribution / packaging
 .Python
-build/
+# build/
 develop-eggs/
 dist/
 downloads/
@@ -701,7 +703,8 @@ poetry.toml
 /coverage
 
 # production
-/build
+MiniTwit.Web/build/
+!Report/build/BSc_group_k.pdf
 
 # misc
 .DS_Store
