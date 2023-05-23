@@ -45,5 +45,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: "Created report PDF"
-          directory: './Report/build'
+          directory: './Report'
           force: 'true'
