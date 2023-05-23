@@ -2,45 +2,45 @@
 
 \section{Developer Interaction}
 
-During the development process, the majority of interaction among the developers has occurred on-site. The group has met one to two times per week to collaboratively develop new features, while smaller ad hoc tasks have been solved individually. Communication in remote contexts has been facilitated by the use of Discord and Facebook Messenger. All documentation such as a guide for local env. setup, release notes, money spent and code guidelines have been manually written and shared on Notion. 
+During the development process, the majority of interaction among the developers has occurred on-site. The group has met one to two times per week to collaboratively develop new features, while smaller ad hoc tasks have been solved individually. Communication in remote contexts has been facilitated by the use of \textit{Discord} and \textit{Messenger}. All documentation such as a guide for local environment setup, release notes, money spent, and code guidelines have been manually written and shared on \textit{Notion}.
 
 \section{Team Organisation}
 
-The organization of the team and distribution of tasks have represented an important aspect of the project's success, considering that each developer attends different courses and jobs which can disrupt communication. To address this challenge, the group has used GitHub Issues, which allows for the creation of a Kanban board displaying pending tasks, their respective type, and current progress. By doing so, the group has been able to maintain transparency of work progress without relying on constant communication.
+The organization of the team and distribution of tasks have represented an important aspect of the project's success, considering that each developer attends different courses and jobs which can disrupt communication. To address this challenge, the group has used \textit{GitHub Issues}, which allows for the creation of a \textit{Kanban board} displaying pending tasks, their respective type, and current progress. By doing so, the group has been able to maintain transparency of work progress without relying on constant communication.
 
 \section{CI/CD}
 \label{sec:ci-cd}
 
-To facilitate the Continues Integration of new code by all developers, several workflows/pipelines have been implemented to ensure that each pull request (\texttt{PR}) is subjected to checks and analyses, including building, testing, and code scanning to mitigate the risk of the service breaking. Once these checks are successfully completed, the \texttt{PR} is deemed safe for merging into the main branch, which initiates a deployment pipeline. The following subsections give a brief explanation of each workflow. 
+To facilitate the Continues Integration of new code by all developers, several workflows/pipelines have been implemented to ensure that each pull request (\textit{PR}) is subjected to checks and analyses, including building, testing, and code scanning to mitigate the risk of the service breaking. Once these checks are successfully completed, the \textit{PR} is deemed safe for merging into the main branch, which initiates a deployment pipeline. The following subsections give a brief explanation of each workflow. 
 
-\subsection{\texttt{build-test.yml}}
+\subsection{\textit{build-test.yml}}
 
 This workflow performs the build and testing of the stack in the service, including the backend and frontend. The pipeline is triggered on push events to any branch and includes two jobs: \\
 
-\textbf{build-test-backend}, which runs on an Ubuntu 20.04 machine and includes the following steps:
+\textbf{build-test-backend:} Runs on an \textit{Ubuntu 20.04} machine and includes the following steps:
 
 \begin{enumerate}
     \item Checkout the repository
-    \item Set up .NET version 7.0.x
+    \item Set up \textit{.NET} version 7.0.x
     \item Restore dependencies
-    \item Build the \texttt{MiniTwit} backend
+    \item Build the \textit{MiniTwit} backend
     \item Run backend tests
 \end{enumerate}
 
-\textbf{build-test-frontend}, which runs on an Ubuntu 22.04 machine and includes the following steps:
+\textbf{build-test-frontend:} Runs on an \textit{Ubuntu 22.04} machine and includes the following steps:
 
 \begin{enumerate}
     \item Checkout the repository
-    \item Install \texttt{Node.js} version 18 and dependencies for caching
-    \item Install dependencies for the \texttt{MiniTwit} frontend
-    \item Build the \texttt{MiniTwit} frontend
-    \item Run frontend tests using \texttt{Playwright}, in a docker container started by \texttt{docker-compose -f docker-compose.ui.yml up -d}
+    \item Install \textit{Node.js} version 18 and dependencies for caching
+    \item Install dependencies for the \textit{MiniTwit} frontend
+    \item Build the \textit{MiniTwit} frontend
+    \item Run frontend tests using \textit{Playwright}, in a docker container started by \textit{docker-compose -f docker-compose.ui.yml up -d}
     \item Stop the UI service by shutting down the Docker containers created with docker-compose
 \end{enumerate}
 
-\subsection{\texttt{eslint.yml}}
+\subsection{\textit{eslint.yml}}
 
-A pipeline that integrates \textit{eslint} for checking the frontend code. This workflow automatically detects and reports issues in the code by uploading a \textit{.sarif} file to GitHub. It provides guidance on how to fix the issues reported, such as unused variables, unused imports, and type-related errors. 
+A pipeline that integrates \textit{eslint} for checking the frontend code. The workflow automatically detects and reports issues in the code by uploading a \textit{.sarif} file to GitHub. It provides guidance on how to fix the issues reported, such as unused variables, unused imports, and type-related errors \ref{fig:elsint_report}. 
 
 \begin{figure}[H]
     \centering
@@ -49,13 +49,13 @@ A pipeline that integrates \textit{eslint} for checking the frontend code. This 
     \label{fig:elsint_report}
 \end{figure}
 
-\subsection{\texttt{codeql.yml}}
+\subsection{\textit{codeql.yml}}
 
-A pipeline that integrates \texttt{CodeQL} (C\# analysis), which scans the backend code for C\# specific vulnerabilities and bugs. It also provides guidance on how to fix them.
+A pipeline that integrates \textit{CodeQL} (C\# analysis), which scans the backend code for \textit{C\#} specific vulnerabilities and bugs. It also provides guidance on how to fix them.
 
-\subsection{\texttt{snyk-security.yml}}
+\subsection{\textit{snyk-security.yml}}
 
-A pipeline that integrates with \texttt{Snyk}, which provides continuous security monitoring. The pipeline scans the project's dependencies to identify any known vulnerabilities and automatically sets up a \texttt{PR} that updates outdated packages or packages containing known vulnerabilities. 
+A pipeline that integrates with \textit{Snyk}, which provides continuous security monitoring \ref{fig:snyk_report}. The pipeline scans the project's dependencies to identify any known vulnerabilities and automatically sets up a \textit{PR} that updates outdated packages or packages containing known vulnerabilities. 
 
 \begin{figure}[H]
     \centering
@@ -64,28 +64,28 @@ A pipeline that integrates with \texttt{Snyk}, which provides continuous securit
     \label{fig:snyk_report}
 \end{figure}
 
-\subsection{\texttt{continuous-deployment.yml}}
+\subsection{\textit{continuous-deployment.yml}}
 
-All pipelines highlighted so far, are triggered either by pushing to a development branch or creating a \texttt{PR} to the main branch. The combination of these pipelines constitutes the project's \textit{deployment gate} which is a collection of predefined checks and signals that must pass before a deployment may be triggered \cite{DevOps_gates}. If the \texttt{PR} passes the gate, it can be deployed. This is done by merging the \texttt{PR}, which will trigger the continuous-deployment pipeline.
+All pipelines highlighted so far, are triggered either by pushing to a feature branch or creating a \textit{PR} to the main branch. The combination of these pipelines constitutes the project's \textit{deployment gate} which is a collection of predefined checks and signals that must pass before a deployment may be triggered \cite{DevOps_gates}. If the \textit{PR} passes the gate, it can be deployed. This is done by merging the \textit{PR}, which will trigger the continuous-deployment pipeline.
 
-The continuous-deployment pipeline is separated into two jobs, namely build and deploy. The \textit{build} job is responsible for building and pushing the Docker images for the \texttt{MiniTwit} backend and frontend, respectively. The job uses the Docker Build tool to build the images and then pushes them to Docker Hub.
+The continuous-deployment pipeline is separated into two jobs, namely build and deploy. The \textit{build} job is responsible for building and pushing the Docker images for the \textit{MiniTwit} backend and frontend, respectively. The job uses the Docker Build tool to build the images and then pushes them to Docker Hub.
 
-The \textit{deploy} job is responsible for deploying the \texttt{MiniTwit} application and monitoring/logging components to the live server. This job is dependent on the \textit{build} job to ensure that the images are built and available for deployment. The job first uses the \textit{rsync} command to copy the Docker Compose files and monitoring/logging configuration files to the live server. It then uses the SSH Action to log in to the live server and deploys the \texttt{MiniTwit} application and monitoring/logging components by executing the docker-compose files: \textit{docker-compose.prod.yml} and \textit{docker-compose.monitoring.yml}.
+The \textit{deploy} job is responsible for deploying the \textit{MiniTwit} application and monitoring/logging components to the live server. This job is dependent on the \textit{build} job to ensure that the images are built and available for deployment. The job first uses the \textit{rsync} command to copy the Docker Compose files and monitoring/logging configuration files to the live server. It then uses the \textit{SSH Action} to log in to the live server and deploy the \textit{MiniTwit} application and monitoring/logging components by executing the docker-compose files: \textit{docker-compose.prod.yml} and \textit{docker-compose.monitoring.yml}.
 
 \section{Repository Organisation}
 
-The group has employed a mono-repository approach, in which all components are stored within a single GitHub repository. While the option to maintain separate repositories for the frontend and backend existed, it was decided that, given the size of this project, a mono-repository was better with regards to the standardization of branch strategies, review of pull requests, and deployment strategy, i.e. we can deploy the whole service from a single \texttt{PR}.
+The group has employed a mono-repository approach, in which all components are stored within a single GitHub repository. While the option to maintain separate repositories for the frontend and backend existed, it was decided that, given the size of this project, a mono-repository was better with regards to the standardization of branching strategies, review of pull requests, and deployment strategy, i.e. we can deploy the whole service from a single \textit{PR}.
 
 \section{Branching Strategy}
 
-We have used a trunk-based branching strategy where we work with two types of branches.
+We have used a trunk-based branching strategy using two types of branches.
 
 \begin{itemize}
     \item The main branch/trunk branch (long-lived)
     \item Several feature branches (short-lived)
 \end{itemize}
 
-The main branch always contains the newest working instance of \texttt{MiniTwit}. The feature branches are short-lived branches containing new features for \texttt{MiniTwit}. As soon as a feature is completed, the feature branch is merged with the main branch using pull requests. Once the merge is accomplished, the feature branch is deleted. Due to branch protection rules merge request can only be accepted onto the main branch after it has undergone review, approval, and has passed all pipeline checks. In order to maintain a clean history of the version control system, it is recommended that each branch correspond to an issue on GitHub, and that commit messages have the following format:
+The main branch always contains the newest working instance of \textit{MiniTwit}. The feature branches are short-lived branches containing new features for \textit{MiniTwit}. As soon as a feature is completed, the feature branch is merged with the main branch using pull requests. Once the merge is accomplished, the feature branch is deleted. Due to branch protection rules pull request can only be accepted onto the main branch after it has undergone review, approval, and has passed all pipeline checks. To maintain a clean history of the version control system, it is recommended that each branch correspond to an issue on GitHub, and that commit messages have the following format:
 
 \begin{verbatim}
     <commit type>([scope]): <message>
@@ -93,10 +93,10 @@ The main branch always contains the newest working instance of \texttt{MiniTwit}
 
 \section{Monotoring}
 
-When it comes to monitoring \texttt{MiniTwit}, we only monitor the backend. For this, we use \texttt{Prometheus} by importing the \texttt{Prometheus} NuGet package in the \texttt{Presentation Layer}. Out of the box \texttt{Prometheus} provides a \texttt{/metrics} endpoint to scrape for the following metrics:
+When it comes to monitoring \textit{MiniTwit}, we only monitor the backend. For this, we use \textit{Prometheus} by importing its NuGet package in the \textit{Presentation Layer}. Out of the box \textit{Prometheus} provides a \textit{/metrics} endpoint to scrape for the following metrics:
 
 \begin{itemize}
-    \item Whether \texttt{Prometheus} and the backend is up
+    \item Whether \textit{Prometheus} and the backend is up
     \item Requests per controller per endpoint
     \item Total number of requests
     \item Average request response time
@@ -105,44 +105,44 @@ When it comes to monitoring \texttt{MiniTwit}, we only monitor the backend. For 
     \item Number of requests with successful and unsuccessful response code
 \end{itemize}
 
-\texttt{Prometheus} is scraped by \texttt{Grafana} and the metrics are visualized in our monitoring dashboard, which can be seen in figure \ref{fig:Minitwit_logging}. The dashboard visualizes the information about the average response time, number of requests, etc. which has been useful to detect any abnormalities in the project. Especially the average response time, which in the beginning was way too high for the system to work properly when multiple incoming requests were handled.
+\textit{Prometheus} is scraped by \textit{Grafana} and the metrics are visualized in our monitoring dashboard, which can be seen in figure \ref{fig:Minitwit_monitoring}. The dashboard visualizes the information about the average response time, number of requests, etc. which has been useful to detect any abnormalities in the project. Especially the average response time, which in the beginning was way too high for the system to work properly when multiple incoming requests were handled.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{Monitoring.png}
-    \caption{\texttt{Grafana} monitoring dashboard for monitoring the \texttt{MiniTwit} backend.}
+    \caption{\textit{Grafana} monitoring dashboard for monitoring the \textit{MiniTwit} backend.}
     \label{fig:Minitwit_monitoring}
 \end{figure}
 
 \section{Logging}
 
-For logging the \texttt{MiniTwit} backend, we used \texttt{Loki}. We use \texttt{Loki} by importing the \texttt{Loki} NuGet package. When logging, \texttt{Loki} automatically sends the logs to a running \texttt{Loki} server instance which is directly queried by \texttt{Grafana}. We only log within the \texttt{Presentation Layer} in the two controllers. The log level used when logging depends on the response state from the service layer, specifically, we use:
+For logging the \textit{MiniTwit} backend, we used \textit{Loki}. When logging, \textit{Loki} automatically sends the logs to a running \textit{Loki} server instance which is directly queried by \textit{Grafana} in a logging dashboard (see figure \ref{fig:Minitwit_logging}). We only log within the \textit{Presentation Layer} in our controllers. The log level used when logging depends on the response state from the service layer, specifically, we use:
 
 \begin{itemize}
-    \item \textbf{Error:} When the \texttt{Service Layer} returns errors when usernames or ids are not found.
-    \item \textbf{Warning:} When an unexpected status is returned from the \texttt{Service Layer}.
-    \item \textbf{Information:} When a request is successfully executed, describe what happened.
+    \item \textbf{Error:} When the \textit{Service Layer} returns errors e.g. when usernames or ids are not found.
+    \item \textbf{Warning:} When an unexpected status is returned from the \textit{Service Layer}.
+    \item \textbf{Information:} When a request is successfully executed, it describes what happened.
     \item \textbf{Debug:} When we want to debug information such as the number of Tweets fetched from the backend etc.
 \end{itemize}
 
 \begin{sidewaysfigure}[H]
     \centering
     \includegraphics[width=\linewidth]{Logging.png}
-    \caption{Logging from our \texttt{Grafana} logging dashboard.}
+    \caption{Logging from our \textit{Grafana} logging dashboard.}
     \label{fig:Minitwit_logging}
 \end{sidewaysfigure}
 
 \section{Security}
 
-As seen in the following security assessment: \href{https://github.com/simonskodt/itu-minitwit/blob/main/Documents/SECURITY_ASSESSMENT.md}{\textit{secuirty assesment}}, we found that our service lacked security measurements, particularly the absence of TLS configuration. To address this issue, the team attempted to implement TLS using \texttt{NGINX} and \texttt{Certbot}, aiming to secure the obtained domain "\underline{https://minitwit.live/}". However, we encountered difficulties in obtaining a certificate, likely caused by the server's firewall blocking the request to \texttt{Certbot}.
+As seen in the following security assessment: \href{https://github.com/simonskodt/itu-minitwit/blob/main/Documents/SECURITY_ASSESSMENT.md}{\textit{secuirty assesment}}, we found that our service lacked some security measurements, particularly the absence of a TLS configuration. To address this issue, the team attempted to implement TLS using \textit{NGINX} and \textit{Certbot}, aiming to secure the obtained domain "\underline{minitwit.live}". However, we didn't manage to obtain a certificate, as we experienced difficulties, likely caused by the server's firewall blocking the request to \textit{Certbot}.
 
 \section{Scaling and Load Balancing}
 
-In terms of scaling, we created a Docker Swarm for horizontal scaling, following the instructions provided during the lecture.  The swarm was successfully set up, and it functioned as intended in theory. However, we never fully understood how the setup communicated between the machines, particularly the mapping of frontends to corresponding backends. Although we had three instances of our service running within the swarm, we were hesitant to replace our production droplet with the swarm due to our lack of confidence in operating and maintaining it effectively. 
+In terms of scaling, we created a Docker Swarm for horizontal scaling, following the instructions provided during the lecture.  The swarm was successfully set up, and it functioned as intended in theory. Although we had three instances of our service running within the swarm, we were hesitant to replace our production droplet with the swarm due to our lack of confidence in operating and maintaining it effectively, as the communication and mapping of frontends to corresponding backends were unclear.
 
-The setup was created by the following shell script \href{https://github.com/simonskodt/itu-minitwit/blob/feat-swarm/swarm.sh
+The Swarm was created and setup using the following shell script \href{https://github.com/simonskodt/itu-minitwit/blob/feat-swarm/swarm.sh
 }{swarm.sh}, which served as our implementation of Infrastructure as Code. Scripts were not employed for creating virtual machines (VMs) beyond this point, as we found the \textit{DigitalOcean} user interface to be very intuitive. Nevertheless, we acknowledge the importance of employing tools such as \textit{Vagrant} or \textit{Terraform} for VM creation, as they would simplify a handover of the project.
 
 \section{Use of Artificial Intelligence} 
 
-This project utilized ChatGPT to solve specific code issues. Additionally, AI has been used to grammatically correct sentences. However, the AI's suggestions were not blindly copied, as the essence of the sentences could be lost in the process.
+This project utilized \textit{ChatGPT} to solve specific code issues. Additionally, AI has been used to grammatically correct sentences. However, the AI's suggestions were not blindly copied, as the essence of the sentences could be lost in the process.
