@@ -35,9 +35,9 @@ jobs:
       - name: Cleanup temp files in Report directory
         run: |
           cd Report
-          rm *.txt
-          rm *.bbl
-          rm *.xml
+          rm -f *.txt
+          rm -f *.bbl
+          rm -f *.xml
           sudo rm -rf svg-inkscape
 
       - name: Upload report PDF file to repository
