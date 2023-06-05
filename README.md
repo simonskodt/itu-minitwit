@@ -166,7 +166,7 @@ Encode your infrastructure setup.
 
 ### Week 13
 
-- [ ] Write report, see [BSc_group_k.pdf](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/BSc_group_k.pdf).
+- [x] Write report, see [BSc_group_k.pdf](https://github.com/simonskodt/itu-minitwit/blob/main/Documents/BSc_group_k.pdf).
 
 ## Course description
 
