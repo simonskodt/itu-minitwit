@@ -1,0 +1,38 @@
+name: Swarm Deployment
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Copy docker-compose production file to Swarm Manager
+        uses: burnett01/rsync-deployments@5.2.1
+        with:
+          switches: -avz --delete --include="docker-compose.prod.yml" --exclude="*"
+          path: .
+          remote_path: ./itu-minitwit/
+          remote_host: ${{ secrets.SSH_HOST_SWARM }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy MiniTwit
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_SWARM }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            export DB_CONNECTION_STRING=${{ secrets.DB_CONNECTIONSTRING_SWARM }}
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            cd ./itu-minitwit
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-server:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/itu-minitwit-web:latest
+            docker stack deploy -c docker-compose.prod.yml minitwit

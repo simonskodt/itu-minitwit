@@ -69,16 +69,13 @@ var app = builder.Build();
 app.SeedDatabase(app.Environment.IsDevelopment());
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniTwit API");
-        options.DocumentTitle = "MiniTwit API - Swagger";
-        options.DisplayRequestDuration();
-    });
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniTwit API");
+    options.DocumentTitle = "MiniTwit API - Swagger";
+    options.DisplayRequestDuration();
+});
 
 // Cross-origin Request Blocked
 app.UseCors(x => x
